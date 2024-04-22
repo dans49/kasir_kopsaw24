@@ -120,6 +120,20 @@
             $("body").toggleClass("sidebar-toggled");
             $(".sidebar").toggleClass("toggled");
         }
+
+        if(url == "?page=laporan") {
+            $('.sidebar #collapse3').collapse('show');
+        }
+
+        if(url == "?page=barang" || url == "?page=kategori" || url == "?page=satuan" || url == "?page=pelanggan" ||url == "?page=supplier") {
+            $('.sidebar #collapseTwo ').collapse('show');
+        }
+
+        if(url == "?page=user") {
+            $('.sidebar #pengaturan').collapse('show');
+        }
+
+
     }
    </script>
 

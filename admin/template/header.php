@@ -29,7 +29,7 @@
     <script src="sb-admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 </head>
 
-<body id="page-top" class="<?php echo (($_GET['page']) == 'jual' ? 'toggled':'') ?>">
+<body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
