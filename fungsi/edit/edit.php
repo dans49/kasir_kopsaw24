@@ -210,7 +210,8 @@ if (!empty($_SESSION['admin'])) {
 				<th>ID Barang</th>
 				<th>Nama Barang</th>
 				<th>Merk</th>
-				<th>Harga Jual</th>
+                <th>Harga Jual</th>
+				<th>Stok</th>
 				<th>Aksi</th>
 			</tr>
 		<?php foreach ($hasil1 as $hasil) {?>
@@ -218,7 +219,8 @@ if (!empty($_SESSION['admin'])) {
 				<td><?php echo $hasil['id_barang'];?></td>
 				<td><?php echo $hasil['nama_barang'];?></td>
 				<td><?php echo $hasil['merk'];?></td>
-				<td><?php echo $hasil['harga_jual'];?></td>
+                <td><?php echo $hasil['harga_jual'];?></td>
+				<td><?php echo $hasil['stok'];?></td>
 				<td>
 				<a href="fungsi/tambah/tambah.php?jual=jual&id=<?php echo $hasil['id_barang'];?>&id_kasir=<?php echo $_SESSION['admin']['id_member'];?>" 
 					class="btn btn-success">

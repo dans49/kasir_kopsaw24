@@ -52,10 +52,10 @@
         <table class="table table-bordered table-striped table-sm" id="example1">
             <thead>
                 <tr style="background:#DFF0D8;color:#333;">
-                    <th>No.</th>
+                    <th width="7%">No.</th>
                     <th>Kategori</th>
-                    <th>Tanggal Input</th>
-                    <th>Aksi</th>
+                    <th width="20%">Tanggal Input</th>
+                    <th width="15%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,11 +63,12 @@
 				$hasil = $lihat -> kategori();
 				$no=1;
 				foreach($hasil as $isi){
+                    $exp = explode(' ', $isi['waktudata']);
 			?>
                 <tr>
                     <td><?php echo $no;?></td>
                     <td><?php echo $isi['nama_kategori'];?></td>
-                    <td><?php echo $isi['tgl_input'];?></td>
+                    <td><?php echo $frmwaktu->tgl_indo($exp[0]); ?></td>
                     <td>
                         <a href="index.php?page=kategori&uid=<?php echo $isi['id_kategori'];?>"><button
                                 class="btn btn-warning">Edit</button></a>

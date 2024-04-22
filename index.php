@@ -18,8 +18,10 @@
 
 	if(!empty($_SESSION['admin'])){
 		require 'config.php';
+		require 'fungsi/Waktu.php';
 		include $view;
 		$lihat = new view($config);
+		$frmwaktu = new Waktu;
 		$toko = $lihat -> toko();
 		//  admin
 			include 'admin/template/header.php';

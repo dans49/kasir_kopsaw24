@@ -42,6 +42,7 @@
                 <!-- <h6 class="collapse-header">Custom Components:</h6> -->
                 <a class="collapse-item" href="index.php?page=barang">Barang</a>
                 <a class="collapse-item" href="index.php?page=kategori">Kategori</a>
+                <a class="collapse-item" href="index.php?page=satuan">Satuan</a>
                 <a class="collapse-item" href="index.php?page=pelanggan">Pelanggan</a>
                 <a class="collapse-item" href="index.php?page=supplier">Supplier</a>
             </div>
