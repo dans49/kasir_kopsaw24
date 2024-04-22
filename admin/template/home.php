@@ -42,7 +42,7 @@
     <!-- STATUS cardS -->
     <div class="col-md-3 mb-3">
         <div class="card">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-warning text-white">
                 <h6 class="pt-2"><i class="fas fa-chart-bar"></i> Stok Barang</h6>
             </div>
             <div class="card-body">
@@ -60,8 +60,8 @@
     <!-- STATUS cardS -->
     <div class="col-md-3 mb-3">
         <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h6 class="pt-2"><i class="fas fa-upload"></i> Telah Terjual</h6>
+            <div class="card-header bg-danger text-white">
+                <h6 class="pt-2"><i class="fas fa-list"></i> Kategori </h6>
             </div>
             <div class="card-body">
                 <center>
@@ -77,8 +77,46 @@
     </div><!-- /col-md-3-->
     <div class="col-md-3 mb-3">
         <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h6 class="pt-2"><i class="fa fa-bookmark"></i> Kategori Barang</h6>
+            <div class="card-header bg-dark text-white">
+                <h6 class="pt-2"><i class="fas fa-upload"></i> Telah Terjual</h6>
+            </div>
+            <div class="card-body">
+                <center>
+                    <h1><?php echo number_format($jual['stok']);?></h1>
+                </center>
+            </div>
+            <div class="card-footer">
+                <a href='index.php?page=laporan'>Tabel
+                    laporan <i class='fa fa-angle-double-right'></i></a>
+            </div>
+        </div>
+        <!--/grey-card -->
+    </div><!-- /col-md-3-->
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h6 class="pt-2"><i class="fa fa-bookmark"></i> Laporan Penjualan</h6>
+            </div>
+            <div class="card-body">
+                <center>
+                    <h1><?php echo number_format($hasil_kategori);?></h1>
+                </center>
+            </div>
+            <div class="card-footer">
+                <a href='index.php?page=kategori'>Tabel
+                    Kategori <i class='fa fa-angle-double-right'></i></a>
+            </div>
+        </div>
+        <!--/grey-card -->
+    </div><!-- /col-md-3-->
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h6 class="pt-2"><i class="fa fa-bookmark"></i> Laporan Pembelian</h6>
             </div>
             <div class="card-body">
                 <center>

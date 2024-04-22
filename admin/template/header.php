@@ -9,8 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>POS Kasir | Codekop</title>
+    <title>KPRI Sawangan Bappelitbangda Kab. Tasikmalaya</title>
 
+    <link rel="icon" type="image/x-icon" href="assets/img/kpri-sawangan.jpeg">
     <!-- Custom fonts for this template-->
     <link href="sb-admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -28,7 +29,7 @@
     <script src="sb-admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 </head>
 
-<body id="page-top">
+<body id="page-top" class="<?php echo (($_GET['page']) == 'jual' ? 'sidebar-toggled':'') ?>">
 
     <!-- Page Wrapper -->
     <div id="wrapper">

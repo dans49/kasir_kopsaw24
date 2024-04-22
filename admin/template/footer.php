@@ -8,8 +8,7 @@
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
                 <span>
-                    <?php echo date('Y');?> - Sistem Penjualan Barang Berbasis Web |
-                    BY <b><a href="https://codekop.com" target="_blank">CODEKOP.COM</a></b>
+                    All Rights Reserved &copy; Copyright <?php echo date('Y');?> Aplikasi Kasir Berbasis Web KPRI Sawangan Bappelitbangda Kabupaten Tasikmalaya.  
                 </span>
             </div>
         </div>
@@ -118,4 +117,4 @@
 
    </body>
 
-   </html>
+</html>
