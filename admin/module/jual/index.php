@@ -62,6 +62,14 @@
                                 <td><b>Tanggal</b></td>
                                 <td><input type="text" readonly="readonly" class="form-control" value="<?php echo date("j F Y, G:i");?>" name="tgl"></td>
                             </tr>
+                            <tr>
+                                <td><b>Pelanggan</b></td>
+                                <td>
+                                    <select class="form-control select2get">
+                                        <option value="">-Pilih-</option>
+                                    </select>
+                                </td>
+                            </tr>
                         </table>
                         <table class="table table-bordered w-100" id="example1">
                             <thead>
@@ -161,32 +169,38 @@
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
                             <?php $no++; }?>
                         <div class="row mb-3">
-                            <div class="col-sm-7">&nbsp;</div>
-                            <div class="col-sm-1">Total Semua</div>
-                            <div class="col-sm-4"><input type="text" class="form-control" name="total" value="<?php echo $total_bayar;?>"></div>
+                            <div class="col-sm-6">&nbsp;</div>
+                            <div class="col-sm-2 text-right">Grand Total</div>
+                            <div class="col-sm-4"><input type="text" id="totals" class="form-control" name="total" value="<?php echo $total_bayar;?>"></div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-sm-7">&nbsp;</div>
-                            <div class="col-sm-1">Bayar</div>
-                            <div class="col-sm-2"><input type="text" class="form-control" name="bayar" value="<?php echo $bayar;?>"></div>
-                            <div class="col-sm-2"><button class="btn btn-success "><i class="fa fa-shopping-cart"></i> Bayar</button>
+                            <div class="col-sm-6">&nbsp;</div>
+                            <div class="col-sm-2 text-right">Bayar</div>
+                            <div class="col-sm-2"><input type="text" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>"></div>
+                            <div class="col-sm-2">
                                 <?php  if(!empty($_GET['nota'] == 'yes')) {?>
                                     <a class="btn btn-danger" href="fungsi/hapus/hapus.php?penjualan=jual">
                                     <b>RESET</b></a><?php }?>
-                                <a class="btn btn-danger" href="#" id="paylater">Bayar Nanti</a>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input paylater" id="customSwitch1" data-on-text="ON" data-off-text="OFF">
+                                    <label class="custom-control-label" for="customSwitch1">Bayar Nanti</label>
+                                </div>
+                                <input type="text" id="status" name="status" value="">
+
                             </div>
                         </div>
                          <div class="row mb-3">
-                            <div class="col-sm-7">&nbsp;</div>
-                            <div class="col-sm-1">Kembali</div>
-                            <div class="col-sm-3"><input type="text" class="form-control" value="<?php echo $hitung;?>"></div>
+                            <div class="col-sm-6">&nbsp;</div>
+                            <div class="col-sm-2 text-right">Kembali</div>
+                            <div class="col-sm-3"><input type="text" id="kembalian" class="form-control" value="<?php echo $hitung;?>"></div>
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-sm-7"></div>
-                            <div class="col-sm-1"></div>
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"></div>
                             <div class="col-sm-3"><a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member'];?>
                                     &bayar=<?php echo $bayar;?>&kembali=<?php echo $hitung;?>" target="_blank">
+                                    <button class="btn btn-success "><i class="fa fa-shopping-cart"></i> Bayar</button>
                                     <button class="btn btn-secondary">
                                         <i class="fa fa-print"></i> Print Untuk Bukti Pembayaran
                                     </button></a></div>
@@ -220,5 +234,34 @@ $(document).ready(function(){
         });
     });
 });
+
+
+$("#kembalian").val('0')
+$(document).on('keyup','#dibayar', function() {
+    var total = $("#totals").val()
+    var bayar = $("#dibayar").val()
+    var getang = 0;
+    getang = bayar - total;
+    
+    $("#kembalian").val(getang);
+});
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+$(document).on('change','.paylater', function(e) {
+    let cek = e.target.checked;
+
+    if (cek == true) {
+        bayar = $("#dibayar").prop('disabled',true);
+        status = $("#status").val('Belum Lunas');
+    } else {
+        bayar = $("#dibayar").prop('disabled', false);
+        status = $("#status").val('');
+    }
+    // $("#kembalian").val('0');
+});
+
 //To select country name
 </script>

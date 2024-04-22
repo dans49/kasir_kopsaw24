@@ -22,6 +22,8 @@
     <link href="sb-admin/css/sb-admin-2.min.css" rel="stylesheet">
     <!-- DATATABLES BS 4-->
     <link rel="stylesheet" href="sb-admin/vendor/datatables/dataTables.bootstrap4.css" />
+
+    <link rel="stylesheet" href="sb-admin/vendor/select2/css/select2.min.css">
     <!-- Bootstrap core JavaScript-->
     <script src="sb-admin/vendor/jquery/jquery.min.js"></script>
     <script src="sb-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

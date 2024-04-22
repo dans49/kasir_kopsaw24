@@ -29,12 +29,14 @@
     <script src="sb-admin/js/sb-admin-2.min.js"></script>
     <script src="sb-admin/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="sb-admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="sb-admin/vendor/select2/js/select2.full.min.js"></script>
     <script type="text/javascript">
     //datatable
     $(function() {
         $("#example1").DataTable();
         $('#example2').DataTable();
     });
+    $('.select2get').select2()
    </script>
    <?php
         $sql=" select * from barang where stok <=3";

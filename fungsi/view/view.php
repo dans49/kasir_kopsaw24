@@ -60,6 +60,16 @@ class view
         return $hasil;
     }
 
+    public function pelanggan()
+    {
+        $sql = "select *
+                from kws_pelanggan";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
     public function barang_stok()
     {
         $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori
