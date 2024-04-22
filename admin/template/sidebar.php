@@ -4,14 +4,14 @@
     $hasil_profil = $lihat -> member_edit($id);
 ?>
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-cash-register"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">POS Codekop<sup></sup></div>
+        <div class="sidebar-brand-text mx-3">KPRI Kopsaw<sup></sup></div>
     </a>
 
     <!-- Divider -->
@@ -63,9 +63,18 @@
     </li>
     <hr class="sidebar-divider">
     <li class="nav-item active">
-        <a class="nav-link" href="index.php?page=pengaturan">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pengaturan" aria-expanded="true"
+            aria-controls="pengaturan"> <!-- index.php?page=pengaturan -->
             <i class="fas fa-fw fa-cogs"></i>
-            <span>Pengaturan Toko</span></a>
+            <span>Pengaturan</span>
+        </a>
+        <div id="pengaturan" class="collapse" aria-labelledby="hpengaturan" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <!-- <h6 class="collapse-header">Custom Components:</h6> -->
+                <a class="collapse-item" href="index.php?page=user">Data User</a>
+                <!-- <a class="collapse-item" href="index.php?page=laporan">Profil Toko</a> -->
+            </div>
+        </div>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
