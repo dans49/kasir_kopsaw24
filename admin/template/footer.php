@@ -113,6 +113,14 @@
         $(".modal-create").hide();
         $(".bg-shadow").hide();
     }
+
+    window.onload = function () {
+        var url = window.location.search
+        if(url == "?page=jual") {
+            $("body").toggleClass("sidebar-toggled");
+            $(".sidebar").toggleClass("toggled");
+        }
+    }
    </script>
 
    </body>
