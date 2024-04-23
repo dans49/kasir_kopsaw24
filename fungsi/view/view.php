@@ -244,7 +244,7 @@ class view
 
     public function penjualan()
     {
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, member.id_member,
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
                 member.nm_member from penjualan 
                 left join barang on barang.id_barang=penjualan.id_barang 
                 left join member on member.id_member=penjualan.id_member
