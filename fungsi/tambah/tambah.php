@@ -52,15 +52,13 @@ if (!empty($_SESSION['admin'])) {
             $kasir =  $_GET['id_kasir'];
             $jumlah = 1;
             $total = $hsl['harga_jual'];
-            $tgl = date("j F Y, G:i");
 
             $data1[] = $id;
             $data1[] = $kasir;
             $data1[] = $jumlah;
             $data1[] = $total;
-            $data1[] = $tgl;
 
-            $sql1 = 'INSERT INTO penjualan (id_barang,id_member,jumlah,total,tanggal_input) VALUES (?,?,?,?,?)';
+            $sql1 = 'INSERT INTO penjualan (id_barang,id_member,jumlah,total) VALUES (?,?,?,?)';
             $row1 = $config -> prepare($sql1);
             $row1 -> execute($data1);
 
@@ -69,5 +67,23 @@ if (!empty($_SESSION['admin'])) {
             echo '<script>alert("Stok Barang Anda Telah Habis !");
 					window.location="../../index.php?page=jual#keranjang"</script>';
         }
+    }
+
+    if (!empty($_GET['pelanggan_jual'])) {
+        $id = htmlentities($_POST['id']);
+        $nama = htmlentities($_POST['nama']);
+        $telpon = htmlentities($_POST['telepon']);
+        $mail = htmlentities($_POST['mail']);
+
+        $data[] = $id;
+        $data[] = $nama;
+        $data[] = $telpon;
+        $data[] = $mail;
+       
+        $sql = 'INSERT INTO ksw_pelanggan (id_pelanggan,nm_pelanggan,telepon,email,statusdata) 
+                VALUES (?,?,?,?,"AKTIF") ';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=jual&success=tambah-data"</script>';
     }
 }

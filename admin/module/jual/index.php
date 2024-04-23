@@ -65,9 +65,15 @@
                             <tr>
                                 <td><b>Pelanggan</b></td>
                                 <td>
-                                    <select class="form-control select2get">
+                                    <select class="form-control select2get" name="plg">
                                         <option value="">-Pilih-</option>
+                                        <?php
+                                        foreach ($lihat->pelanggan() as $gdata) {
+                                            echo "<option value='$gdata[nm_pelanggan]'>$gdata[nm_pelanggan]</option>";
+                                        }
+                                        ?>
                                     </select>
+                                    <button type="button" class="btn btn-primary btn-sm mr-2"  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span> Tambah</button>
                                 </td>
                             </tr>
                         </table>
@@ -76,6 +82,7 @@
                                 <tr>
                                     <td> No</td>
                                     <td> Nama Barang</td>
+                                    <td> Merk Barang</td>
                                     <td style="width:10%;"> Jumlah</td>
                                     <td style="width:20%;"> Total</td>
                                     <td> Kasir</td>
@@ -88,6 +95,7 @@
                                 <tr>
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $isi['nama_barang'];?></td>
+                                    <td><?php echo $isi['merk'];?></td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
@@ -176,11 +184,11 @@
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Bayar</div>
-                            <div class="col-sm-2"><input type="text" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>"></div>
+                            <div class="col-sm-2"><input type="text" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>" required></div>
                             <div class="col-sm-2">
-                                <?php  if(!empty($_GET['nota'] == 'yes')) {?>
+                                <!-- <?php  if(!empty($_GET['nota'] == 'yes')) {?>
                                     <a class="btn btn-danger" href="fungsi/hapus/hapus.php?penjualan=jual">
-                                    <b>RESET</b></a><?php }?>
+                                    <b>RESET</b></a><?php }?> -->
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input paylater" id="customSwitch1" data-on-text="ON" data-off-text="OFF">
                                     <label class="custom-control-label" for="customSwitch1">Bayar Nanti</label>
@@ -200,19 +208,66 @@
                             <div class="col-sm-2"></div>
                             <div class="col-sm-3"><a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member'];?>
                                     &bayar=<?php echo $bayar;?>&kembali=<?php echo $hitung;?>" target="_blank">
-                                    <button class="btn btn-success "><i class="fa fa-shopping-cart"></i> Bayar</button>
+                                    <button class="btn btn-success "><i class="fa fa-shopping-cart"></i> Proses Transaksi</button>
                                     <button class="btn btn-secondary">
                                         <i class="fa fa-print"></i> Print Untuk Bukti Pembayaran
                                     </button></a></div>
                         </div>
                         <br/>
                         <br/>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style=" border-radius:0px;">
+                <div class="modal-header" style="background:#285c64;color:#fff;">
+                    <h5 class="modal-title"><i class="fa fa-plus"></i> Tambah Pelanggan</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="fungsi/tambah/tambah.php?pelanggan_jual=tambah" method="POST">
+                    <div class="modal-body">
+                        <table class="table table-striped bordered">
+                            <?php
+                                $format = $lihat -> pelanggan_id();
+                            ?>
+                            <tr>
+                                <td>ID Pelanggan</td>
+                                <td><input type="text" readonly="readonly" required value="<?php echo $format;?>"
+                                        class="form-control" name="id"></td>
+                            </tr>
+                            <tr>
+                                <td>Nama Pelanggan*</td>
+                                <td><input type="text" placeholder="Nama Pelanggan" required class="form-control"
+                                        name="nama"></td>
+                            </tr>
+                            <tr>
+                                <td>Telepon*</td>
+                                <td><input type="text" placeholder="Telepon" required class="form-control"
+                                        name="telepon" maxlength="15"></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><input type="email" placeholder="Email" class="form-control"
+                                        name="mail"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Insert
+                            Data</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
 
 <script>
 // AJAX call for autocomplete 
@@ -255,12 +310,14 @@ $(document).on('change','.paylater', function(e) {
 
     if (cek == true) {
         bayar = $("#dibayar").prop('disabled',true);
-        status = $("#status").val('Belum Lunas');
+        bayar = $("#dibayar").prop('required',false);
+        status = $("#status").val('Hutang');
     } else {
         bayar = $("#dibayar").prop('disabled', false);
+        bayar = $("#dibayar").prop('required',true);
         status = $("#status").val('');
     }
-    // $("#kembalian").val('0');
+    $("#kembalian").val('0');
 });
 
 //To select country name

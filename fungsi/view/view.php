@@ -62,12 +62,24 @@ class view
 
     public function pelanggan()
     {
-        $sql = "select *
-                from kws_pelanggan";
+        $sql = "select * from ksw_pelanggan";
         $row = $this-> db -> prepare($sql);
         $row -> execute();
         $hasil = $row -> fetchAll();
         return $hasil;
+    }
+
+    public function pelanggan_id()
+    {
+        $sql = 'SELECT * FROM ksw_pelanggan ORDER BY id_pelanggan DESC';
+        $row = $this-> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> fetch();
+
+        $urut = substr($hasil['id_pelanggan'], 2, 4);
+        $tambah = (int) $urut + 1;
+        $format = "PW".sprintf('%04d',$tambah);
+        return $format;
     }
 
     public function barang_stok()
@@ -232,7 +244,7 @@ class view
 
     public function penjualan()
     {
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, member.id_member,
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, member.id_member,
                 member.nm_member from penjualan 
                 left join barang on barang.id_barang=penjualan.id_barang 
                 left join member on member.id_member=penjualan.id_member
