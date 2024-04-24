@@ -80,7 +80,7 @@
                         <table class="table table-bordered w-100" id="example1">
                             <thead>
                                 <tr>
-                                    <th> No</th>
+                                    <th> No <?=temp_id($config) ?></th>
                                     <th> Nama Barang</th>
                                     <th> Merk Barang</th>
                                     <th> Harga</th>
@@ -91,7 +91,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $total_bayar=0; $no=1; $hasil_penjualan = $lihat -> penjualan();?>
+                                <?php $total_bayar=0; $no=1; $hasil_penjualan = $lihat -> temp_penjualan();?>
                                 <?php foreach($hasil_penjualan  as $isi){?>
                                 <tr>
                                     <td><?php echo $no;?></td>
