@@ -30,7 +30,7 @@
                 <input type="hidden" name="id" value="<?= $edit['id_kategori'];?>">
             </td>
             <td style="padding-left:10px;"><button id="tombol-simpan" class="btn btn-primary"><i class="fa fa-edit"></i>
-                    Ubah Data</button></td>
+                    Edit Data</button></td>
         </tr>
     </table>
 </form>
