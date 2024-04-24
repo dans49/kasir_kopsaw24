@@ -1,17 +1,24 @@
 <?php
-function kodesiswa($koneksi)
+function temp_id($koneksi)
 {
-	$newprod = $koneksi->query("select max(right(idsiswa,3)) as kode from ql_siswa where year(waktudata)=year(now()) and month(waktudata)=month(now())");
-	$get = mysqli_fetch_array($newprod);
-	if($get['kode'] == NULL || $get['kode'] == 0){
-		$newprod = $koneksi->query("select concat(date_format(now(),'%Y%m'),lpad(count(idsiswa)+1,3,0)) as kode from ql_siswa where year(waktudata)=year(now()) and month(waktudata)=month(now())");
-		$get = mysqli_fetch_array($newprod);
+	$sql = "select max(right(id_temp,3)) as kode from _temp_penjualan where year(waktudata)=year(now()) and month(waktudata)=month(now())";
+	$row = $koneksi -> prepare($sql);
+    $row -> execute(array($id));
+    $hasil = $row -> fetch();
+
+    if($hasil['kode'] == NULL || $hasil['kode'] == 0){
+		$sql2 = "select concat(date_format(now(),'TE%d%m%Y.'),lpad(count(id_temp)+1,4,0)) as kode from _temp_penjualan where year(waktudata)=year(now()) and month(waktudata)=month(now())";
+		$row = $koneksi -> prepare($sql2);
+		$row -> execute(array($id));
+		$hasil = $row -> fetch();
 		
 	} else {
-		$newprod = $koneksi->query("select concat(date_format(now(),'%Y%m'),lpad(max(right(idsiswa,3))+1,3,0)) as kode from ql_siswa where year(waktudata)=year(now()) and month(waktudata)=month(now())");
-		$get = mysqli_fetch_array($newprod);
+		$sql2 = "select concat(date_format(now(),'TE%d%m%Y.'),lpad(max(right(id_temp,4))+1,4,0)) as kode from _temp_penjualan where year(waktudata)=year(now()) and month(waktudata)=month(now())";
+		$row = $koneksi -> prepare($sql2);
+		$row -> execute(array($id));
+		$hasil = $row -> fetch();
 	}
 
-	return $get['kode'];
+	return $hasil['kode'];
 }
 
