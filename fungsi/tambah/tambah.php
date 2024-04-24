@@ -49,12 +49,12 @@ if (!empty($_SESSION['admin'])) {
         $hsl = $row->fetch();
 
         if ($hsl['stok'] > 0) {
-            $id = temp_id($config);
+            $id_temp = temp_id($config);
             $kasir =  $_GET['id_kasir'];
             $jumlah = 1;
             $total = $hsl['harga_jual'];
 
-            $data1[] = $id;
+            $data1[] = $id_temp;
             $data1[] = $total;
             $data1[] = $kasir;
             $data1[] = $jumlah;
