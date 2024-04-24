@@ -80,7 +80,7 @@
                         <table class="table table-bordered w-100" id="example1">
                             <thead>
                                 <tr>
-                                    <th> No</th>
+                                    <th> No <?=temp_id($config) ?></th>
                                     <th> Nama Barang</th>
                                     <th> Merk Barang</th>
                                     <th> Harga</th>
@@ -91,7 +91,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $total_bayar=0; $no=1; $hasil_penjualan = $lihat -> penjualan();?>
+                                <?php $total_bayar=0; $no=1; $hasil_penjualan = $lihat -> temp_penjualan();?>
                                 <?php foreach($hasil_penjualan  as $isi){?>
                                 <tr>
                                     <td><?php echo $no;?></td>
@@ -138,16 +138,16 @@
                                     {
                                         $id_barang = $_POST['id_barang'];
                                         $id_member = $_POST['id_member'];
+                                        $getplg = $_POST['plg'];
                                         $jumlah = $_POST['jumlah'];
                                         $total = $_POST['total1'];
-                                        $tgl_input = $_POST['tgl_input'];
                                         $periode = $_POST['periode'];
                                         $jumlah_dipilih = count($id_barang);
                                         
                                         for($x=0;$x<$jumlah_dipilih;$x++){
 
-                                            $d = array($id_barang[$x],$id_member[$x],$jumlah[$x],$total[$x],$tgl_input[$x],$periode[$x]);
-                                            $sql = "INSERT INTO nota (id_barang,id_member,jumlah,total,tanggal_input,periode) VALUES(?,?,?,?,?,?)";
+                                            $d = array($id_barang[$x],$id_member[$x],$getplg,$jumlah[$x],$total[$x],$bayar[$x],$periode[$x]);
+                                            $sql = "INSERT INTO nota (id_barang,id_member,nm_pelanggan,jumlah,total,bayaran,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?)";
                                             $row = $config->prepare($sql);
                                             $row->execute($d);
 
