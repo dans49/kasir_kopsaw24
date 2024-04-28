@@ -80,7 +80,7 @@
                         <table class="table table-bordered w-100" id="example1">
                             <thead>
                                 <tr>
-                                    <th> No <?=temp_id($config) ?></th>
+                                    <th> No</th>
                                     <th> Nama Barang</th>
                                     <th> Merk Barang</th>
                                     <th> Harga</th>
@@ -102,7 +102,7 @@
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
                                             <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml">
-                                            <input type="hidden" name="id" value="<?php echo $isi['id_penjualan'];?>" class="form-control">
+                                            <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
                                     </td>
                                     <td>Rp.<?php echo number_format($isi['total'],0,',','.');?>,-</td>
@@ -111,7 +111,7 @@
                                             <button type="submit" class="btn btn-warning">Update</button>
                                         </form>
                                         <!-- aksi ke table penjualan -->
-                                        <a href="fungsi/hapus/hapus.php?jual=jual&id=<?php echo $isi['id_penjualan'];?>&brg=<?php echo $isi['id_barang'];?>
+                                        <a href="fungsi/hapus/hapus.php?jual=jual&id=<?php echo $isi['id_temp'];?>&brg=<?php echo $isi['id_barang'];?>
                                             &jml=<?php echo $isi['jumlah']; ?>"  class="btn btn-danger"><i class="fa fa-times"></i>
                                         </a>
                                     </td>

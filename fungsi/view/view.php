@@ -257,10 +257,10 @@ class view
 
     public function temp_penjualan()
     {
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
+        $sql ="SELECT _temp_penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
                 member.nm_member from _temp_penjualan 
-                left join barang on barang.id_barang=penjualan.id_barang 
-                left join member on member.id_member=penjualan.id_member
+                left join barang on barang.id_barang=_temp_penjualan.id_barang 
+                left join member on member.id_member=_temp_penjualan.id_member
                 ORDER BY id_temp";
         $row = $this-> db -> prepare($sql);
         $row -> execute();
