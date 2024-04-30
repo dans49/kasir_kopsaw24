@@ -101,7 +101,7 @@ if (!empty($_SESSION['admin'])) {
         $data[] = $telpon;
         $data[] = $mail;
        
-        $sql = 'INSERT INTO ksw_pelanggan (id_pelanggan,nm_pelanggan,telepon,email,statusdata) 
+        $sql = 'INSERT INTO ksw_pelanggan (id_pelanggan,nm_pelanggan,identitas,telepon,statusdata) 
                 VALUES (?,?,?,?,"AKTIF") ';
         $row = $config -> prepare($sql);
         $row -> execute($data);
