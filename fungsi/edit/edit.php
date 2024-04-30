@@ -184,7 +184,7 @@ if (!empty($_SESSION['admin'])) {
             $data1[] = $jumlah;
             $data1[] = $total;
             $data1[] = $id;
-            $sql1 = 'UPDATE penjualan SET jumlah=?,total=? WHERE id_penjualan=?';
+            $sql1 = 'UPDATE _temp_penjualan SET jumlah=?,total=? WHERE id_temp=?';
             $row1 = $config -> prepare($sql1);
             $row1 -> execute($data1);
             echo '<script>window.location="../../index.php?page=jual#keranjang"</script>';

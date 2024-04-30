@@ -130,48 +130,58 @@
                             // proses bayar dan ke nota
                             if(!empty($_GET['nota'] == 'yes')) {
                                 $total = $_POST['total'];
-                                $bayar = $_POST['bayar'];
+                                $bayar = $_POST['bayar'] ?? '';
+                                $kembali = $_POST['kembalian'];
+                                $jml2 = 0;
+                                $tot2 = 0;
+                                $status = $_POST['status'] ?? 'Lunas';
                                 if(!empty($bayar))
                                 {
                                     $hitung = $bayar - $total;
-                                    if($bayar >= $total)
-                                    {
-                                        $idnota = getnota($config);
+
+                                    $idnota = getnota($config);
+                                    $id_barang = $_POST['id_barang'];
+                                    $id_member = $_POST['id_member'];
+                                    $getplg = $_POST['plg'];
+                                    $jumlah = $_POST['jumlah'];
+                                    $total = $_POST['total1'];
+                                    $periode = $_POST['periode'];
+                                    $jumlah_dipilih = count($id_barang);
+                                    
+                                    for($x=0;$x<$jumlah_dipilih;$x++){
+
                                         $idjual = getpenjualan($config);
-                                        $id_barang = $_POST['id_barang'];
-                                        $id_member = $_POST['id_member'];
-                                        $getplg = $_POST['plg'];
-                                        $jumlah = $_POST['jumlah'];
-                                        $total = $_POST['total1'];
-                                        $periode = $_POST['periode'];
-                                        $jumlah_dipilih = count($id_barang);
+                                        $d = array($idjual,$id_barang[$x],$id_member[$x],$idnota,$jumlah[$x],$total[$x]);
+                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?)";
+                                        $row = $config->prepare($sql);
+                                        $row->execute($d);
+
+                                        // ubah stok barang
+                                        $sql_barang = "SELECT * FROM barang WHERE id_barang = ?";
+                                        $row_barang = $config->prepare($sql_barang);
+                                        $row_barang->execute(array($id_barang[$x]));
+                                        $hsl = $row_barang->fetch();
                                         
-                                        for($x=0;$x<$jumlah_dipilih;$x++){
+                                        $stok = $hsl['stok'];
+                                        $idb  = $hsl['id_barang'];
 
-                                            $d = array($idjual[$x],$id_barang[$x],$id_member[$x],$getplg,$jumlah[$x],$total[$x],$periode[$x]);
-                                            $sql = "INSERT INTO penjualan (id_penjualan,id_barang,id_member,jumlah,total,waktudata) VALUES(?,?,?,?,?,?,?)";
-                                            $row = $config->prepare($sql);
-                                            $row->execute($d);
+                                        $total_stok = $stok - $jumlah[$x];
+                                        // echo $total_stok;
+                                        $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
+                                        $row_stok = $config->prepare($sql_stok);
+                                        $row_stok->execute(array($total_stok, $idb));
 
-                                            // ubah stok barang
-                                            $sql_barang = "SELECT * FROM barang WHERE id_barang = ?";
-                                            $row_barang = $config->prepare($sql_barang);
-                                            $row_barang->execute(array($id_barang[$x]));
-                                            $hsl = $row_barang->fetch();
-                                            
-                                            $stok = $hsl['stok'];
-                                            $idb  = $hsl['id_barang'];
-
-                                            $total_stok = $stok - $jumlah[$x];
-                                            // echo $total_stok;
-                                            $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
-                                            $row_stok = $config->prepare($sql_stok);
-                                            $row_stok->execute(array($total_stok, $idb));
-                                        }
-                                        echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
-                                    }else{
-                                        echo '<script>alert("Uang Kurang ! Rp.'.$hitung.'");</script>';
+                                        $jml2 = $jml2 + $jumlah[$x];
+                                        $tot2 = $tot2 + $total[$x];
                                     }
+
+                                    $d = array($idnota,$id_member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$periode);
+                                    $sql = "INSERT INTO nota (id_nota,id_member,nm_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
+                                    $row = $config->prepare($sql);
+                                    $row->execute($d);
+
+                                    echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
+                                    
                                 }
                             }
                             ?>
@@ -188,6 +198,23 @@
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Grand Total</div>
                             <div class="col-sm-4"><input type="text" id="totals" class="form-control" name="total" value="<?php echo $total_bayar;?>"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">&nbsp;</div>
+                            <div class="col-sm-2 text-right">Pelanggan *Opsi</div>
+                            <div class="col-sm-2">
+                                <select class="form-control select2get" name="plg">
+                                    <option value="">-Pilih-</option>
+                                    <?php
+                                    foreach ($lihat->pelanggan() as $gdata) {
+                                        echo "<option value='$gdata[nm_pelanggan]'>$gdata[nm_pelanggan]</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-primary btn-sm mr-2"  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span> Tambah</button>
+                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
@@ -208,7 +235,7 @@
                          <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Kembali</div>
-                            <div class="col-sm-3"><input type="text" id="kembalian" class="form-control" value="<?php echo $hitung;?>"></div>
+                            <div class="col-sm-3"><input type="text" id="kembalian" name="kembalian" class="form-control" value="<?php echo $hitung;?>"></div>
                         </div>
 
                         <div class="row mb-3">
@@ -411,14 +438,14 @@ $(document).on('change','.paylater', function(e) {
     let cek = e.target.checked;
 
     if (cek == true) {
-        bayar = $("#dibayar").prop('disabled',true);
-        bayar = $("#dibayar").prop('required',false);
-        status = $("#status").val('Hutang');
+        $("#dibayar").prop('readonly',true);
+        $("#dibayar").prop('required',false);
+        $("#status").val('Hutang');
         $(".btnprint").show();
     } else {
-        bayar = $("#dibayar").prop('disabled', false);
-        bayar = $("#dibayar").prop('required',true);
-        status = $("#status").val('');
+        $("#dibayar").prop('disabled', false);
+        $("#dibayar").prop('required',true);
+        $("#status").val('');
         $(".btnprint").hide();
     }
     $("#kembalian").val('0');
