@@ -52,7 +52,7 @@
                 <tr>
                     <td><?php echo $no;?></td>
                     <td><?php echo $isi['nm_pelanggan'];?></td>
-                    <td><?php echo $isi[''];?></td>
+                    <td><?php echo $isi['identitas'];?></td>
                     <td><?php echo $isi['telepon'];?></td>
                     <td><?php echo $isi['statusdata'];?></td>
                     
@@ -78,46 +78,53 @@
 <!-- tambah barang MODALS-->
 <!-- Modal -->
 
-<div id="myModalPelanggan" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content" style=" border-radius:0px;">
-            <div class="modal-header" style="background:#285c64;color:#fff;">
-                <h5 class="modal-title"><i class="fa fa-plus"></i> Tambah Pelanggan</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+ <div id="myModalPelanggan" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content" style=" border-radius:0px;">
+                    <div class="modal-header" style="background:#285c64;color:#fff;">
+                        <h5 class="modal-title"><i class="fa fa-plus"></i> Tambah Pelanggan</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form action="fungsi/tambah/tambah.php?pelanggan=tambah" method="POST">
+                        <div class="modal-body">
+                            <table class="table table-striped bordered">
+                                <?php
+									$format = $lihat -> pelanggan_id();
+								?>
+                                <tr>
+                                    <td>ID Pelanggan</td>
+                                    <td><input type="text" readonly="readonly" required value="<?php echo $format;?>" class="form-control" name="id"></td>
+                                </tr>
+                               
+                                <tr>
+                                    <td>Nama Pelanggan</td>
+                                    <td><input type="text" placeholder="Nama Pelanggan" required class="form-control"
+                                            name="nm_pelanggan"></td>
+                                </tr>
+                                <tr>
+                                    <td>Identitas</td>
+                                    <td><input type="text" placeholder="Identitas" required class="form-control" name="identitas"></td>
+                                </tr>
+                                <tr>
+                                    <td>Nomor HP</td>
+                                    <td><input type="number" placeholder="No HP" required class="form-control"
+                                            name="telepon"></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td> <input type="text" readonly="readonly" required value="AKTIF" class="form-control" name="statusdata"></td>
+                                </tr>
+                               
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Insert
+                                Data</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <form action="fungsi/tambah/tambah.php?pelanggan=tambah" method="POST">
-                <div class="modal-body">
-                    <table class="table table-striped bordered">
-                        <?php
-                            $format = $lihat -> pelanggan();
-                        ?>
-                        
-                       
-                        <tr>
-                            <td>Nama Pelanggan</td>
-                            <td><input type="text" placeholder="Nama Pelanggan" required class="form-control"
-                                    name="nama"></td>
-                        </tr>
-                        <tr>
-                            <td>Identitas</td>
-                            <td><input type="text" placeholder="Identitas Pelanggan" required class="form-control"
-                                    name="identitas"></td>
-                        </tr>
-                        <tr>
-                            <td>Tanggal Input</td>
-                            <td><input type="text" required readonly="readonly" class="form-control"
-                                    value="<?php echo  date("j F Y, G:i");?>" name="tgl"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Insert
-                        Data</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-</div>
+        </div>
