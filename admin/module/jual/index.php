@@ -130,12 +130,12 @@
                             // proses bayar dan ke nota
                             if(!empty($_GET['nota'] == 'yes')) {
                                 $total = $_POST['total'];
-                                $bayar = $_POST['bayar'] ?? '';
+                                $bayar = $_POST['bayar'] ?? '0';
                                 $kembali = $_POST['kembalian'];
                                 $jml2 = 0;
                                 $tot2 = 0;
                                 $status = $_POST['status'] ?? 'Lunas';
-                                if(!empty($bayar))
+                                if(!empty($bayar) || $bayar == '0')
                                 {
                                     $hitung = $bayar - $total;
 
@@ -167,18 +167,19 @@
 
                                         $total_stok = $stok - $jumlah[$x];
                                         // echo $total_stok;
-                                        $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
-                                        $row_stok = $config->prepare($sql_stok);
-                                        $row_stok->execute(array($total_stok, $idb));
+                                        // $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
+                                        // $row_stok = $config->prepare($sql_stok);
+                                        // $row_stok->execute(array($total_stok, $idb));
 
                                         $jml2 = $jml2 + $jumlah[$x];
                                         $tot2 = $tot2 + $total[$x];
+                                        $perio = $periode[$x];
                                     }
 
-                                    $d = array($idnota,$id_member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$periode);
-                                    $sql = "INSERT INTO nota (id_nota,id_member,nm_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
-                                    $row = $config->prepare($sql);
-                                    $row->execute($d);
+                                    $d2 = array($idnota,$id_member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
+                                    $sql2 = "INSERT INTO nota (id_nota,id_member,nm_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
+                                    $row2 = $config->prepare($sql2);
+                                    $row2->execute($d2);
 
                                     echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
                                     
@@ -228,7 +229,7 @@
                                     <input type="checkbox" class="custom-control-input paylater" id="customSwitch1" data-on-text="ON" data-off-text="OFF">
                                     <label class="custom-control-label" for="customSwitch1">Bayar Nanti</label>
                                 </div>
-                                <input type="hidden" id="status" name="status" value="">
+                                <input type="text" id="status" name="status" value="">
 
                             </div>
                         </div>
@@ -395,7 +396,7 @@ $(document).ready(function(){
             cache: false,
             processData: false,
             success: function(response){
-                // console.log(response);
+                console.log(response);
                 $("#myKasir").modal('show')
                 // if(response["status"] == "OK"){
                 //     swal({
@@ -440,10 +441,11 @@ $(document).on('change','.paylater', function(e) {
     if (cek == true) {
         $("#dibayar").prop('readonly',true);
         $("#dibayar").prop('required',false);
+        $("#dibayar").val(0);
         $("#status").val('Hutang');
         $(".btnprint").show();
     } else {
-        $("#dibayar").prop('disabled', false);
+        $("#dibayar").prop('readonly', false);
         $("#dibayar").prop('required',true);
         $("#status").val('');
         $(".btnprint").hide();
