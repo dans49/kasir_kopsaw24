@@ -19,6 +19,7 @@
 	if(!empty($_SESSION['admin'])){
 		require 'config.php';
 		require 'fungsi/Waktu.php';
+		require 'fungsi/helper.php';
 		include $view;
 		$lihat = new view($config);
 		$frmwaktu = new Waktu;

@@ -37,6 +37,21 @@ if (!empty($_SESSION['admin'])) {
         $rowI -> execute($dataI);
         $hasil = $rowI -> fetch();
 
+        $id = htmlentities($_GET['id']);
+        $data[] = $id;
+        $sql = 'DELETE FROM _temp_penjualan WHERE id_temp=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=jual"</script>';
+    }
+
+    if (!empty(htmlentities($_GET['jual_barang']))) {
+        $dataI[] = htmlentities($_GET['brg']);
+        $sqlI = 'select*from barang where id_barang=?';
+        $rowI = $config -> prepare($sqlI);
+        $rowI -> execute($dataI);
+        $hasil = $rowI -> fetch();
+
         /*$jml = htmlentities($_GET['jml']) + $hasil['stok'];
 
         $dataU[] = $jml;
