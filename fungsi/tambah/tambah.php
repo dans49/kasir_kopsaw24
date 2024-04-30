@@ -107,4 +107,25 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=jual&success=tambah-data"</script>';
     }
+
+    if (!empty($_GET['pelanggan'])) {
+        $id = htmlentities($_POST['id']);
+        $nm_pelanggan= htmlentities(htmlentities(ucwords($_POST['nm_pelanggan'])));
+        $identitas= htmlentities (strtoupper($_POST['identitas']));
+        $telepon= htmlentities ($_POST['telepon']);
+        $statusdata= htmlentities ($_POST['statusdata']);
+     
+
+        $data[] = $id;
+        $data[] = $nm_pelanggan;
+        $data[] = $identitas;
+        $data[] = $telepon;
+        $data[] = $statusdata;
+     
+       
+        $sql = 'INSERT INTO ksw_pelanggan (id_pelanggan,nm_pelanggan,identitas,telepon,statusdata) VALUES(?,?,?,?,?)';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=pelanggan&&success=tambah-data"</script>';
+    }
 }
