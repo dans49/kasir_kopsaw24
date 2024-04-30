@@ -93,13 +93,13 @@ if (!empty($_SESSION['admin'])) {
     if (!empty($_GET['pelanggan_jual'])) {
         $id = htmlentities($_POST['id']);
         $nama = htmlentities($_POST['nama']);
-        $telpon = htmlentities($_POST['telepon']);
-        $mail = htmlentities($_POST['mail']);
+        $identitas= htmlentities (strtoupper($_POST['identitas']));
+        $telepon= htmlentities ($_POST['telepon']);
 
         $data[] = $id;
         $data[] = $nama;
-        $data[] = $telpon;
-        $data[] = $mail;
+        $data[] = $identitas;
+        $data[] = $telepon;
        
         $sql = 'INSERT INTO ksw_pelanggan (id_pelanggan,nm_pelanggan,identitas,telepon,statusdata) 
                 VALUES (?,?,?,?,"AKTIF") ';
