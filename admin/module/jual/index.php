@@ -51,7 +51,7 @@
                 <div class="card-header bg-info text-white">
                     <h5><i class="fa fa-shopping-cart"></i> KASIR
                     <a class="btn btn-danger btn-sm float-right" 
-                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?penjualan=jual">
+                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?penjualan_jual=jual">
                         <b><span class="fa fa-trash"></span> Reset Keranjang</b></a>
                     </h5>
                 </div>
@@ -61,20 +61,6 @@
                             <tr>
                                 <td><b>Tanggal</b></td>
                                 <td><input type="text" readonly="readonly" class="form-control" value="<?php echo date("j F Y, G:i");?>" name="tgl"></td>
-                            </tr>
-                            <tr>
-                                <td><b>Pelanggan</b></td>
-                                <td>
-                                    <select class="form-control select2get" name="plg">
-                                        <option value="">-Pilih-</option>
-                                        <?php
-                                        foreach ($lihat->pelanggan() as $gdata) {
-                                            echo "<option value='$gdata[nm_pelanggan]'>$gdata[nm_pelanggan]</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                    <button type="button" class="btn btn-primary btn-sm mr-2"  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span> Tambah</button>
-                                </td>
                             </tr>
                         </table>
                         <table class="table table-bordered w-100" id="example1">
@@ -174,10 +160,11 @@
                                         $jml2 = $jml2 + $jumlah[$x];
                                         $tot2 = $tot2 + $total[$x];
                                         $perio = $periode[$x];
+                                        $member = $id_member[$x];
                                     }
 
-                                    $d2 = array($idnota,$id_member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
-                                    $sql2 = "INSERT INTO nota (id_nota,id_member,nm_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
+                                    $d2 = array($idnota,$member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
+                                    $sql2 = "INSERT INTO nota (id_nota,id_member,id_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
                                     $row2 = $config->prepare($sql2);
                                     $row2->execute($d2);
 
@@ -208,7 +195,7 @@
                                     <option value="">-Pilih-</option>
                                     <?php
                                     foreach ($lihat->pelanggan() as $gdata) {
-                                        echo "<option value='$gdata[nm_pelanggan]'>$gdata[nm_pelanggan]</option>";
+                                        echo "<option value='$gdata[id_pelanggan]'>$gdata[nm_pelanggan]</option>";
                                     }
                                     ?>
                                 </select>
@@ -229,7 +216,7 @@
                                     <input type="checkbox" class="custom-control-input paylater" id="customSwitch1" data-on-text="ON" data-off-text="OFF">
                                     <label class="custom-control-label" for="customSwitch1">Bayar Nanti</label>
                                 </div>
-                                <input type="text" id="status" name="status" value="">
+                                <input type="hidden" id="status" name="status" value="">
 
                             </div>
                         </div>
@@ -243,12 +230,11 @@
                             <div class="col-sm-6"></div>
                             <div class="col-sm-2"></div>
                             <div class="col-sm-3">
-                                <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-shopping-cart"></i> Proses Transaksi</button>
-                                <!-- <button class="btn btn-primary btn-sm mr-2"><span class="fa fa-plus"></span> Proses Transaksi</button> -->
-                                <a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member'];?>
+                                <button type="submit" class="btn btn-success btn-xs"><i class="fa fa-shopping-cart"></i> Proses Transaksi</button>
+                                <!-- <a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member'];?>
                                     &bayar=<?php echo $bayar;?>&kembali=<?php echo $hitung;?>" target="_blank" class="btn btn-secondary btn-sm btnprint">
                                         <i class="fa fa-print"></i> Print Invoice
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                         </form>
@@ -320,13 +306,10 @@
                             <center>KPRI Sawangan</center>
                             <center>Bappelitbangda Kab. Tasikmalaya</center>
                             <center>Tanggal : <?php  echo date("j F Y, G:i"); ?></center>
-                            <?php
-                                $format = getnota($config);
-                            ?>
                         <table width="100%" class="mt-2">
                             <tr>
                                 <td>TRX</td>
-                                <td>: <?php echo $format;?></td>
+                                <td>: <span id="trx"></span></td>
                             </tr>
                             <tr>
                                 <td>Kasir </td>
@@ -340,14 +323,15 @@
                                 <td>Jumlah</td>
                                 <td>Total</td>
                             </tr>
+                            <tbody id="dataTrx"></tbody>
                         </table>
                         <div class="pull-right">
                             <?php $hasil = $lihat -> jumlah(); ?>
-                            Total : Rp.<?php echo number_format($hasil['bayar']);?>,-
+                            Total : Rp. <span id="gettotal"></span>,-
                             <br/>
-                            Bayar : Rp.<?php echo number_format(htmlentities($_GET['bayar']));?>,-
+                            Bayar : Rp. <span id="getbayar"></span>,-
                             <br/>
-                            Kembali : Rp.<?php echo number_format(htmlentities($_GET['kembali']));?>,-
+                            Kembali : Rp. <span id="getkembali"></span>,-
                         </div>
                         <div class="clearfix"></div>
                         <center>

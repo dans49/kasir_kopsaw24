@@ -74,6 +74,13 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute();
         echo '<script>window.location="../../index.php?page=jual"</script>';
     }
+
+    if (!empty(htmlentities($_GET['penjualan_jual']))) {
+        $sql = 'DELETE FROM _temp_penjualan';
+        $row = $config -> prepare($sql);
+        $row -> execute();
+        echo '<script>window.location="../../index.php?page=jual"</script>';
+    }
     
     if (!empty(htmlentities($_GET['laporan']))) {
         $sql = 'DELETE FROM nota';
