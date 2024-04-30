@@ -17,7 +17,7 @@
         <?php }?>
 
         <?php 
-			$sql=" select * from suplier where stok <= 3";
+			$sql=" select * from barang where stok <= 3";
 			$row = $config -> prepare($sql);
 			$row -> execute();
 			$r = $row -> rowCount();
