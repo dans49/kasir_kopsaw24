@@ -342,7 +342,10 @@
                         </center>
                     </div>
                     <div class="modal-footer">
-                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Print</a>
+                        <!-- <a href="" class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Print</a> -->
+                        <a href="#" id="printinv" target="_blank" class="btn btn-secondary btn-sm btnprint">
+                                <i class="fa fa-print"></i> Print Invoice
+                        </a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -395,6 +398,7 @@ $(document).ready(function(){
                         $("#getbayar").html(numberWithCommas(res.bayar))
                         $("#getkembali").html(numberWithCommas(res.kembali))
                         $("#dataTrx").html(res.penjualan)
+                        $("#printinv").prop("href","print.php?nota="+res.nota)
                     }
                 })
                 $("#myKasir").modal('show')
