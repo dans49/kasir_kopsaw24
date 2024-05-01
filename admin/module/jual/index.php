@@ -316,13 +316,16 @@
                                 <td>: <?php  echo htmlentities($_SESSION['admin']['nm_member']);?></td>
                             </tr>
                         </table>
-                        <table class="table table-striped bordered mt-2">
-                            <tr>
-                                <td>No.</td>
-                                <td>Barang</td>
-                                <td>Jumlah</td>
-                                <td>Total</td>
-                            </tr>
+                        <table class="table bordered mt-2">
+                            <thead>
+                                <tr>
+                                    <td>No.</td>
+                                    <td>Barang</td>
+                                    <td>Merk</td>
+                                    <td>Jumlah</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
                             <tbody id="dataTrx"></tbody>
                         </table>
                         <div class="pull-right">
@@ -372,6 +375,8 @@ $(document).ready(function(){
 $(document).ready(function(){
     $('#subkasir').on('submit', function(e){
         e.preventDefault();
+        let idm = "<?php echo $_SESSION['admin']['id_member']; ?>"
+
         $.ajax({
             type: 'POST',
             url: "index.php?page=jual&nota=yes",
@@ -380,20 +385,19 @@ $(document).ready(function(){
             cache: false,
             processData: false,
             success: function(response){
-                console.log(response);
+                $.ajax({
+                    type: 'GET',
+                    url: "fungsi/apis/apisnota.php?memberid="+idm,
+                    dataType: 'json',
+                    success: function(res) {
+                        $("#trx").html(res.nota)
+                        $("#gettotal").html(numberWithCommas(res.total))
+                        $("#getbayar").html(numberWithCommas(res.bayar))
+                        $("#getkembali").html(numberWithCommas(res.kembali))
+                        $("#dataTrx").html(res.penjualan)
+                    }
+                })
                 $("#myKasir").modal('show')
-                // if(response["status"] == "OK"){
-                //     swal({
-                //         title: "Success!", 
-                //         text: "Camera is Set!", 
-                //         icon: "success",
-                //         timer: 1000
-                //     })
-                //     .then(() => {
-                //         location.reload();
-                //     });
-
-                // }
             }
         });
     });

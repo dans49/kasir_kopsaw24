@@ -9,7 +9,7 @@
 	include $view;
 	$lihat = new view($config);
 	$toko = $lihat -> toko();
-	$hsl = $lihat -> penjualan();
+	$hsl = $lihat -> _temp_penjualan();
 ?>
 <html>
 	<head>
