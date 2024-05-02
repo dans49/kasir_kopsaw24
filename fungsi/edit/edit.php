@@ -76,6 +76,25 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=barang/edit&barang='.$id.'&success=edit-data"</script>';
     }
+	
+	if (!empty($_GET['supplier'])) {
+        $id_supplier2 = htmlentities($_POST['id_supplier2']);
+        $nama_supplier2 = htmlentities($_POST['nama_supplier2']);
+        $telepon2 = htmlentities($_POST['telepon2']);
+        $alamat2 = htmlentities($_POST['alamat2']);
+        $status2 = htmlentities($_POST['status2']);
+
+        $data[] = $id_supplier2;
+        $data[] = $nama_supplier2;
+        $data[] = $telepon2;
+        $data[] = $alamat2;
+        $data[] = $status2;
+        $sql = 'UPDATE supplier SET id_supplier=?, nama_supplier=?, telepon=?, 
+				alamat=?, status=? WHERE id_supplier=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=supplier&&success-supplier=edit-data"</script>';
+    }
 
     if (!empty($_GET['gambar'])) {
         $id = htmlentities($_POST['id']);

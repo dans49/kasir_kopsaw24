@@ -48,6 +48,15 @@ class view
         $hasil = $row -> fetchAll();
         return $hasil;
     }
+	
+	public function supplier()
+    {
+        $sql = "select*from supplier";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
 
     public function barang()
     {

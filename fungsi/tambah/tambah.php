@@ -124,4 +124,25 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=pelanggan&&success=tambah-data"</script>';
     }
+	
+	if (!empty($_GET['supplier'])) {
+        $id = bin2hex(random_bytes(20));
+        $nama_supplier= htmlentities(htmlentities(ucwords($_POST['nama_supplier'])));
+        $telepon= htmlentities ($_POST['telepon']);
+        $alamat= htmlentities ($_POST['alamat']);
+        $status= htmlentities ($_POST['status']);
+     
+
+        $data[] = $id;
+        $data[] = $nama_supplier;
+        $data[] = $telepon;
+        $data[] = $alamat;
+        $data[] = $status;
+     
+       
+        $sql = 'INSERT INTO supplier (id_supplier,nama_supplier,telepon,alamat,status) VALUES(?,?,?,?,?)';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=supplier&&success=tambah-data"</script>';
+    }
 }
