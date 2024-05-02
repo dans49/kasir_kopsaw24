@@ -51,7 +51,7 @@
                 <div class="card-header bg-info text-white">
                     <h5><i class="fa fa-shopping-cart"></i> KASIR
                     <a class="btn btn-danger btn-sm float-right" 
-                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?penjualan=jual">
+                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?penjualan_jual=jual">
                         <b><span class="fa fa-trash"></span> Reset Keranjang</b></a>
                     </h5>
                 </div>
@@ -61,20 +61,6 @@
                             <tr>
                                 <td><b>Tanggal</b></td>
                                 <td><input type="text" readonly="readonly" class="form-control" value="<?php echo date("j F Y, G:i");?>" name="tgl"></td>
-                            </tr>
-                            <tr>
-                                <td><b>Pelanggan</b></td>
-                                <td>
-                                    <select class="form-control select2get" name="plg">
-                                        <option value="">-Pilih-</option>
-                                        <?php
-                                        foreach ($lihat->pelanggan() as $gdata) {
-                                            echo "<option value='$gdata[nm_pelanggan]'>$gdata[nm_pelanggan]</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                    <button type="button" class="btn btn-primary btn-sm mr-2"  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span> Tambah</button>
-                                </td>
                             </tr>
                         </table>
                         <table class="table table-bordered w-100" id="example1">
@@ -130,50 +116,64 @@
                             // proses bayar dan ke nota
                             if(!empty($_GET['nota'] == 'yes')) {
                                 $total = $_POST['total'];
-                                $bayar = $_POST['bayar'];
-                                if(!empty($bayar))
+                                $bayar = $_POST['bayar'] ?? '0';
+                                $kembali = $_POST['kembalian'];
+                                $jml2 = 0;
+                                $tot2 = 0;
+                                $status = $_POST['status'] ?? 'Lunas';
+                                if(!empty($bayar) || $bayar == '0')
                                 {
                                     $hitung = $bayar - $total;
-                                    if($bayar >= $total)
-                                    {
-                                        $id_barang = $_POST['id_barang'];
-                                        $id_member = $_POST['id_member'];
-                                        $getplg = $_POST['plg'];
-                                        $jumlah = $_POST['jumlah'];
-                                        $total = $_POST['total1'];
-                                        $periode = $_POST['periode'];
-                                        $jumlah_dipilih = count($id_barang);
+
+                                    $idnota = getnota($config);
+                                    $id_barang = $_POST['id_barang'];
+                                    $id_member = $_POST['id_member'];
+                                    $getplg = $_POST['plg'];
+                                    $jumlah = $_POST['jumlah'];
+                                    $total = $_POST['total1'];
+                                    $periode = $_POST['periode'];
+                                    $jumlah_dipilih = count($id_barang);
+                                    
+                                    for($x=0;$x<$jumlah_dipilih;$x++){
+
+                                        $idjual = getpenjualan($config);
+                                        $d = array($idjual,$id_barang[$x],$id_member[$x],$idnota,$jumlah[$x],$total[$x]);
+                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?)";
+                                        $row = $config->prepare($sql);
+                                        $row->execute($d);
+
+                                        // ubah stok barang
+                                        $sql_barang = "SELECT * FROM barang WHERE id_barang = ?";
+                                        $row_barang = $config->prepare($sql_barang);
+                                        $row_barang->execute(array($id_barang[$x]));
+                                        $hsl = $row_barang->fetch();
                                         
-                                        for($x=0;$x<$jumlah_dipilih;$x++){
+                                        $stok = $hsl['stok'];
+                                        $idb  = $hsl['id_barang'];
 
-                                            $d = array($id_barang[$x],$id_member[$x],$getplg,$jumlah[$x],$total[$x],$bayar[$x],$periode[$x]);
-                                            $sql = "INSERT INTO nota (id_barang,id_member,nm_pelanggan,jumlah,total,bayaran,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?)";
-                                            $row = $config->prepare($sql);
-                                            $row->execute($d);
+                                        $total_stok = $stok - $jumlah[$x];
+                                        // echo $total_stok;
+                                        // $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
+                                        // $row_stok = $config->prepare($sql_stok);
+                                        // $row_stok->execute(array($total_stok, $idb));
 
-                                            // ubah stok barang
-                                            $sql_barang = "SELECT * FROM barang WHERE id_barang = ?";
-                                            $row_barang = $config->prepare($sql_barang);
-                                            $row_barang->execute(array($id_barang[$x]));
-                                            $hsl = $row_barang->fetch();
-                                            
-                                            $stok = $hsl['stok'];
-                                            $idb  = $hsl['id_barang'];
-
-                                            $total_stok = $stok - $jumlah[$x];
-                                            // echo $total_stok;
-                                            $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
-                                            $row_stok = $config->prepare($sql_stok);
-                                            $row_stok->execute(array($total_stok, $idb));
-                                        }
-                                        echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
-                                    }else{
-                                        echo '<script>alert("Uang Kurang ! Rp.'.$hitung.'");</script>';
+                                        $jml2 = $jml2 + $jumlah[$x];
+                                        $tot2 = $tot2 + $total[$x];
+                                        $perio = $periode[$x];
+                                        $member = $id_member[$x];
                                     }
+
+                                    $d2 = array($idnota,$member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
+                                    $sql2 = "INSERT INTO nota (id_nota,id_member,id_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
+                                    $row2 = $config->prepare($sql2);
+                                    $row2->execute($d2);
+
+                                    echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
+                                    
                                 }
                             }
                             ?>
-                        <form method="POST" action="index.php?page=jual&nota=yes#kasirnya">
+                        <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
                             <?php foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
@@ -186,6 +186,23 @@
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Grand Total</div>
                             <div class="col-sm-4"><input type="text" id="totals" class="form-control" name="total" value="<?php echo $total_bayar;?>"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">&nbsp;</div>
+                            <div class="col-sm-2 text-right">Pelanggan *Opsi</div>
+                            <div class="col-sm-2">
+                                <select class="form-control select2get" name="plg">
+                                    <option value="">-Pilih-</option>
+                                    <?php
+                                    foreach ($lihat->pelanggan() as $gdata) {
+                                        echo "<option value='$gdata[id_pelanggan]'>$gdata[nm_pelanggan]</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-primary btn-sm mr-2"  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span> Tambah</button>
+                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
@@ -206,23 +223,23 @@
                          <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Kembali</div>
-                            <div class="col-sm-3"><input type="text" id="kembalian" class="form-control" value="<?php echo $hitung;?>"></div>
+                            <div class="col-sm-3"><input type="text" id="kembalian" name="kembalian" class="form-control" value="<?php echo $hitung;?>"></div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-sm-6"></div>
                             <div class="col-sm-2"></div>
                             <div class="col-sm-3">
-                                <button class="btn btn-success btn-sm"><i class="fa fa-shopping-cart"></i> Proses Transaksi</button>
-                                <a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member'];?>
+                                <button type="submit" class="btn btn-success btn-xs"><i class="fa fa-shopping-cart"></i> Proses Transaksi</button>
+                                <!-- <a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member'];?>
                                     &bayar=<?php echo $bayar;?>&kembali=<?php echo $hitung;?>" target="_blank" class="btn btn-secondary btn-sm btnprint">
                                         <i class="fa fa-print"></i> Print Invoice
-                                </a>
+                                </a> -->
                             </div>
                         </div>
-                        <br/>
-                        <br/>
                         </form>
+                        <br/>
+                        <br/>
                     </div>
                 </div>
             </div>
@@ -254,20 +271,78 @@
                                         name="nama"></td>
                             </tr>
                             <tr>
+                                <td>Identitas*</td>
+                                <td><input type="text" placeholder="Identitas" class="form-control"
+                                        name="identitas"></td>
+                            </tr>
+                            <tr>
                                 <td>Telepon*</td>
                                 <td><input type="text" placeholder="Telepon" required class="form-control"
                                         name="telepon" maxlength="15"></td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td><input type="email" placeholder="Email" class="form-control"
-                                        name="mail"></td>
                             </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Insert
                             Data</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="myKasir" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style=" border-radius:0px;">
+                <div class="modal-header" style="background:#285c64;color:#fff;">
+                    <h5 class="modal-title"> Detail Transaksi</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="fungsi/tambah/tambah.php?pelanggan_jual=tambah" method="POST">
+                    <div class="modal-body">
+                            <center>KPRI Sawangan</center>
+                            <center>Bappelitbangda Kab. Tasikmalaya</center>
+                            <center>Tanggal : <?php  echo date("j F Y, G:i"); ?></center>
+                        <table width="100%" class="mt-2">
+                            <tr>
+                                <td>TRX</td>
+                                <td>: <span id="trx"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Kasir </td>
+                                <td>: <?php  echo htmlentities($_SESSION['admin']['nm_member']);?></td>
+                            </tr>
+                        </table>
+                        <table class="table bordered mt-2">
+                            <thead>
+                                <tr>
+                                    <td>No.</td>
+                                    <td>Barang</td>
+                                    <td>Merk</td>
+                                    <td>Jumlah</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody id="dataTrx"></tbody>
+                        </table>
+                        <div class="pull-right">
+                            <?php $hasil = $lihat -> jumlah(); ?>
+                            Total : Rp. <span id="gettotal"></span>,-
+                            <br/>
+                            Bayar : Rp. <span id="getbayar"></span>,-
+                            <br/>
+                            Kembali : Rp. <span id="getkembali"></span>,-
+                        </div>
+                        <div class="clearfix"></div>
+                        <center>
+                            <p>Terima Kasih Telah berbelanja di toko kami !</p>
+                        </center>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Print</a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -297,6 +372,37 @@ $(document).ready(function(){
     });
 });
 
+$(document).ready(function(){
+    $('#subkasir').on('submit', function(e){
+        e.preventDefault();
+        let idm = "<?php echo $_SESSION['admin']['id_member']; ?>"
+
+        $.ajax({
+            type: 'POST',
+            url: "index.php?page=jual&nota=yes",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(response){
+                $.ajax({
+                    type: 'GET',
+                    url: "fungsi/apis/apisnota.php?memberid="+idm,
+                    dataType: 'json',
+                    success: function(res) {
+                        $("#trx").html(res.nota)
+                        $("#gettotal").html(numberWithCommas(res.total))
+                        $("#getbayar").html(numberWithCommas(res.bayar))
+                        $("#getkembali").html(numberWithCommas(res.kembali))
+                        $("#dataTrx").html(res.penjualan)
+                    }
+                })
+                $("#myKasir").modal('show')
+            }
+        });
+    });
+});
+
 
 // ======== KONDISI AWAL =======
 $("#kembalian").val('0')
@@ -321,14 +427,15 @@ $(document).on('change','.paylater', function(e) {
     let cek = e.target.checked;
 
     if (cek == true) {
-        bayar = $("#dibayar").prop('disabled',true);
-        bayar = $("#dibayar").prop('required',false);
-        status = $("#status").val('Hutang');
+        $("#dibayar").prop('readonly',true);
+        $("#dibayar").prop('required',false);
+        $("#dibayar").val(0);
+        $("#status").val('Hutang');
         $(".btnprint").show();
     } else {
-        bayar = $("#dibayar").prop('disabled', false);
-        bayar = $("#dibayar").prop('required',true);
-        status = $("#status").val('');
+        $("#dibayar").prop('readonly', false);
+        $("#dibayar").prop('required',true);
+        $("#status").val('');
         $(".btnprint").hide();
     }
     $("#kembalian").val('0');

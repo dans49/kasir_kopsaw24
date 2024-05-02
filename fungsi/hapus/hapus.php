@@ -12,6 +12,15 @@ if (!empty($_SESSION['admin'])) {
         echo '<script>window.location="../../index.php?page=kategori&&remove=hapus-data"</script>';
     }
 
+    if (!empty(htmlentities($_GET['satuan']))) {
+        $id= htmlentities($_GET['id']);
+        $data[] = $id;
+        $sql = 'DELETE FROM satuan WHERE id_satuan=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=satuan&&remove=hapus-data"</script>';
+    }
+
     if (!empty(htmlentities($_GET['barang']))) {
         $id= htmlentities($_GET['id']);
         $data[] = $id;
@@ -70,6 +79,13 @@ if (!empty($_SESSION['admin'])) {
 
     if (!empty(htmlentities($_GET['penjualan']))) {
         $sql = 'DELETE FROM penjualan';
+        $row = $config -> prepare($sql);
+        $row -> execute();
+        echo '<script>window.location="../../index.php?page=jual"</script>';
+    }
+
+    if (!empty(htmlentities($_GET['penjualan_jual']))) {
+        $sql = 'DELETE FROM _temp_penjualan';
         $row = $config -> prepare($sql);
         $row -> execute();
         echo '<script>window.location="../../index.php?page=jual"</script>';

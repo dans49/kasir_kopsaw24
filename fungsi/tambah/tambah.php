@@ -13,9 +13,19 @@ if (!empty($_SESSION['admin'])) {
         echo '<script>window.location="../../index.php?page=kategori&&success=tambah-data"</script>';
     }
 
+    if (!empty($_GET['satuan'])) {
+        $nama= htmlentities(htmlentities($_POST['satuan']));
+        $data[] = $nama;
+        $sql = 'INSERT INTO satuan (nama_satuan,status_satuan) VALUES(?,"AKTIF")';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=satuan&&success=tambah-data"</script>';
+    }
+
     if (!empty($_GET['barang'])) {
         $id = htmlentities($_POST['id']);
         $kategori = htmlentities($_POST['kategori']);
+        $satuan = htmlentities ($_POST['satuan']);
         $nama = htmlentities($_POST['nama']);
         $merk = htmlentities($_POST['merk']);
         $beli = htmlentities($_POST['beli']);
@@ -26,6 +36,7 @@ if (!empty($_SESSION['admin'])) {
 
         $data[] = $id;
         $data[] = $kategori;
+        $data[] = $satuan;
         $data[] = $nama;
         $data[] = $merk;
         $data[] = $beli;
@@ -33,8 +44,8 @@ if (!empty($_SESSION['admin'])) {
         $data[] = $satuan;
         $data[] = $stok;
         $data[] = $tgl;
-        $sql = 'INSERT INTO barang (id_barang,id_kategori,nama_barang,merk,harga_beli,harga_jual,satuan_barang,stok,tgl_input) 
-			    VALUES (?,?,?,?,?,?,?,?,?) ';
+        $sql = 'INSERT INTO barang (id_barang,id_kategori,id_satuan,nama_barang,merk,harga_beli,harga_jual,satuan_barang,stok,tgl_input) 
+			    VALUES (?,?,?,?,?,?,?,?,?,?) ';
         $row = $config -> prepare($sql);
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=barang&success=tambah-data"</script>';
@@ -50,11 +61,12 @@ if (!empty($_SESSION['admin'])) {
         $hsl = $row->fetch();
 
         if ($hsl['stok'] > 0) {
-            $sqlb = 'SELECT count(*) FROM _temp_penjualan WHERE id_barang = ?';
+            $sqlb = 'SELECT jumlah FROM _temp_penjualan WHERE id_barang = ?';
             $rowb = $config->prepare($sqlb);
             $rowb->execute(array($id));
             $hslb = $rowb->fetchColumn();
-
+            // echo $hslb;
+            // return 0;
             $id_temp = temp_id($config);
             $kasir =  $_GET['id_kasir'];
             $jumlah = 1;
@@ -66,18 +78,21 @@ if (!empty($_SESSION['admin'])) {
             $data1[] = $jumlah;
             $data1[] = $total;
 
-            // if($hslb == 0) {
+            if($hslb == 0) {
                 $sql1 = 'INSERT INTO _temp_penjualan (id_temp,id_barang,id_member,jumlah,total) VALUES (?,?,?,?,?)';
                 $row1 = $config -> prepare($sql1);
                 $row1 -> execute($data1);
-            // } 
-            // elseif($hslb > 0) {
-            //     $data2[] = $id;
-            //     $data2[] = $jumlah+$hslb;
-            //     $sql1 = 'UPDATE _temp_penjualan SET jumlah=? WHERE id_barang=?';
-            //     $row1 = $config -> prepare($sql1);
-            //     $row1 -> execute($data2);
-            // }
+            } 
+            elseif($hslb > 0) {
+                $data2[] = $jumlah+$hslb;
+                $data2[] = ($jumlah+$hslb) * $hsl['harga_jual'];
+                $data2[] = $id;
+                // var_dump($data2);
+                // return 0;
+                $sql2 = 'UPDATE _temp_penjualan SET jumlah=?,total=? WHERE id_barang=?';
+                $row2 = $config -> prepare($sql2);
+                $row2 -> execute($data2);
+            }
 
             echo '<script>window.location="../../index.php?page=jual&success=tambah-data"</script>';
         } else {
@@ -89,15 +104,15 @@ if (!empty($_SESSION['admin'])) {
     if (!empty($_GET['pelanggan_jual'])) {
         $id = htmlentities($_POST['id']);
         $nama = htmlentities($_POST['nama']);
-        $telpon = htmlentities($_POST['telepon']);
-        $mail = htmlentities($_POST['mail']);
+        $identitas= htmlentities (strtoupper($_POST['identitas']));
+        $telepon= htmlentities ($_POST['telepon']);
 
         $data[] = $id;
         $data[] = $nama;
-        $data[] = $telpon;
-        $data[] = $mail;
+        $data[] = $identitas;
+        $data[] = $telepon;
        
-        $sql = 'INSERT INTO ksw_pelanggan (id_pelanggan,nm_pelanggan,telepon,email,statusdata) 
+        $sql = 'INSERT INTO ksw_pelanggan (id_pelanggan,nm_pelanggan,identitas,telepon,statusdata) 
                 VALUES (?,?,?,?,"AKTIF") ';
         $row = $config -> prepare($sql);
         $row -> execute($data);

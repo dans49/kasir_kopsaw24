@@ -61,12 +61,16 @@
 					<td>Satuan Barang</td>
 					<td>
 						<select name="satuan" class="form-control">
-							<option value="<?php echo $hasil['satuan_barang'];?>"><?php echo $hasil['satuan_barang'];?>
+							<option value="<?php echo $hasil['id_satuan'];?>"><?php echo $hasil['nama_satuan'];?>
 							</option>
 							<option value="#">Pilih Satuan</option>
-							<option value="PCS">PCS</option>
+							<?php  $sat = $lihat -> satuan(); foreach($sat as $isi){ 	?>
+							<option value="<?php echo $isi['id_satuan'];?>"><?php echo $isi['nama_satuan'];?></option>
+							<?php }?>
+							
 						</select>
 					</td>
+					
 				</tr>
 				<tr>
 					<td>Stok</td>

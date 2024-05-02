@@ -87,7 +87,7 @@
                             </td>
                             <td>Rp.<?php echo number_format($isi['harga_beli']);?>,-</td>
                             <td>Rp.<?php echo number_format($isi['harga_jual']);?>,-</td>
-                            <td> <?php echo $isi['satuan_barang'];?></td>
+                            <td> <?php echo $isi['nama_satuan'];?></td>
                             <td>
                                 <?php if($isi['stok'] <=  '3'){?>
                                 <form method="POST" action="fungsi/edit/edit.php?stok=edit">
@@ -192,9 +192,14 @@
                                     <td>
                                         <select name="satuan" class="form-control" required>
                                             <option value="#">Pilih Satuan</option>
-                                            <option value="PCS">PCS</option>
+                                            <?php  $sat = $lihat -> satuan(); foreach($sat as $isi){ 	?>
+                                            <option value="<?php echo $isi['id_satuan'];?>">
+                                                <?php echo $isi['nama_satuan'];?></option>
+                                            <?php }?>
+                                           
                                         </select>
                                     </td>
+                                    
                                 </tr>
                                 <tr>
                                     <td>Stok</td>

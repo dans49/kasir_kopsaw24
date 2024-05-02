@@ -58,16 +58,28 @@ class view
         return $hasil;
     }
 
-    public function barang()
+    public function satuan()
     {
-        $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori
-                from barang inner join kategori on barang.id_kategori = kategori.id_kategori 
-                ORDER BY id DESC";
+        $sql = "select*from satuan";
         $row = $this-> db -> prepare($sql);
         $row -> execute();
         $hasil = $row -> fetchAll();
         return $hasil;
     }
+
+    public function barang()
+    {
+        $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan from barang inner join kategori on barang.id_kategori = kategori.id_kategori
+        INNER JOIN satuan ON barang.id_satuan = satuan.id_satuan 
+        ORDER BY id DESC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
+  
+
 
     public function pelanggan()
     {
@@ -93,10 +105,10 @@ class view
 
     public function barang_stok()
     {
-        $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori
-                from barang inner join kategori on barang.id_kategori = kategori.id_kategori 
-                where stok <= 3 
-                ORDER BY id DESC";
+        $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan from barang inner join kategori on barang.id_kategori = kategori.id_kategori 
+        inner join satuan on barang.id_satuan = satuan.id_satuan
+        where stok <= 3 
+        ORDER BY id DESC";
         $row = $this-> db -> prepare($sql);
         $row -> execute();
         $hasil = $row -> fetchAll();
@@ -105,9 +117,10 @@ class view
 
     public function barang_edit($id)
     {
-        $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori
-                from barang inner join kategori on barang.id_kategori = kategori.id_kategori
-                where id_barang=?";
+        $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan
+        from barang inner join kategori on barang.id_kategori = kategori.id_kategori
+        inner join satuan on barang.id_satuan = satuan.id_satuan
+        where id_barang=?";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array($id));
         $hasil = $row -> fetch();
@@ -116,9 +129,10 @@ class view
 
     public function barang_cari($cari)
     {
-        $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori
-                from barang inner join kategori on barang.id_kategori = kategori.id_kategori
-                where id_barang like '%$cari%' or nama_barang like '%$cari%' or merk like '%$cari%'";
+        $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan
+        from barang inner join kategori on barang.id_kategori = kategori.id_kategori
+        inner join satuan on barang.id_satuan = satuan.id_satuan
+        where id_barang like '%$cari%' or nama_barang like '%$cari%' or merk like '%$cari%'";
         $row = $this-> db -> prepare($sql);
         $row -> execute();
         $hasil = $row -> fetchAll();
@@ -158,6 +172,24 @@ class view
     public function kategori_row()
     {
         $sql = "select*from kategori";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> rowCount();
+        return $hasil;
+    }
+
+    public function satuan_edit($id)
+    {
+        $sql = "select*from satuan where id_satuan=?";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($id));
+        $hasil = $row -> fetch();
+        return $hasil;
+    }
+
+    public function satuan_row()
+    {
+        $sql = "select*from satuan";
         $row = $this-> db -> prepare($sql);
         $row -> execute();
         $hasil = $row -> rowCount();
