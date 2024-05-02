@@ -31,6 +31,17 @@ if (!empty($_SESSION['admin'])) {
         echo '<script>window.location="../../index.php?page=kategori&uid='.$id.'&success-edit=edit-data"</script>';
     }
 
+    if (!empty($_GET['satuan'])) {
+        $nama= htmlentities($_POST['satuan']);
+        $id= htmlentities($_POST['id']);
+        $data[] = $nama;
+        $data[] = $id;
+        $sql = 'UPDATE satuan SET  nama_satuan=? WHERE id_satuan=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=satuan&stn='.$id.'&success-edit=edit-data"</script>';
+    }
+
     if (!empty($_GET['stok'])) {
         $restok = htmlentities($_POST['restok']);
         $id = htmlentities($_POST['id']);
@@ -53,6 +64,7 @@ if (!empty($_SESSION['admin'])) {
     if (!empty($_GET['barang'])) {
         $id = htmlentities($_POST['id']);
         $kategori = htmlentities($_POST['kategori']);
+        $satuan = htmlentities($_POST['satuan']);
         $nama = htmlentities($_POST['nama']);
         $merk = htmlentities($_POST['merk']);
         $beli = htmlentities($_POST['beli']);
@@ -62,6 +74,7 @@ if (!empty($_SESSION['admin'])) {
         $tgl = htmlentities($_POST['tgl']);
 
         $data[] = $kategori;
+        $data[] = $satuan;
         $data[] = $nama;
         $data[] = $merk;
         $data[] = $beli;
@@ -70,7 +83,7 @@ if (!empty($_SESSION['admin'])) {
         $data[] = $stok;
         $data[] = $tgl;
         $data[] = $id;
-        $sql = 'UPDATE barang SET id_kategori=?, nama_barang=?, merk=?, 
+        $sql = 'UPDATE barang SET id_kategori=?, id_satuan=?, nama_barang=?, merk=?, 
 				harga_beli=?, harga_jual=?, satuan_barang=?, stok=?, tgl_update=?  WHERE id_barang=?';
         $row = $config -> prepare($sql);
         $row -> execute($data);
@@ -198,8 +211,9 @@ if (!empty($_SESSION['admin'])) {
         $cari = trim(strip_tags($_POST['keyword']));
         if ($cari == '') {
         } else {
-            $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori
+            $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan
 					from barang inner join kategori on barang.id_kategori = kategori.id_kategori
+                    inner join satuan on barang.id_satuan = satuan.id_satuan
 					where barang.id_barang like '%$cari%' or barang.nama_barang like '%$cari%' or barang.merk like '%$cari%'";
             $row = $config -> prepare($sql);
             $row -> execute();

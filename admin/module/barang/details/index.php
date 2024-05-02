@@ -48,7 +48,7 @@
 			</tr>
 			<tr>
 				<td>Satuan Barang</td>
-				<td><?php echo $hasil['satuan_barang'];?></td>
+				<td><?php echo $hasil['nama_satuan'];?></td>
 			</tr>
 			<tr>
 				<td>Stok</td>
