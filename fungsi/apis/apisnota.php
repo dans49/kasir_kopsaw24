@@ -23,8 +23,8 @@ foreach ($hasil2 as $value) {
 	$getjual .= "<td>$nom</td>";
 	$getjual .= "<td>$value[nama_barang]</td>";
 	$getjual .= "<td>$value[merk]</td>";
-	$getjual .= "<td>$value[jumlah]</td>";
-	$getjual .= "<td>$value[total]</td>";
+	$getjual .= "<td>".number_format($value['jumlah'],0,',','.')."</td>";
+	$getjual .= "<td>Rp. ".number_format($value['total'],0,',','.').",-</td>";
 	$getjual .= "</tr>";
 	$nom++;
 }
