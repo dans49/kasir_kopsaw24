@@ -13,7 +13,7 @@
 ?>
 <html>
 	<head>
-		<title>print</title>
+		<title>Print Nota</title>
 		<link rel="stylesheet" href="assets/css/bootstrap.css">
 	</head>
 	<body>
