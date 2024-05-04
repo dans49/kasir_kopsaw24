@@ -153,9 +153,9 @@
 
                                         $total_stok = $stok - $jumlah[$x];
                                         // echo $total_stok;
-                                        // $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
-                                        // $row_stok = $config->prepare($sql_stok);
-                                        // $row_stok->execute(array($total_stok, $idb));
+                                        $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
+                                        $row_stok = $config->prepare($sql_stok);
+                                        $row_stok->execute(array($total_stok, $idb));
 
                                         $jml2 = $jml2 + $jumlah[$x];
                                         $tot2 = $tot2 + $total[$x];
