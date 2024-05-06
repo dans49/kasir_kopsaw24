@@ -61,9 +61,9 @@
             <span>Kasir</span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="index.php?page=jual">
+        <a class="nav-link" href="index.php?page=restok">
             <i class="fas fa-fw fa-shopping-cart"></i>
-            <span>Kasir Restock</span></a>
+            <span>Kasir Restok</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse3" aria-expanded="true"

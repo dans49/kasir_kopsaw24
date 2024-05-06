@@ -309,6 +309,19 @@ class view
         return $hasil;
     }
 
+    public function temp_restok()
+    {
+        $sql ="SELECT _temp_restok.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
+                member.nm_member from _temp_restok 
+                left join barang on barang.id_barang=_temp_restok.id_barang 
+                left join member on member.id_member=_temp_restok.id_member
+                ORDER BY id_trestok";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
     public function penjualan_print($nota)
     {
         $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,

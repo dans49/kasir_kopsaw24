@@ -90,6 +90,29 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute();
         echo '<script>window.location="../../index.php?page=jual"</script>';
     }
+
+    if (!empty(htmlentities($_GET['restok_barang']))) {
+        $sql = 'DELETE FROM _temp_restok';
+        $row = $config -> prepare($sql);
+        $row -> execute();
+        echo '<script>window.location="../../index.php?page=restok"</script>';
+    }
+
+    if (!empty(htmlentities($_GET['beli_restok']))) {
+         $dataI[] = htmlentities($_GET['brg']);
+        $sqlI = 'select*from barang where id_barang=?';
+        $rowI = $config -> prepare($sqlI);
+        $rowI -> execute($dataI);
+        $hasil = $rowI -> fetch();
+
+        $id = htmlentities($_GET['id']);
+        $data[] = $id;
+        $sql = 'DELETE FROM _temp_restok WHERE id_trestok=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        echo '<script>window.location="../../index.php?page=restok"</script>';
+
+    }
     
     if (!empty(htmlentities($_GET['laporan']))) {
         $sql = 'DELETE FROM nota';
