@@ -9,11 +9,11 @@
 	include $view;
 	$lihat = new view($config);
 	$toko = $lihat -> toko();
-	$hsl = $lihat -> _temp_penjualan();
+	$hsl = $lihat -> penjualan_print($_GET['nota']);
 ?>
 <html>
 	<head>
-		<title>print</title>
+		<title>Print Nota</title>
 		<link rel="stylesheet" href="assets/css/bootstrap.css">
 	</head>
 	<body>
@@ -23,34 +23,37 @@
 				<div class="col-sm-4"></div>
 				<div class="col-sm-4">
 					<center>
-						<p><?php echo $toko['nama_toko'];?></p>
-						<p><?php echo $toko['alamat_toko'];?></p>
+						<h2><?php echo $toko['nama_toko'];?></br>
+						<?php echo $toko['alamat_toko'];?></h2>
 						<p>Tanggal : <?php  echo date("j F Y, G:i");?></p>
-						<p>Kasir : <?php  echo htmlentities($_GET['nm_member']);?></p>
 					</center>
-					<table class="table table-bordered" style="width:100%;">
+					<p>TRX : <?php  echo htmlentities($_GET['nota']);?> </br>
+					Kasir : <?php  echo htmlentities($_SESSION['admin']['nm_member']);?></p>
+					<table border="1" cellpadding="0" cellspacing="0" style="width:100%;">
 						<tr>
-							<td>No.</td>
-							<td>Barang</td>
-							<td>Jumlah</td>
-							<td>Total</td>
+							<th>No.</th>
+							<th>Barang</th>
+							<th>Merk</th>
+							<th>Jumlah</th>
+							<th>Total</th>
 						</tr>
 						<?php $no=1; foreach($hsl as $isi){?>
-						<tr>
+						<tr align="center">
 							<td><?php echo $no;?></td>
 							<td><?php echo $isi['nama_barang'];?></td>
+							<td><?php echo $isi['merk'];?></td>
 							<td><?php echo $isi['jumlah'];?></td>
 							<td><?php echo $isi['total'];?></td>
 						</tr>
 						<?php $no++; }?>
 					</table>
 					<div class="pull-right">
-						<?php $hasil = $lihat -> jumlah(); ?>
-						Total : Rp.<?php echo number_format($hasil['bayar']);?>,-
+						<?php $hasil = $lihat -> nota_print($_GET['nota']); ?>
+						Total : Rp.<?php echo number_format($hasil['total']);?>,-
 						<br/>
-						Bayar : Rp.<?php echo number_format(htmlentities($_GET['bayar']));?>,-
+						Bayar : Rp.<?php echo number_format(htmlentities($hasil['bayar']));?>,-
 						<br/>
-						Kembali : Rp.<?php echo number_format(htmlentities($_GET['kembali']));?>,-
+						Kembali : Rp.<?php echo number_format(htmlentities($hasil['kembalian']));?>,-
 					</div>
 					<div class="clearfix"></div>
 					<center>

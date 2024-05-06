@@ -309,6 +309,20 @@ class view
         return $hasil;
     }
 
+    public function penjualan_print($nota)
+    {
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
+                member.nm_member from penjualan 
+                left join barang on barang.id_barang=penjualan.id_barang 
+                left join member on member.id_member=penjualan.id_member
+                WHERE penjualan.id_nota=?
+                ORDER BY id_penjualan";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($nota));
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
     public function jumlah()
     {
         $sql ="SELECT SUM(total) as bayar FROM penjualan";
@@ -323,6 +337,15 @@ class view
         $sql ="SELECT SUM(total) as bayar FROM nota";
         $row = $this -> db -> prepare($sql);
         $row -> execute();
+        $hasil = $row -> fetch();
+        return $hasil;
+    }
+
+    public function nota_print($nota)
+    {
+        $sql ="SELECT * FROM nota WHERE id_nota = ?";
+        $row = $this -> db -> prepare($sql);
+        $row -> execute(array($nota));
         $hasil = $row -> fetch();
         return $hasil;
     }
