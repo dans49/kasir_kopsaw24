@@ -219,10 +219,12 @@ if (!empty($_SESSION['admin'])) {
             $sql1 = 'UPDATE _temp_penjualan SET jumlah=?,total=? WHERE id_temp=?';
             $row1 = $config -> prepare($sql1);
             $row1 -> execute($data1);
-            echo '<script>window.location="../../index.php?page=jual#keranjang"</script>';
+            // echo '<script>window.location="../../index.php?page=jual#keranjang"</script>';
+            echo "1";
         } else {
-            echo '<script>alert("Keranjang Melebihi Stok Barang Anda !");
-					window.location="../../index.php?page=jual#keranjang"</script>';
+            echo "2";
+     //        echo '<script>alert("Keranjang Melebihi Stok Barang Anda !");
+					// window.location="../../index.php?page=jual#keranjang"</script>';
         }
     }
 

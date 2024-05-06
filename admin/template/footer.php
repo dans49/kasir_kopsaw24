@@ -118,7 +118,7 @@
 
     window.onload = function () {
         var url = window.location.search
-        if(url == "?page=jual" || url == '?page=restok') {
+        if(url == "?page=jual" || url == "?page=jual&success=tambah-data" || url == '?page=restok') {
             $("body").toggleClass("sidebar-toggled");
             $(".sidebar").toggleClass("toggled");
         }
