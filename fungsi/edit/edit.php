@@ -97,12 +97,12 @@ if (!empty($_SESSION['admin'])) {
         $alamat2 = htmlentities($_POST['alamat2']);
         $status2 = htmlentities($_POST['status2']);
 
-        $data[] = $id_supplier2;
         $data[] = $nama_supplier2;
         $data[] = $telepon2;
         $data[] = $alamat2;
         $data[] = $status2;
-        $sql = 'UPDATE supplier SET id_supplier=?, nama_supplier=?, telepon=?, 
+        $data[] = $id_supplier2;
+        $sql = 'UPDATE supplier SET nama_supplier=?, telepon=?, 
 				alamat=?, status=? WHERE id_supplier=?';
         $row = $config -> prepare($sql);
         $row -> execute($data);

@@ -97,4 +97,12 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute();
         echo '<script>window.location="../../index.php?page=laporan&remove=hapus"</script>';
     }
+
+    if (!empty(htmlentities($_GET['supplier']))) {
+        $id = $_GET['id'];
+        $sql = 'DELETE FROM supplier WHERE id_supplier=?';
+        $row = $config -> prepare($sql);
+        $row -> execute(array($id));
+        echo '<script>window.location="../../index.php?page=supplier&remove=hapus"</script>';
+    }
 }

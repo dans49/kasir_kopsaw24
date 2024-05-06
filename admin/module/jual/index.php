@@ -405,6 +405,16 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#myKasir').on('hidden.bs.modal', function () {
+        $.ajax({
+            url: "fungsi/hapus/hapus.php?penjualan_jual=jual",
+            method: "GET",
+            success: function() {
+                location.reload();
+            }
+        })
+    })
 });
 
 
