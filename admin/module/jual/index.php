@@ -179,14 +179,14 @@
                             }
                             ?>
                         <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
-                            <?php foreach($hasil_penjualan as $isi){;?>
+                            <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
                                 <input type="hidden" name="jumlah[]" value="<?php echo $isi['jumlah'];?>">
-                                <input type="text" name="total1[]" class="totalg1" value="<?php echo $isi['total'];?>">
+                                <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
                                 <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
-                            <?php $no++; }?>
+                            <?php $no++; $no2++; }?>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Grand Total</div>
@@ -483,7 +483,6 @@ $(document).on('change keyup','.cjml', function() {
     for (var i = 1; i < nomor; i++) {
         if(idt == $('#coltotal'+i).data('id2')) {
             // console.log($('#coltotal'+i).val())
-            // console.log(jml)
             $.ajax({
                 url: "fungsi/edit/edit.php?jual=jual",
                 method: "POST",
@@ -504,29 +503,24 @@ $(document).on('change keyup','.cjml', function() {
                                 dataType: 'json',
                                 success: function(response) {
                                     // console.log(response.data[4])
-                                    // console.log(i)
                                     for (var j = 1; j < nomor; j++) {
                                         if(idt == $('.totaltemp'+j).data('id3')) {
                                             $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
+                                            $(".totalg1"+j).val(response.data[4])
                                         }
                                     }
                                 }
 
                             })
 
-                            // AJAX RELOAD KOLOM
+
                             $.ajax({
                                 type: 'GET',
                                 url: "fungsi/apis/apitempjualall.php?memberid="+memberid,
                                 dataType: 'json',
                                 success: function(response) {
-                                    console.log(response.data[4])
-                                    // console.log(i)
-                                    // for (var j = 1; j < nomor; j++) {
-                                    //     if(idt == $('.totaltemp'+j).data('id3')) {
-                                    //         $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
-                                    //     }
-                                    // }
+                                    // console.log(response.data[4])
+                                    $("#totals").val(response.total[0])
                                 }
 
                             })
