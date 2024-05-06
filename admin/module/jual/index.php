@@ -92,7 +92,7 @@
                                             <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
                                     </td>
-                                    <td>Rp. <span class="totaltemp"><?php echo number_format($isi['total'],0,',','.');?></span>,-
+                                    <td>Rp. <span class="totaltemp<?=$no?>" data-id3="<?= $isi['id_temp'];?>"><?php echo number_format($isi['total'],0,',','.');?></span>,-
                                         
                                         <input type="hidden" name="totaltemp" id="coltotal<?=$no ?>" data-id2="<?php echo $isi['id_temp'];?>" value="<?php echo $isi['total'];?>" class="form-control">
                                     </td>
@@ -183,7 +183,7 @@
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
                                 <input type="hidden" name="jumlah[]" value="<?php echo $isi['jumlah'];?>">
-                                <input type="text" name="total1[]" value="<?php echo $isi['total'];?>">
+                                <input type="text" name="total1[]" class="totalg1" value="<?php echo $isi['total'];?>">
                                 <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
                             <?php $no++; }?>
@@ -497,17 +497,41 @@ $(document).on('change keyup','.cjml', function() {
                         alert ("Minimal Harus memilih 1 jumlah barang atau dihapus!")
                     } else {
                         if (res == 1) {
-                            // AJAX
+                            // AJAX RELOAD HTML
                             $.ajax({
                                 type: 'GET',
-                                url: "fungsi/apis/apitemppenjualan.php?memberid="+memberid,
+                                url: "fungsi/apis/apitemppenjualan.php?memberid="+memberid+"&idt="+idt,
                                 dataType: 'json',
                                 success: function(response) {
-                                    
+                                    // console.log(response.data[4])
+                                    // console.log(i)
+                                    for (var j = 1; j < nomor; j++) {
+                                        if(idt == $('.totaltemp'+j).data('id3')) {
+                                            $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
+                                        }
+                                    }
                                 }
 
                             })
-                            // location.reload()
+
+                            // AJAX RELOAD KOLOM
+                            $.ajax({
+                                type: 'GET',
+                                url: "fungsi/apis/apitempjualall.php?memberid="+memberid,
+                                dataType: 'json',
+                                success: function(response) {
+                                    console.log(response.data[4])
+                                    // console.log(i)
+                                    // for (var j = 1; j < nomor; j++) {
+                                    //     if(idt == $('.totaltemp'+j).data('id3')) {
+                                    //         $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
+                                    //     }
+                                    // }
+                                }
+
+                            })
+                            
+
                         } else {
                             alert ("Keranjang Melebihi Stok Barang Anda !")
                             location.reload()
