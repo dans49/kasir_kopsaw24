@@ -60,11 +60,11 @@
             <i class="fas fa-fw fa-shopping-cart"></i>
             <span>Kasir</span></a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link" href="index.php?page=restok">
             <i class="fas fa-fw fa-shopping-cart"></i>
             <span>Kasir Restok</span></a>
-    </li>
+    </li> -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse3" aria-expanded="true"
             aria-controls="collapse3">

@@ -91,3 +91,26 @@ function restok_id($koneksi)
 	return $hasil['kode'];
 }
 
+function getstok($koneksi)
+{
+	$sql = "select max(right(id_getstok,4)) as kode from restok_barang where year(waktudata)=year(now()) and month(waktudata)=month(now())";
+	$row = $koneksi -> prepare($sql);
+    $row -> execute();
+    $hasil = $row -> fetch();
+
+    if($hasil['kode'] == NULL || $hasil['kode'] == 0){
+		$sql2 = "select concat(date_format(now(),'ST%m%Y.'),lpad(count(id_getstok)+1,4,0)) as kode from restok_barang where year(waktudata)=year(now()) and month(waktudata)=month(now())";
+		$row = $koneksi -> prepare($sql2);
+		$row -> execute();
+		$hasil = $row -> fetch();
+		
+	} else {
+		$sql2 = "select concat(date_format(now(),'ST%m%Y.'),lpad(max(right(id_getstok,4))+1,4,0)) as kode from restok_barang where year(waktudata)=year(now()) and month(waktudata)=month(now())";
+		$row = $koneksi -> prepare($sql2);
+		$row -> execute();
+		$hasil = $row -> fetch();
+	}
+
+	return $hasil['kode'];
+}
+

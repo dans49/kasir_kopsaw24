@@ -314,19 +314,15 @@ if (!empty($_SESSION['admin'])) {
         $row_tampil -> execute(array($id_barang));
         $hasil = $row_tampil -> fetch();
 
-        if ($hasil['stok'] > $jumlah) {
-            $jual = $hasil['harga_jual'];
-            $total = $jual * $jumlah;
-            $data1[] = $jumlah;
-            $data1[] = $total;
-            $data1[] = $id;
-            $sql1 = 'UPDATE _temp_restok SET jumlah=?,total=? WHERE id_trestok=?';
-            $row1 = $config -> prepare($sql1);
-            $row1 -> execute($data1);
-            echo '<script>window.location="../../index.php?page=restok#keranjang"</script>';
-        } else {
-            echo '<script>alert("Keranjang Melebihi Stok Barang Anda !");
-                    window.location="../../index.php?page=restok#keranjang"</script>';
-        }
+        
+        $jual = $hasil['harga_jual'];
+        $total = $jual * $jumlah;
+        $data1[] = $jumlah;
+        $data1[] = $total;
+        $data1[] = $id;
+        $sql1 = 'UPDATE _temp_restok SET jumlah=?,total=? WHERE id_trestok=?';
+        $row1 = $config -> prepare($sql1);
+        $row1 -> execute($data1);
+        echo '<script>window.location="../../index.php?page=restok#keranjang"</script>';
     }
 }

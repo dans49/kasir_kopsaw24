@@ -51,7 +51,7 @@
                 <div class="card-header bg-success text-white">
                     <h5><i class="fa fa-shopping-cart"></i> KASIR
                     <a class="btn btn-danger btn-sm float-right" 
-                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?penjualan_jual=jual">
+                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?restok_barang=yes">
                         <b><span class="fa fa-trash"></span> Reset Keranjang</b></a>
                     </h5>
                 </div>
@@ -101,8 +101,7 @@
                                             <button type="submit" class="btn btn-warning">Update</button>
                                         </form>
                                         <!-- aksi ke table penjualan -->
-                                        <a href="fungsi/hapus/hapus.php?beli_restok=del&id=<?php echo $isi['id_temp'];?>&brg=<?php echo $isi['id_barang'];?>
-                                            &jml=<?php echo $isi['jumlah']; ?>"  class="btn btn-danger"><i class="fa fa-times"></i>
+                                        <a href="fungsi/hapus/hapus.php?beli_restok=del&id=<?php echo $isi['id_trestok'];?>&brg=<?php echo $isi['id_barang'];?>&jml=<?php echo $isi['jumlah']; ?>"  class="btn btn-danger"><i class="fa fa-times"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -124,7 +123,7 @@
                                 $kembali = $_POST['kembalian'];
                                 $jml2 = 0;
                                 $tot2 = 0;
-                                $status = $_POST['status'] ?? 'Lunas';
+                                
                                 if(!empty($bayar) || $bayar == '0')
                                 {
                                     $hitung = $bayar - $total;
@@ -132,7 +131,6 @@
                                     $idnota = getnota($config);
                                     $id_barang = $_POST['id_barang'];
                                     $id_member = $_POST['id_member'];
-                                    $getplg = $_POST['plg'];
                                     $jumlah = $_POST['jumlah'];
                                     $total = $_POST['total1'];
                                     $periode = $_POST['periode'];
@@ -140,9 +138,10 @@
                                     
                                     for($x=0;$x<$jumlah_dipilih;$x++){
 
-                                        $idjual = getpenjualan($config);
-                                        $d = array($idjual,$id_barang[$x],$id_member[$x],$idnota,$jumlah[$x],$total[$x]);
-                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?)";
+                                        $idstok = getstok($config);
+                                        $id_supplier = $_POST['supplier'];
+                                        $d = array($idstok,$id_barang[$x],$id_supplier,$id_member[$x],$jumlah[$x],$total[$x]);
+                                        $sql = "INSERT INTO restok_barang (id_getstok,id_barang,id_supplier,id_member,jumlah,total) VALUES(?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
                                         $row->execute($d);
 
@@ -155,7 +154,7 @@
                                         $stok = $hsl['stok'];
                                         $idb  = $hsl['id_barang'];
 
-                                        $total_stok = $stok - $jumlah[$x];
+                                        $total_stok = $stok + $jumlah[$x];
                                         // echo $total_stok;
                                         $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
                                         $row_stok = $config->prepare($sql_stok);
@@ -167,10 +166,10 @@
                                         $member = $id_member[$x];
                                     }
 
-                                    $d2 = array($idnota,$member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
-                                    $sql2 = "INSERT INTO nota (id_nota,id_member,id_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
-                                    $row2 = $config->prepare($sql2);
-                                    $row2->execute($d2);
+                                    // $d2 = array($idnota,$member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
+                                    // $sql2 = "INSERT INTO nota (id_nota,id_member,id_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
+                                    // $row2 = $config->prepare($sql2);
+                                    // $row2->execute($d2);
 
                                     echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
                                     
@@ -199,7 +198,7 @@
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Supplier</div>
                             <div class="col-sm-4">
-                                <select class="form-control select2get" name="plg" required>
+                                <select class="form-control select2get" name="supplier" required>
                                     <option value="">-Pilih-</option>
                                     <?php
                                     foreach ($lihat->supplier() as $suppdata) {
@@ -326,42 +325,32 @@ $(document).ready(function(){
             processData: false,
             success: function(response){
                 $.ajax({
-                    type: 'GET',
-                    url: "fungsi/apis/apisnota.php?memberid="+idm,
-                    dataType: 'json',
-                    success: function(res) {
-                        $("#trx").html(res.nota)
-                        $("#gettotal").html(numberWithCommas(res.total))
-                        $("#getbayar").html(numberWithCommas(res.bayar))
-                        $("#getkembali").html(numberWithCommas(res.kembali))
-                        $("#dataTrx").html(res.penjualan)
-                        $("#printinv").prop("href","print.php?nota="+res.nota)
+                    url: "fungsi/hapus/hapus.php?restok_barang=del",
+                    method: "GET",
+                    success: function() {
+                        alert('Stok barang sudah ditambahkan!')
+                        location.reload();
                     }
                 })
-                $("#myStuff").modal('show')
+
+                // $.ajax({
+                //     type: 'GET',
+                //     url: "fungsi/apis/apisnota.php?memberid="+idm,
+                //     dataType: 'json',
+                //     success: function(res) {
+                        // $("#trx").html(res.nota)
+                        // $("#gettotal").html(numberWithCommas(res.total))
+                        // $("#getbayar").html(numberWithCommas(res.bayar))
+                        // $("#getkembali").html(numberWithCommas(res.kembali))
+                        // $("#dataTrx").html(res.penjualan)
+                        // $("#printinv").prop("href","print.php?nota="+res.nota)
+                //     }
+                // })
+                // $("#myStuff").modal('show')
             }
         });
     });
 
-    $('#myStuff').on('hidden.bs.modal', function () {
-        $.ajax({
-            url: "fungsi/hapus/hapus.php?penjualan_jual=jual",
-            method: "GET",
-            success: function() {
-                location.reload();
-            }
-        })
-    })
-
-    $('#myStuff').on('hidden.bs.modal', function () {
-        $.ajax({
-            url: "fungsi/hapus/hapus.php?restok_barang=del",
-            method: "GET",
-            success: function() {
-                location.reload();
-            }
-        })
-    })
 });
 
 

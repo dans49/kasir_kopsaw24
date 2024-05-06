@@ -101,6 +101,7 @@
                                         onclick="javascript:return confirm('Hapus Data barang ?');">
                                         <button class="btn btn-danger btn-sm">Hapus</button></a>
                                 </form>
+                                <!-- <a href="index.php?page=restok" class="btn btn-primary btn-sm">Restok Barang</a> -->
                                 <?php }else{?>
                                 <a href="index.php?page=barang/details&barang=<?php echo $isi['id_barang'];?>"><button
                                         class="btn btn-primary btn-xs">Details</button></a>

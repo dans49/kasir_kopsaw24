@@ -180,6 +180,7 @@ if (!empty($_SESSION['admin'])) {
             $id_temp = restok_id($config);
             $kasir =  $_GET['id_kasir'];
             $jumlah = 1;
+            // $jumlah = $hsl['stok'];
             $total = $hsl['harga_jual'];
 
             $data1[] = $id_temp;
