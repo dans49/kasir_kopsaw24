@@ -327,4 +327,22 @@ if (!empty($_SESSION['admin'])) {
         $row1 -> execute($data1);
         echo '<script>window.location="../../index.php?page=restok#keranjang"</script>';
     }
+
+    if (!empty($_GET['pelanggan'])) {
+        $id = htmlentities($_POST['id']);
+        $nama = htmlentities($_POST['nm_pelanggan']);
+        $identitas = htmlentities($_POST['identitas']);
+        $telepon = htmlentities($_POST['telepon']);
+        $status = htmlentities($_POST['status']);
+
+        $data1[] = $nama;
+        $data1[] = $identitas;
+        $data1[] = $telepon;
+        $data1[] = $status;
+        $data1[] = $id;
+        $sql1 = 'UPDATE ksw_pelanggan SET nm_pelanggan=?,identitas=?,telepon=?,statusdata=? WHERE id_pelanggan=?';
+        $row1 = $config -> prepare($sql1);
+        $row1 -> execute($data1);
+        echo '<script>window.location="../../index.php?page=pelanggan"</script>';
+    }
 }

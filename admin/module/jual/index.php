@@ -98,7 +98,7 @@
                                     </td>
                                     <td><?php echo $isi['nm_member'];?></td>
                                     <td>
-                                            <button type="submit" class="btn btn-warning">Update</button>
+                                            <!-- <button type="submit" class="btn btn-warning">Update</button> -->
                                         </form>
                                         <!-- aksi ke table penjualan -->
                                         <a href="fungsi/hapus/hapus.php?jual=jual&id=<?php echo $isi['id_temp'];?>&brg=<?php echo $isi['id_barang'];?>

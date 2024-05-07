@@ -90,6 +90,15 @@ class view
         return $hasil;
     }
 
+    public function pelanggan_w()
+    {
+        $sql = "select * from ksw_pelanggan WHERE id_pelanggan = ?";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($_GET['idp']));
+        $hasil = $row -> fetch();
+        return $hasil;
+    }
+
     public function pelanggan_id()
     {
         $sql = 'SELECT * FROM ksw_pelanggan ORDER BY id_pelanggan DESC';
