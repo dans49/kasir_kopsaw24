@@ -60,7 +60,7 @@
     <!-- STATUS cardS -->
     <div class="col-md-3 mb-3">
         <div class="card">
-            <div class="card-header bg-danger text-white">
+            <div class="card-header bg-primary text-white">
                 <h6 class="pt-2"><i class="fas fa-list"></i> Kategori </h6>
             </div>
             <div class="card-body">
@@ -77,7 +77,7 @@
     </div><!-- /col-md-3-->
     <div class="col-md-3 mb-3">
         <div class="card">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header bg-success text-white">
                 <h6 class="pt-2"><i class="fas fa-upload"></i> Telah Terjual</h6>
             </div>
             <div class="card-body">
@@ -94,7 +94,7 @@
     </div><!-- /col-md-3-->
 </div>
 
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-3 mb-3">
         <div class="card">
             <div class="card-header bg-info text-white">
@@ -110,8 +110,8 @@
                     Kategori <i class='fa fa-angle-double-right'></i></a>
             </div>
         </div>
-        <!--/grey-card -->
-    </div><!-- /col-md-3-->
+        
+    </div>
 
     <div class="col-md-3 mb-3">
         <div class="card">
@@ -128,6 +128,6 @@
                     Kategori <i class='fa fa-angle-double-right'></i></a>
             </div>
         </div>
-        <!--/grey-card -->
-    </div><!-- /col-md-3-->
-</div>
+        
+    </div>
+</div> -->
