@@ -268,6 +268,37 @@ class view
         return $hasil;
     }
 
+    public function penjual()
+    {
+        $data[] = date('m');
+        $data[] = date('Y');
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
+                member.nm_member from penjualan 
+                left join barang on barang.id_barang=penjualan.id_barang 
+                left join member on member.id_member=penjualan.id_member 
+                where month(penjualan.waktudata) = ?
+                AND year(penjualan.waktudata) = ?
+                ORDER BY id_penjualan DESC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute($data);
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
+    public function periode_penjual($periode)
+    {
+        $cari = "%$periode%";
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
+                member.nm_member from penjualan 
+                left join barang on barang.id_barang=penjualan.id_barang 
+                left join member on member.id_member=penjualan.id_member WHERE penjualan.waktudata like ? 
+                ORDER BY id_penjualan ASC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($cari));
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
     public function hari_jual($hari)
     {
         $ex = explode('-', $hari);

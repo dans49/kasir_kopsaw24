@@ -75,7 +75,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Custom Components:</h6> -->
                 <a class="collapse-item" href="index.php?page=laporan">Nota Penjualan</a>
-                <a class="collapse-item" href="index.php?page=laporan">Penjualan Barang</a>
+                <a class="collapse-item" href="index.php?page=laporan_penjualan">Penjualan Barang</a>
                 <a class="collapse-item" href="index.php?page=jual">Laporan Pembelian</a>
             </div>
         </div>
