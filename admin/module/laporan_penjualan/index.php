@@ -88,7 +88,7 @@
 									class="btn btn-info"><i class="fa fa-download"></i>
 									Excel</a>
 								<?php }else{?>
-								<a href="excel.php" class="btn btn-info"><i class="fa fa-download"></i>
+								<a href="excel_penjualan.php" class="btn btn-info"><i class="fa fa-download"></i>
 									Excel</a>
 								<?php }?>
 							</td>
@@ -114,15 +114,15 @@
 								<button class="btn btn-primary">
 									<i class="fa fa-search"></i> Cari
 								</button>
-								<a href="index.php?page=laporan" class="btn btn-success">
-									<i class="fa fa-refresh"></i> Refresh</a>
+								<a href="index.php?page=laporan_penjualan" class="btn btn-success">
+									<i class="fa fa-refresh"></i> Refresh Hari</a>
 
 								<?php if(!empty($_GET['hari'])){?>
 								<a href="excel.php?hari=cek&tgl=<?= $_POST['hari'];?>" class="btn btn-info"><i
 										class="fa fa-download"></i>
 									Excel</a>
 								<?php }else{?>
-								<a href="excel.php" class="btn btn-info"><i class="fa fa-download"></i>
+								<a href="excel_penjualan.php" class="btn btn-info"><i class="fa fa-download"></i>
 									Excel</a>
 								<?php }?>
 							</td>
@@ -164,9 +164,9 @@
 									$no=1; 
 									$jumlah = 0;
 									$bayar = 0;
-									$hasil = $lihat -> hari_jual($hari);
+									$hasil = $lihat -> hari_barang_jual($hari);
 								}else{
-									$hasil = $lihat -> penjual();
+									$hasil = $lihat -> barang_jual();
 								}
 							?>
 							<?php 
