@@ -1,18 +1,20 @@
 <?php
 session_start();
-require '../../config.php';
+// require '../../config.php';
+$db = mysqli_connect('localhost','root','','db_niagakopsaw');
 
-$year = $_GET['tahun'];
+$year = $_GET['tahun'] ?? date('Y');
 
-$gt[] = $year;
+$bln = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 
-$sql2 ="SELECT sum(total) from _temp_penjualan WHERE _temp_penjualan.id_member = ?";
-$row2 = $config -> prepare($sql2);
-$row2 -> execute($gt);
-$hasil2 = $row2 -> fetch();
+for ($i=0; $i < count($bln); $i++) { 
 
-// foreach ($hasil as $value) {
-    $data['total'] = $hasil2;
-// }
+    $sql2 ="SELECT sum(total) as jml from penjualan 
+            WHERE year(penjualan.waktudata) = '$year' AND month(penjualan.waktudata)= '$bln[$i]'";
+    $row = mysqli_query($db, $sql2);
+    $hasil = mysqli_fetch_assoc($row);
+
+    $data[] = $hasil['jml'];
+}
 
 echo json_encode($data);

@@ -133,7 +133,7 @@
 </div> -->
 
 <div class="row">
-    <div class="col-md-12 mb-3">
+    <div class="col-md-12 mb-3" id="grafikPenjualan">
         <div class="card">
             <div class="card-header bg-success text-white">
                 Grafik Penjualan
@@ -142,6 +142,7 @@
                 <div class="row">
                     
                     <div class="col-md-2">
+                        <input type="hidden" name="getnow" id="yearnow" value="<?=date('Y') ?>">
                         <select class="form-control" id="chartyear">
                                 
                             <?php

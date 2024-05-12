@@ -146,14 +146,30 @@
 
    <script>
     $(document).ready(function(){
-        penjualanChart()
+        var now = $("#yearnow").val()
+        $.ajax({
+            url: "fungsi/apis/apigetsumpenjualan.php?tahun="+now,
+            method: "GET",
+            dataType: 'json',
+            success: function(response) {
+                penjualanChart(response)
+            }
+        })
 
         $("#chartyear").on('change',function(){
-            console.log($("#chartyear").val())
+            var thn = $("#chartyear").val()
+            $.ajax({
+                url: "fungsi/apis/apigetsumpenjualan.php?tahun="+thn,
+                method: "GET",
+                dataType: 'json',
+                success: function(response) {
+                    penjualanChart(response)
+                }
+            })
         })
     })
 
-    function penjualanChart() {
+    function penjualanChart(getdata) {
         var areaChartData = {
           labels  : ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli','Agustus','September','Oktober','November','Desember'],
           datasets: [
@@ -166,7 +182,7 @@
               pointStrokeColor    : 'rgba(60,141,188,1)',
               pointHighlightFill  : '#fff',
               pointHighlightStroke: 'rgba(60,141,188,1)',
-              data                : [0, 0, 0, 27, 90]
+              data                : getdata
             }
           ]
         }
