@@ -94,44 +94,6 @@
     </div><!-- /col-md-3-->
 </div>
 
-<!-- <div class="row">
-    <div class="col-md-3 mb-3">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h6 class="pt-2"><i class="fa fa-bookmark"></i> Laporan Penjualan</h6>
-            </div>
-            <div class="card-body">
-                <center>
-                    <h1><?php echo number_format($hasil_kategori);?></h1>
-                </center>
-            </div>
-            <div class="card-footer">
-                <a href='index.php?page=kategori'>Tabel
-                    Kategori <i class='fa fa-angle-double-right'></i></a>
-            </div>
-        </div>
-        
-    </div>
-
-    <div class="col-md-3 mb-3">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h6 class="pt-2"><i class="fa fa-bookmark"></i> Laporan Pembelian</h6>
-            </div>
-            <div class="card-body">
-                <center>
-                    <h1><?php echo number_format($hasil_kategori);?></h1>
-                </center>
-            </div>
-            <div class="card-footer">
-                <a href='index.php?page=kategori'>Tabel
-                    Kategori <i class='fa fa-angle-double-right'></i></a>
-            </div>
-        </div>
-        
-    </div>
-</div> -->
-
 <div class="row">
     <div class="col-md-12 mb-3" id="grafikPenjualan">
         <div class="card">

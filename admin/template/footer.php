@@ -193,9 +193,31 @@
         barChartData.datasets[0] = temp0
 
         var barChartOptions = {
-          responsive              : true,
-          maintainAspectRatio     : false,
-          datasetFill             : false
+            responsive              : true,
+            maintainAspectRatio     : false,
+            datasetFill             : false,
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    }
+                }
+            },
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            callback: function(label, index, labels) {
+                                return label/1000+'k';
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '1k = 1000'
+                        }
+                    }
+                ]
+            }
         }
 
         var barChart = new Chart(barChartCanvas, {
