@@ -169,6 +169,11 @@
         })
     })
 
+    function resetChart() {
+        $('#penjualan-chart').remove();
+        $('#cp').append("<>");
+    }
+
     function penjualanChart(getdata) {
         var areaChartData = {
           labels  : ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli','Agustus','September','Oktober','November','Desember'],
@@ -203,21 +208,6 @@
                     }
                 }
             },
-            scales: {
-                yAxes: [
-                    {
-                        ticks: {
-                            callback: function(label, index, labels) {
-                                return label/1000+'k';
-                            }
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: '1k = 1000'
-                        }
-                    }
-                ]
-            }
         }
 
         var barChart = new Chart(barChartCanvas, {

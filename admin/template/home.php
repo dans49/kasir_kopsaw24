@@ -118,7 +118,7 @@
                         <a href="index.php" class="btn btn-success"><i class="fa fa-sync"></i></a>
                     </div>
                 </div>
-                <div class="chart">
+                <div class="chart cp">
                     <canvas id="penjualan-chart" style="min-height: 250px; height: 450px; max-height: 550px; max-width: 100%;"></canvas>
                 </div>
             </div>

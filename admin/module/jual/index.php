@@ -182,7 +182,7 @@
                             <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
-                                <input type="hidden" name="jumlah[]" value="<?php echo $isi['jumlah'];?>">
+                                <input type="hidden" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
                                 <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
                                 <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
@@ -507,6 +507,7 @@ $(document).on('change keyup','.cjml', function() {
                                         if(idt == $('.totaltemp'+j).data('id3')) {
                                             $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
                                             $(".totalg1"+j).val(response.data[4])
+                                            $(".cjml2"+j).val(response.data[3])
                                         }
                                     }
                                 }
