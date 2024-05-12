@@ -30,6 +30,7 @@
     <script src="sb-admin/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="sb-admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="sb-admin/vendor/select2/js/select2.full.min.js"></script>
+    <script src="sb-admin/vendor/chart.js/Chart.min.js"></script>
     <script type="text/javascript">
     //datatable
     $(function() {
@@ -142,6 +143,52 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
    </script>
+
+   <script>
+    $(document).ready(function(){
+        penjualanChart()
+
+        $("#chartyear").on('change',function(){
+            console.log($("#chartyear").val())
+        })
+    })
+
+    function penjualanChart() {
+        var areaChartData = {
+          labels  : ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli','Agustus','September','Oktober','November','Desember'],
+          datasets: [
+            {
+              label               : 'Penjualan Barang',
+              backgroundColor     : 'rgba(60,141,188,0.9)',
+              borderColor         : 'rgba(60,141,188,0.8)',
+              pointRadius          : false,
+              pointColor          : '#3b8bba',
+              pointStrokeColor    : 'rgba(60,141,188,1)',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(60,141,188,1)',
+              data                : [0, 0, 0, 27, 90]
+            }
+          ]
+        }
+        
+        var barChartCanvas = $('#penjualan-chart').get(0).getContext('2d')
+        var barChartData = jQuery.extend(true, {}, areaChartData)
+        var temp0 = areaChartData.datasets[0]
+        barChartData.datasets[0] = temp0
+
+        var barChartOptions = {
+          responsive              : true,
+          maintainAspectRatio     : false,
+          datasetFill             : false
+        }
+
+        var barChart = new Chart(barChartCanvas, {
+          type: 'bar', 
+          data: barChartData,
+          options: barChartOptions
+        })
+    }
+    </script>
 
    </body>
 

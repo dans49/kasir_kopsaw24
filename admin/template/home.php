@@ -131,3 +131,35 @@
         
     </div>
 </div> -->
+
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                Grafik Penjualan
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    
+                    <div class="col-md-2">
+                        <select class="form-control" id="chartyear">
+                                
+                            <?php
+                            for ($i=date('Y'); $i > 2019; $i--) { 
+                                echo "<option value='$i'>$i</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="index.php" class="btn btn-success"><i class="fa fa-sync"></i></a>
+                    </div>
+                </div>
+                <div class="chart">
+                    <canvas id="penjualan-chart" style="min-height: 250px; height: 450px; max-height: 550px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+        <!--/grey-card -->
+    </div><!-- /col-md-3-->
+</div>
