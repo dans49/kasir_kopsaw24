@@ -60,11 +60,11 @@
             <i class="fas fa-fw fa-shopping-cart"></i>
             <span>Kasir</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="index.php?page=jual">
+    <!-- <li class="nav-item">
+        <a class="nav-link" href="index.php?page=restok">
             <i class="fas fa-fw fa-shopping-cart"></i>
-            <span>Kasir Restock</span></a>
-    </li>
+            <span>Kasir Restok</span></a>
+    </li> -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse3" aria-expanded="true"
             aria-controls="collapse3">
@@ -75,8 +75,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Custom Components:</h6> -->
                 <a class="collapse-item" href="index.php?page=laporan">Nota Penjualan</a>
-                <a class="collapse-item" href="index.php?page=laporan">Penjualan Barang</a>
-                <a class="collapse-item" href="index.php?page=jual">Laporan Pembelian</a>
+                <a class="collapse-item" href="index.php?page=laporan_penjualan">Penjualan Barang</a>
+                <!-- <a class="collapse-item" href="index.php?page=jual">Laporan Pembelian</a> -->
             </div>
         </div>
     </li>

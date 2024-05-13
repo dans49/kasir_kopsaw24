@@ -23,17 +23,17 @@
 	<div class="row">
         <div class="col-sm-4">
             <div class="card card-primary mb-3">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-success text-white">
                     <i class="fa fa-search"></i> Cari Barang
                 </div>
                 <div class="card-body">
-                    <input type="text" id="cari" class="form-control" name="cari" placeholder="Masukan : Kode / Nama Barang  [ENTER]">
+                    <input type="text" id="cariBarang" class="form-control" name="cari" placeholder="Masukan : Kode / Nama Barang  [ENTER]">
                 </div>
             </div>
         </div>
         <div class="col-sm-8">
             <div class="card card-info mb-3">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-success text-white">
                     <i class="fa fa-list"></i> Hasil Pencarian
                 </div>
                 <div class="card-body">
@@ -48,10 +48,10 @@
 
         <div class="col-sm-12">
             <div class="card card-primary">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-success text-white">
                     <h5><i class="fa fa-shopping-cart"></i> KASIR
                     <a class="btn btn-danger btn-sm float-right" 
-                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?penjualan_jual=jual">
+                        onclick="javascript:return confirm('Apakah anda ingin reset keranjang ?');" href="fungsi/hapus/hapus.php?restok_barang=yes">
                         <b><span class="fa fa-trash"></span> Reset Keranjang</b></a>
                     </h5>
                 </div>
@@ -77,9 +77,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $total_bayar=0; $no=1; $hasil_penjualan = $lihat -> temp_penjualan();?>
-                                <?php foreach($hasil_penjualan  as $isi){
-                                    ?>
+                                <?php 
+                                    $total_bayar=0; 
+                                    $no=1; 
+                                    $restok = $lihat -> temp_restok();
+                                    foreach($restok  as $isi){
+                                ?>
                                 <tr>
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $isi['nama_barang'];?></td>
@@ -87,22 +90,18 @@
                                     <td>Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?></td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
-                                        <form method="POST" action="fungsi/edit/edit.php?jual=jual">
-                                            <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>">
-                                            <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
+                                        <form method="POST" action="fungsi/edit/edit.php?restok_barang=yes">
+                                            <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml">
+                                            <input type="hidden" name="id" value="<?php echo $isi['id_trestok'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
                                     </td>
-                                    <td>Rp. <span class="totaltemp<?=$no?>" data-id3="<?= $isi['id_temp'];?>"><?php echo number_format($isi['total'],0,',','.');?></span>,-
-                                        
-                                        <input type="hidden" name="totaltemp" id="coltotal<?=$no ?>" data-id2="<?php echo $isi['id_temp'];?>" value="<?php echo $isi['total'];?>" class="form-control">
-                                    </td>
+                                    <td>Rp.<?php echo number_format($isi['total'],0,',','.');?>,-</td>
                                     <td><?php echo $isi['nm_member'];?></td>
                                     <td>
-                                            <!-- <button type="submit" class="btn btn-warning">Update</button> -->
+                                            <button type="submit" class="btn btn-warning">Update</button>
                                         </form>
                                         <!-- aksi ke table penjualan -->
-                                        <a href="fungsi/hapus/hapus.php?jual=jual&id=<?php echo $isi['id_temp'];?>&brg=<?php echo $isi['id_barang'];?>
-                                            &jml=<?php echo $isi['jumlah']; ?>"  class="btn btn-danger"><i class="fa fa-times"></i>
+                                        <a href="fungsi/hapus/hapus.php?beli_restok=del&id=<?php echo $isi['id_trestok'];?>&brg=<?php echo $isi['id_barang'];?>&jml=<?php echo $isi['jumlah']; ?>"  class="btn btn-danger"><i class="fa fa-times"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -111,7 +110,6 @@
                                 $total_bayar += $isi['total'];
                                 }
                                 ?>
-                                <input type="hidden" name="no" value="<?php echo $no; ?>" class="gnomor">
                             </tbody>
                     </table>
                     <br/>
@@ -119,13 +117,13 @@
                     <div id="kasirnya">
                             <?php
                             // proses bayar dan ke nota
-                            if(!empty($_GET['nota'] == 'yes')) {
+                            if(!empty($_GET['beli'] == 'yes')) {
                                 $total = $_POST['total'];
                                 $bayar = $_POST['bayar'] ?? '0';
                                 $kembali = $_POST['kembalian'];
                                 $jml2 = 0;
                                 $tot2 = 0;
-                                $status = $_POST['status'] ?? 'Lunas';
+                                
                                 if(!empty($bayar) || $bayar == '0')
                                 {
                                     $hitung = $bayar - $total;
@@ -133,7 +131,6 @@
                                     $idnota = getnota($config);
                                     $id_barang = $_POST['id_barang'];
                                     $id_member = $_POST['id_member'];
-                                    $getplg = $_POST['plg'];
                                     $jumlah = $_POST['jumlah'];
                                     $total = $_POST['total1'];
                                     $periode = $_POST['periode'];
@@ -141,9 +138,10 @@
                                     
                                     for($x=0;$x<$jumlah_dipilih;$x++){
 
-                                        $idjual = getpenjualan($config);
-                                        $d = array($idjual,$id_barang[$x],$id_member[$x],$idnota,$jumlah[$x],$total[$x]);
-                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?)";
+                                        $idstok = getstok($config);
+                                        $id_supplier = $_POST['supplier'];
+                                        $d = array($idstok,$id_barang[$x],$id_supplier,$id_member[$x],$jumlah[$x],$total[$x]);
+                                        $sql = "INSERT INTO restok_barang (id_getstok,id_barang,id_supplier,id_member,jumlah,total) VALUES(?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
                                         $row->execute($d);
 
@@ -156,7 +154,7 @@
                                         $stok = $hsl['stok'];
                                         $idb  = $hsl['id_barang'];
 
-                                        $total_stok = $stok - $jumlah[$x];
+                                        $total_stok = $stok + $jumlah[$x];
                                         // echo $total_stok;
                                         $sql_stok = "UPDATE barang SET stok = ? WHERE id_barang = ?";
                                         $row_stok = $config->prepare($sql_stok);
@@ -168,67 +166,47 @@
                                         $member = $id_member[$x];
                                     }
 
-                                    $d2 = array($idnota,$member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
-                                    $sql2 = "INSERT INTO nota (id_nota,id_member,id_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
-                                    $row2 = $config->prepare($sql2);
-                                    $row2->execute($d2);
+                                    // $d2 = array($idnota,$member,$getplg,$jml2,$tot2,$bayar,$kembali,$status,$perio);
+                                    // $sql2 = "INSERT INTO nota (id_nota,id_member,id_pelanggan,jumlah,total,bayar,kembalian,status_nota,periode) VALUES(?,?,?,?,?,?,?,?,?)";
+                                    // $row2 = $config->prepare($sql2);
+                                    // $row2->execute($d2);
 
                                     echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
                                     
                                 }
                             }
                             ?>
-                        <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
-                            <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
+                        <form method="POST" id="subrestok" action="#" > 
+                            <?php foreach($restok as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
                                 <input type="hidden" name="jumlah[]" value="<?php echo $isi['jumlah'];?>">
-                                <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
+                                <input type="hidden" name="total1[]" value="<?php echo $isi['total'];?>">
                                 <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
-                            <?php $no++; $no2++; }?>
+                            <?php $no++; }?>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
-                            <div class="col-sm-2 text-right">Grand Total</div>
-                            <div class="col-sm-4"><input type="text" id="totals" class="form-control" name="total" value="<?php echo $total_bayar;?>"></div>
+                            <div class="col-sm-2 text-right"><h3>Total </h3></div>
+                            <div class="col-sm-4">
+                                <input type="hidden" id="totals" class="form-control" name="total" value="<?php echo $total_bayar;?>">
+                                <h3>Rp. <span id="gettotal"><?php echo number_format($total_bayar,0,',','.');?></span>,-</h3>
+                            </div>
                         </div>
+
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
-                            <div class="col-sm-2 text-right">Pelanggan *Opsi</div>
-                            <div class="col-sm-2">
-                                <select class="form-control select2get" name="plg">
+                            <div class="col-sm-2 text-right">Supplier</div>
+                            <div class="col-sm-4">
+                                <select class="form-control select2get" name="supplier" required>
                                     <option value="">-Pilih-</option>
                                     <?php
-                                    foreach ($lihat->pelanggan() as $gdata) {
-                                        echo "<option value='$gdata[id_pelanggan]'>$gdata[nm_pelanggan]</option>";
+                                    foreach ($lihat->supplier() as $suppdata) {
+                                        echo "<option value='$suppdata[id_supplier]'>$suppdata[nama_supplier]</option>";
                                     }
                                     ?>
                                 </select>
                             </div>
-                            <div class="col-sm-2">
-                                <button type="button" class="btn btn-primary btn-sm mr-2"  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span> Tambah</button>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">&nbsp;</div>
-                            <div class="col-sm-2 text-right">Bayar</div>
-                            <div class="col-sm-2"><input type="text" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>" required></div>
-                            <div class="col-sm-2">
-                                <!-- <?php  if(!empty($_GET['nota'] == 'yes')) {?>
-                                    <a class="btn btn-danger" href="fungsi/hapus/hapus.php?penjualan=jual">
-                                    <b>RESET</b></a><?php }?> -->
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input paylater" id="customSwitch1" data-on-text="ON" data-off-text="OFF">
-                                    <label class="custom-control-label" for="customSwitch1">Bayar Nanti</label>
-                                </div>
-                                <input type="hidden" id="status" name="status" value="">
-
-                            </div>
-                        </div>
-                         <div class="row mb-3">
-                            <div class="col-sm-6">&nbsp;</div>
-                            <div class="col-sm-2 text-right">Kembali</div>
-                            <div class="col-sm-3"><input type="text" id="kembalian" name="kembalian" class="form-control" value="<?php echo $hitung;?>"></div>
                         </div>
 
                         <div class="row mb-3">
@@ -250,55 +228,8 @@
             </div>
         </div>
     </div>
-    
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content" style=" border-radius:0px;">
-                <div class="modal-header" style="background:#285c64;color:#fff;">
-                    <h5 class="modal-title"><i class="fa fa-plus"></i> Tambah Pelanggan</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="fungsi/tambah/tambah.php?pelanggan_jual=tambah" method="POST">
-                    <div class="modal-body">
-                        <table class="table table-striped bordered">
-                            <?php
-                                $format = $lihat -> pelanggan_id();
-                            ?>
-                            <tr>
-                                <td>ID Pelanggan</td>
-                                <td><input type="text" readonly="readonly" required value="<?php echo $format;?>"
-                                        class="form-control" name="id"></td>
-                            </tr>
-                            <tr>
-                                <td>Nama Pelanggan*</td>
-                                <td><input type="text" placeholder="Nama Pelanggan" required class="form-control"
-                                        name="nama"></td>
-                            </tr>
-                            <tr>
-                                <td>Identitas*</td>
-                                <td><input type="text" placeholder="Identitas" class="form-control"
-                                        name="identitas"></td>
-                            </tr>
-                            <tr>
-                                <td>Telepon*</td>
-                                <td><input type="text" placeholder="Telepon" required class="form-control"
-                                        name="telepon" maxlength="15"></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Insert
-                            Data</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-    </div>
-
-    <div id="myKasir" class="modal fade" role="dialog">
+    <div id="myStuff" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content" style=" border-radius:0px;">
@@ -362,10 +293,10 @@
 <script>
 // AJAX call for autocomplete 
 $(document).ready(function(){
-    $("#cari").change(function(){
+    $("#cariBarang").change(function(){
         $.ajax({
             type: "POST",
-            url: "fungsi/edit/edit.php?cari_barang=yes",
+            url: "fungsi/edit/edit.php?cari_stok_barang=yes",
             data:'keyword='+$(this).val(),
             beforeSend: function(){
                 $("#hasil_cari").hide();
@@ -381,84 +312,55 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-    $('#subkasir').on('submit', function(e){
+    $('#subrestok').on('submit', function(e){
         e.preventDefault();
         let idm = "<?php echo $_SESSION['admin']['id_member']; ?>"
 
         $.ajax({
             type: 'POST',
-            url: "index.php?page=jual&nota=yes",
+            url: "index.php?page=restok&beli=yes",
             data: new FormData(this),
             contentType: false,
             cache: false,
             processData: false,
             success: function(response){
                 $.ajax({
-                    type: 'GET',
-                    url: "fungsi/apis/apisnota.php?memberid="+idm,
-                    dataType: 'json',
-                    success: function(res) {
-                        $("#trx").html(res.nota)
-                        $("#gettotal").html(numberWithCommas(res.total))
-                        $("#getbayar").html(numberWithCommas(res.bayar))
-                        $("#getkembali").html(numberWithCommas(res.kembali))
-                        $("#dataTrx").html(res.penjualan)
-                        $("#printinv").prop("href","print.php?nota="+res.nota)
+                    url: "fungsi/hapus/hapus.php?restok_barang=del",
+                    method: "GET",
+                    success: function() {
+                        alert('Stok barang sudah ditambahkan!')
+                        location.reload();
                     }
                 })
-                $("#myKasir").modal('show')
+
+                // $.ajax({
+                //     type: 'GET',
+                //     url: "fungsi/apis/apisnota.php?memberid="+idm,
+                //     dataType: 'json',
+                //     success: function(res) {
+                        // $("#trx").html(res.nota)
+                        // $("#gettotal").html(numberWithCommas(res.total))
+                        // $("#getbayar").html(numberWithCommas(res.bayar))
+                        // $("#getkembali").html(numberWithCommas(res.kembali))
+                        // $("#dataTrx").html(res.penjualan)
+                        // $("#printinv").prop("href","print.php?nota="+res.nota)
+                //     }
+                // })
+                // $("#myStuff").modal('show')
             }
         });
     });
 
-    $('#myKasir').on('hidden.bs.modal', function () {
-        $.ajax({
-            url: "fungsi/hapus/hapus.php?penjualan_jual=jual",
-            method: "GET",
-            success: function() {
-                location.reload();
-            }
-        })
-    })
 });
 
 
 // ======== KONDISI AWAL =======
-$("#kembalian").val('0')
 $(".btnprint").hide();
 // =============================
-
-
-$(document).on('keyup','#dibayar', function() {
-    var total = $("#totals").val()
-    var bayar = $("#dibayar").val()
-    var getang = 0;
-    getang = bayar - total;
-    
-    $("#kembalian").val(getang);
-});
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
-
-$(document).on('change','.paylater', function(e) {
-    let cek = e.target.checked;
-
-    if (cek == true) {
-        $("#dibayar").prop('readonly',true);
-        $("#dibayar").prop('required',false);
-        $("#dibayar").val(0);
-        $("#status").val('Hutang');
-        $(".btnprint").show();
-    } else {
-        $("#dibayar").prop('readonly', false);
-        $("#dibayar").prop('required',true);
-        $("#status").val('');
-        $(".btnprint").hide();
-    }
-    $("#kembalian").val('0');
-});
 
 $(document).on('keyup','#dibayar', function() {
     let balik = $("#kembalian").val();
@@ -472,69 +374,9 @@ $(document).on('keyup','#dibayar', function() {
     }
 });
 
-var nomor = $('.gnomor').val()
-
-$(document).on('change keyup','.cjml', function() {
-    var idt = $(this).data('id')
-    var idbarang = $(this).data('id-barang')
-    var memberid = $(this).data('member')
-    var jml = $(this).val()
-
-    for (var i = 1; i < nomor; i++) {
-        if(idt == $('#coltotal'+i).data('id2')) {
-            // console.log($('#coltotal'+i).val())
-            $.ajax({
-                url: "fungsi/edit/edit.php?jual=jual",
-                method: "POST",
-                data: {
-                    id : idt,
-                    id_barang : idbarang,
-                    jumlah : jml
-                },
-                success: function (res) {
-                    if(jml < 1) {
-                        alert ("Minimal Harus memilih 1 jumlah barang atau dihapus!")
-                    } else {
-                        if (res == 1) {
-                            // AJAX RELOAD HTML
-                            $.ajax({
-                                type: 'GET',
-                                url: "fungsi/apis/apitemppenjualan.php?memberid="+memberid+"&idt="+idt,
-                                dataType: 'json',
-                                success: function(response) {
-                                    // console.log(response.data[4])
-                                    for (var j = 1; j < nomor; j++) {
-                                        if(idt == $('.totaltemp'+j).data('id3')) {
-                                            $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
-                                            $(".totalg1"+j).val(response.data[4])
-                                        }
-                                    }
-                                }
-
-                            })
-
-
-                            $.ajax({
-                                type: 'GET',
-                                url: "fungsi/apis/apitempjualall.php?memberid="+memberid,
-                                dataType: 'json',
-                                success: function(response) {
-                                    // console.log(response.data[4])
-                                    $("#totals").val(response.total[0])
-                                }
-
-                            })
-                            
-
-                        } else {
-                            alert ("Keranjang Melebihi Stok Barang Anda !")
-                            location.reload()
-                        }
-                    }
-                }
-            })
-        }
-    }
+$(document).on('change','.cjml', function() {
+    var jml = $(".cjml").val()
+    // console.log(jml)
 });
 
 //To select country name

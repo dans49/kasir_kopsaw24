@@ -123,7 +123,7 @@
                             <table class="table table-striped bordered">
                                 <tr>
                                     <td>Nama Supplier</td>
-                                    <td><input type="text" hidden value="<?php echo $isi['id_supplier'];?>" name="id_supplier2">
+                                    <td><input type="hidden" value="<?php echo $isi['id_supplier'];?>" name="id_supplier2">
 										<input type="text" value="<?php echo $isi['nama_supplier'];?>" required class="form-control"
                                             name="nama_supplier2"></td>
                                 </tr>
@@ -142,7 +142,7 @@
                                     <td><select name="status2" class="form-control" required>
                                             <option value="<?php echo $isi['status'];?>"><?php echo $isi['status'];?></option>
                                             <?php if($isi['status']="AKTIF"){?> 
-                                            <option value="TIDAK AKTIF">TIDAK AKTIF</option>
+                                            <option value="TIDAK">TIDAK AKTIF</option>
 											<?php } else { ?> 
 											<option value="AKTIF">AKTIF</option>
 											<?php }?>

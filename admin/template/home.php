@@ -60,7 +60,7 @@
     <!-- STATUS cardS -->
     <div class="col-md-3 mb-3">
         <div class="card">
-            <div class="card-header bg-danger text-white">
+            <div class="card-header bg-primary text-white">
                 <h6 class="pt-2"><i class="fas fa-list"></i> Kategori </h6>
             </div>
             <div class="card-body">
@@ -77,7 +77,7 @@
     </div><!-- /col-md-3-->
     <div class="col-md-3 mb-3">
         <div class="card">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header bg-success text-white">
                 <h6 class="pt-2"><i class="fas fa-upload"></i> Telah Terjual</h6>
             </div>
             <div class="card-body">
@@ -94,7 +94,7 @@
     </div><!-- /col-md-3-->
 </div>
 
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-3 mb-3">
         <div class="card">
             <div class="card-header bg-info text-white">
@@ -110,8 +110,8 @@
                     Kategori <i class='fa fa-angle-double-right'></i></a>
             </div>
         </div>
-        <!--/grey-card -->
-    </div><!-- /col-md-3-->
+        
+    </div>
 
     <div class="col-md-3 mb-3">
         <div class="card">
@@ -126,6 +126,39 @@
             <div class="card-footer">
                 <a href='index.php?page=kategori'>Tabel
                     Kategori <i class='fa fa-angle-double-right'></i></a>
+            </div>
+        </div>
+        
+    </div>
+</div> -->
+
+<div class="row">
+    <div class="col-md-12 mb-3" id="grafikPenjualan">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                Grafik Penjualan
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    
+                    <div class="col-md-2">
+                        <input type="hidden" name="getnow" id="yearnow" value="<?=date('Y') ?>">
+                        <select class="form-control" id="chartyear">
+                                
+                            <?php
+                            for ($i=date('Y'); $i > 2019; $i--) { 
+                                echo "<option value='$i'>$i</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="index.php" class="btn btn-success"><i class="fa fa-sync"></i></a>
+                    </div>
+                </div>
+                <div class="chart">
+                    <canvas id="penjualan-chart" style="min-height: 250px; height: 450px; max-height: 550px; max-width: 100%;"></canvas>
+                </div>
             </div>
         </div>
         <!--/grey-card -->
