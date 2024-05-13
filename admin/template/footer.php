@@ -163,6 +163,7 @@
                 method: "GET",
                 dataType: 'json',
                 success: function(response) {
+                    resetChart()
                     penjualanChart(response)
                 }
             })
@@ -171,7 +172,8 @@
 
     function resetChart() {
         $('#penjualan-chart').remove();
-        $('#cp').append("<>");
+        $('.chartjs-size-monitor').remove();
+        $('.cp').append("<canvas id='penjualan-chart' style='min-height: 250px; height: 450px; max-height: 550px; max-width: 100%;'></canvas>");
     }
 
     function penjualanChart(getdata) {
@@ -204,7 +206,7 @@
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        return tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        return "Rp. "+tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                     }
                 }
             },
