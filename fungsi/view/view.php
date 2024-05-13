@@ -132,7 +132,7 @@ class view
         $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan
         from barang inner join kategori on barang.id_kategori = kategori.id_kategori
         inner join satuan on barang.id_satuan = satuan.id_satuan
-        where id_barang like '%$cari%' or nama_barang like '%$cari%' or merk like '%$cari%'";
+        where id_barang like '%$cari%' or nama_barang like '%$cari%' like '%$cari%'";
         $row = $this-> db -> prepare($sql);
         $row -> execute();
         $hasil = $row -> fetchAll();
@@ -285,7 +285,7 @@ class view
 
     public function penjualan()
     {
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_jual, member.id_member,
                 member.nm_member from penjualan 
                 left join barang on barang.id_barang=penjualan.id_barang 
                 left join member on member.id_member=penjualan.id_member
@@ -298,7 +298,7 @@ class view
 
     public function temp_penjualan()
     {
-        $sql ="SELECT _temp_penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
+        $sql ="SELECT _temp_penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_jual, member.id_member,
                 member.nm_member from _temp_penjualan 
                 left join barang on barang.id_barang=_temp_penjualan.id_barang 
                 left join member on member.id_member=_temp_penjualan.id_member
@@ -311,7 +311,7 @@ class view
 
     public function penjualan_print($nota)
     {
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.merk, barang.harga_jual, member.id_member,
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_jual, member.id_member,
                 member.nm_member from penjualan 
                 left join barang on barang.id_barang=penjualan.id_barang 
                 left join member on member.id_member=penjualan.id_member

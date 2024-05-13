@@ -27,7 +27,6 @@ if (!empty($_SESSION['admin'])) {
         $kategori = htmlentities($_POST['kategori']);
         $satuan = htmlentities ($_POST['satuan']);
         $nama = htmlentities($_POST['nama']);
-        $merk = htmlentities($_POST['merk']);
         $beli = htmlentities($_POST['beli']);
         $jual = htmlentities($_POST['jual']);
         $satuan = htmlentities($_POST['satuan']);
@@ -38,14 +37,13 @@ if (!empty($_SESSION['admin'])) {
         $data[] = $kategori;
         $data[] = $satuan;
         $data[] = $nama;
-        $data[] = $merk;
         $data[] = $beli;
         $data[] = $jual;
         $data[] = $satuan;
         $data[] = $stok;
         $data[] = $tgl;
-        $sql = 'INSERT INTO barang (id_barang,id_kategori,id_satuan,nama_barang,merk,harga_beli,harga_jual,satuan_barang,stok,tgl_input) 
-			    VALUES (?,?,?,?,?,?,?,?,?,?) ';
+        $sql = 'INSERT INTO barang (id_barang,id_kategori,id_satuan,nama_barang,harga_beli,harga_jual,satuan_barang,stok,tgl_input) 
+			    VALUES (?,?,?,?,?,?,?,?,?) ';
         $row = $config -> prepare($sql);
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=barang&success=tambah-data"</script>';

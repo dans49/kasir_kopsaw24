@@ -66,7 +66,6 @@ if (!empty($_SESSION['admin'])) {
         $kategori = htmlentities($_POST['kategori']);
         $satuan = htmlentities($_POST['satuan']);
         $nama = htmlentities($_POST['nama']);
-        $merk = htmlentities($_POST['merk']);
         $beli = htmlentities($_POST['beli']);
         $jual = htmlentities($_POST['jual']);
         $satuan = htmlentities($_POST['satuan']);
@@ -76,14 +75,13 @@ if (!empty($_SESSION['admin'])) {
         $data[] = $kategori;
         $data[] = $satuan;
         $data[] = $nama;
-        $data[] = $merk;
         $data[] = $beli;
         $data[] = $jual;
         $data[] = $satuan;
         $data[] = $stok;
         $data[] = $tgl;
         $data[] = $id;
-        $sql = 'UPDATE barang SET id_kategori=?, id_satuan=?, nama_barang=?, merk=?, 
+        $sql = 'UPDATE barang SET id_kategori=?, id_satuan=?, nama_barang=?, 
 				harga_beli=?, harga_jual=?, satuan_barang=?, stok=?, tgl_update=?  WHERE id_barang=?';
         $row = $config -> prepare($sql);
         $row -> execute($data);
@@ -233,7 +231,7 @@ if (!empty($_SESSION['admin'])) {
             $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan
 					from barang inner join kategori on barang.id_kategori = kategori.id_kategori
                     inner join satuan on barang.id_satuan = satuan.id_satuan
-					where barang.id_barang like '%$cari%' or barang.nama_barang like '%$cari%' or barang.merk like '%$cari%'";
+					where barang.id_barang like '%$cari%' or barang.nama_barang like '%$cari%' like '%$cari%'";
             $row = $config -> prepare($sql);
             $row -> execute();
             $hasil1= $row -> fetchAll();
@@ -242,7 +240,6 @@ if (!empty($_SESSION['admin'])) {
 			<tr>
 				<th>ID Barang</th>
 				<th>Nama Barang</th>
-				<th>Merk</th>
                 <th>Harga Jual</th>
 				<th>Stok</th>
 				<th>Aksi</th>
@@ -251,7 +248,6 @@ if (!empty($_SESSION['admin'])) {
 			<tr>
 				<td><?php echo $hasil['id_barang'];?></td>
 				<td><?php echo $hasil['nama_barang'];?></td>
-				<td><?php echo $hasil['merk'];?></td>
                 <td><?php echo $hasil['harga_jual'];?></td>
 				<td><?php echo $hasil['stok'];?></td>
 				<td>
