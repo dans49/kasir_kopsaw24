@@ -163,11 +163,18 @@
                 method: "GET",
                 dataType: 'json',
                 success: function(response) {
+                    resetChart()
                     penjualanChart(response)
                 }
             })
         })
     })
+
+    function resetChart() {
+        $('#penjualan-chart').remove();
+        $('.chartjs-size-monitor').remove();
+        $('.cp').append("<canvas id='penjualan-chart' style='min-height: 250px; height: 450px; max-height: 550px; max-width: 100%;'></canvas>");
+    }
 
     function penjualanChart(getdata) {
         var areaChartData = {
@@ -193,9 +200,16 @@
         barChartData.datasets[0] = temp0
 
         var barChartOptions = {
-          responsive              : true,
-          maintainAspectRatio     : false,
-          datasetFill             : false
+            responsive              : true,
+            maintainAspectRatio     : false,
+            datasetFill             : false,
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return "Rp. "+tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    }
+                }
+            },
         }
 
         var barChart = new Chart(barChartCanvas, {
