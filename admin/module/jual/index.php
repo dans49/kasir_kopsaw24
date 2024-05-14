@@ -371,6 +371,7 @@ $(document).ready(function(){
                 $("#tunggu").html('<p style="color:green"><blink>tunggu sebentar</blink></p>');
             },
             success: function(html){
+                // console.log(html);
                 $("#tunggu").html('');
                 $("#hasil_cari").show();
                 $("#hasil_cari").html(html);
