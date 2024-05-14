@@ -68,7 +68,7 @@
                                 <tr>
                                     <th> No</th>
                                     <th> Nama Barang</th>
-                                    <th> Merk Barang</th>
+                                  
                                     <th> Harga</th>
                                     <th> Jumlah</th>
                                     <th> Total</th>
@@ -83,7 +83,7 @@
                                 <tr>
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $isi['nama_barang'];?></td>
-                                    <td><?php echo $isi['merk'];?></td>
+                               
                                     <td>Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?></td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
@@ -326,7 +326,6 @@
                                 <tr>
                                     <td>No.</td>
                                     <td>Barang</td>
-                                    <td>Merk</td>
                                     <td>Jumlah</td>
                                     <td>Total</td>
                                 </tr>

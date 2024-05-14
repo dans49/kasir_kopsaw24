@@ -123,7 +123,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">Total </td>
+                            <th colspan="4">Total </td>
                             <th><?php echo $totalStok;?></td>
                             <th>Rp.<?php echo number_format($totalBeli);?>,-</td>
                             <th>Rp.<?php echo number_format($totalJual);?>,-</td>
