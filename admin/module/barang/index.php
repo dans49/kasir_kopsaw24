@@ -49,7 +49,7 @@
                             <th>ID Barang</th>
                             <th>Kategori</th>
                             <th>Nama Barang</th>
-                            <th>Merk</th>
+                            
                             <th>Stok</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
@@ -77,7 +77,7 @@
                             <td><?php echo $isi['id_barang'];?></td>
                             <td><?php echo $isi['nama_kategori'];?></td>
                             <td><?php echo $isi['nama_barang'];?></td>
-                            <td><?php echo $isi['merk'];?></td>
+                            
                             <td>
                                 <?php if($isi['stok'] == '0'){?>
                                 <button class="btn btn-danger"> Habis</button>
@@ -123,7 +123,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">Total </td>
+                            <th colspan="4">Total </td>
                             <th><?php echo $totalStok;?></td>
                             <th>Rp.<?php echo number_format($totalBeli);?>,-</td>
                             <th>Rp.<?php echo number_format($totalJual);?>,-</td>
