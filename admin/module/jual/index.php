@@ -89,8 +89,9 @@
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
                                             <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>">
-                                            <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
+                                            <input type="text" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
+                                           
                                     </td>
                                     <td>Rp. <span class="totaltemp<?=$no?>" data-id3="<?= $isi['id_temp'];?>"><?php echo number_format($isi['total'],0,',','.');?></span>,-
                                         
@@ -133,6 +134,8 @@
                                     $idnota = getnota($config);
                                     $id_barang = $_POST['id_barang'];
                                     $id_member = $_POST['id_member'];
+                                    $hsb = $_POST['harga_satuan_beli'];
+                                    $hsj = $_POST['harga_satuan_jual'];
                                     $getplg = $_POST['plg'];
                                     $jumlah = $_POST['jumlah'];
                                     $total = $_POST['total1'];
@@ -142,8 +145,8 @@
                                     for($x=0;$x<$jumlah_dipilih;$x++){
 
                                         $idjual = getpenjualan($config);
-                                        $d = array($idjual,$id_barang[$x],$id_member[$x],$idnota,$jumlah[$x],$total[$x]);
-                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?)";
+                                        $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$jumlah[$x],$total[$x]);
+                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
                                         $row->execute($d);
 
@@ -181,6 +184,8 @@
                         <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
                             <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
+                                <input type="hidden" name='harga_satuan_beli[]' value='<?php echo number_format($isi['harga_beli'],0,',','.');?>'>
+                                 <input type="hidden" name='harga_satuan_jual[]' value='<?php echo number_format($isi['harga_jual'],0,',','.');?>' >
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
                                 <input type="hidden" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
                                 <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
@@ -196,6 +201,7 @@
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Pelanggan *Opsi</div>
                             <div class="col-sm-2">
+                            
                                 <select class="form-control select2get" name="plg">
                                     <option value="">-Pilih-</option>
                                     <?php
