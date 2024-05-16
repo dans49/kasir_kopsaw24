@@ -68,7 +68,6 @@
                                 <tr>
                                     <th> No</th>
                                     <th> Nama Barang</th>
-                                  
                                     <th> Harga</th>
                                     <th> Jumlah</th>
                                     <th> Total</th>
@@ -89,7 +88,7 @@
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
                                             <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>">
-                                            <input type="text" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
+                                            <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
                                            
                                     </td>
@@ -184,10 +183,10 @@
                         <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
                             <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
-                                <input type="hidden" name='harga_satuan_beli[]' value='<?php echo $isi['harga_beli'];?>'>
-                                 <input type="hidden" name='harga_satuan_jual[]' value='<?= $isi['harga_jual'];?>' >
+                                <input type="text" name='harga_satuan_beli[]' value='<?php echo $isi['harga_beli'];?>'>
+                                 <input type="text" name='harga_satuan_jual[]' value='<?= $isi['harga_jual'];?>' >
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
-                                <input type="hidden" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
+                                <input type="text" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
                                 <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
                                 <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
@@ -498,6 +497,8 @@ $(document).on('change keyup','.cjml', function() {
                     jumlah : jml
                 },
                 success: function (res) {
+                    console.log(res)
+                    
                     if(jml < 1) {
                         alert ("Minimal Harus memilih 1 jumlah barang atau dihapus!")
                     } else {
