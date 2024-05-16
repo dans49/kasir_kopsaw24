@@ -497,7 +497,6 @@ $(document).on('change keyup','.cjml', function() {
                     jumlah : jml
                 },
                 success: function (res) {
-                    console.log(res)
                     
                     if(jml < 1) {
                         alert ("Minimal Harus memilih 1 jumlah barang atau dihapus!")
