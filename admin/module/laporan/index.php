@@ -133,7 +133,7 @@
 		</div>
          <br />
          <br />
-         <!-- view barang -->
+         <!-- view Nota -->
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive">
@@ -166,7 +166,7 @@
 									$bayar = 0;
 									$hasil = $lihat -> hari_jual($hari);
 								}else{
-									$hasil = $lihat -> jual();
+									$hasil = $lihat -> barang_jual();
 								}
 							?>
 							<?php 
@@ -175,32 +175,22 @@
 								$modal = 0;
 								foreach($hasil as $isi){ 
 									$bayar += $isi['total'];
-									$modal += $isi['harga_beli']* $isi['jumlah'];
+									$modal += $isi['harga_satuan_beli']* $isi['jumlah'];
 									$jumlah += $isi['jumlah'];
 							?>
 							<tr>
 								<td><?php echo $no;?></td>
-								<td><?php echo $isi['id_barang'];?></td>
-								<td><?php echo $isi['nama_barang'];?></td>
+								<td><?php echo $isi['id_member'];?></td>
+								<td><?php echo $isi['nm_member'];?></td>
 								<td><?php echo $isi['jumlah'];?> </td>
-								<td>Rp.<?php echo number_format($isi['harga_beli']* $isi['jumlah']);?>,-</td>
+								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['jumlah']);?>,-</td>
 								<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
-								<td><?php echo $isi['tanggal_input'];?></td>
+								<td><?php echo $isi['nm_member'];?></td>
 							</tr>
 							<?php $no++; }?>
 						</tbody>
-						<tfoot>
-							<tr>
-								<th colspan="3">Total Terjual</td>
-								<th><?php echo $jumlah;?></td>
-								<th>Rp.<?php echo number_format($modal);?>,-</th>
-								<th>Rp.<?php echo number_format($bayar);?>,-</th>
-								<th style="background:#0bb365;color:#fff;">Keuntungan</th>
-								<th style="background:#0bb365;color:#fff;">
-									Rp.<?php echo number_format($bayar-$modal);?>,-</th>
-							</tr>
-						</tfoot>
+						
 					</table>
 				</div>
 			</div>
