@@ -184,8 +184,8 @@
                         <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
                             <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
-                                <input type="hidden" name='harga_satuan_beli[]' value='<?php echo number_format($isi['harga_beli'],0,',','.');?>'>
-                                 <input type="hidden" name='harga_satuan_jual[]' value='<?php echo number_format($isi['harga_jual'],0,',','.');?>' >
+                                <input type="hidden" name='harga_satuan_beli[]' value='<?php echo $isi['harga_beli'];?>'>
+                                 <input type="hidden" name='harga_satuan_jual[]' value='<?= $isi['harga_jual'];?>' >
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
                                 <input type="hidden" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
                                 <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">

@@ -175,7 +175,7 @@
 								$modal = 0;
 								foreach($hasil as $isi){ 
 									$bayar += $isi['total'];
-									$modal += $isi['harga_beli']* $isi['jumlah'];
+									$modal += $isi['harga_satuan_beli']* $isi['jumlah'];
 									$jumlah += $isi['jumlah'];
 									$expl = explode(' ', $isi['waktudata']);
 							?>
@@ -184,7 +184,7 @@
 								<td><?php echo $isi['id_barang'];?></td>
 								<td><?php echo $isi['nama_barang'];?></td>
 								<td><?php echo $isi['jumlah'];?> </td>
-								<td>Rp.<?php echo number_format($isi['harga_beli']* $isi['jumlah']);?>,-</td>
+								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['jumlah']);?>,-</td>
 								<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
 								<td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>

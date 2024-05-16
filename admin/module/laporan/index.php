@@ -141,13 +141,13 @@
 						<thead>
 							<tr style="background:#DFF0D8;color:#333;">
 								<th> No</th>
-								<th> ID Barang</th>
-								<th> Nama Barang</th>
-								<th style="width:10%;"> Jumlah</th>
-								<th style="width:10%;"> Modal</th>
-								<th style="width:10%;"> Total</th>
+								<th> ID Transaksi</th>
+								<th> Nama Pelanggan</th>
+								<th style="width:10%;"> Status</th>
+								<th style="width:10%;"> Tanggal</th>
+								<th style="width:10%;"> Pembayaran</th>
 								<th> Kasir</th>
-								<th> Tanggal Input</th>
+								<th> Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
