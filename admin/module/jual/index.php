@@ -144,6 +144,8 @@
                                     for($x=0;$x<$jumlah_dipilih;$x++){
 
                                         $idjual = getpenjualan($config);
+                                        $idjual2 .= getpenjualan($config);
+                                        echo $idjual2 .' - ';
                                         $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$jumlah[$x],$total[$x]);
                                         $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
@@ -182,14 +184,14 @@
                             ?>
                         <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
                             <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
-                                <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
+                                <input type="text" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
                                 <input type="text" name='harga_satuan_beli[]' value='<?php echo $isi['harga_beli'];?>'>
                                  <input type="text" name='harga_satuan_jual[]' value='<?= $isi['harga_jual'];?>' >
-                                <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
+                                <input type="text" name="id_member[]" value="<?php echo $isi['id_member'];?>">
                                 <input type="text" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
-                                <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
-                                <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
-                                <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
+                                <input type="text" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
+                                <input type="text" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
+                                <input type="text" name="periode[]" value="<?php echo date('m-Y');?>">
                             <?php $no++; $no2++; }?>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
