@@ -68,7 +68,6 @@
                                 <tr>
                                     <th> No</th>
                                     <th> Nama Barang</th>
-                                  
                                     <th> Harga</th>
                                     <th> Jumlah</th>
                                     <th> Total</th>
@@ -89,7 +88,7 @@
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
                                             <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>">
-                                            <input type="text" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
+                                            <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
                                            
                                     </td>
@@ -146,6 +145,7 @@
 
                                         $idjual = getpenjualan($config);
                                         $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$jumlah[$x],$total[$x]);
+                                        var_dump($d);
                                         $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
                                         $row->execute($d);
@@ -498,6 +498,7 @@ $(document).on('change keyup','.cjml', function() {
                     jumlah : jml
                 },
                 success: function (res) {
+                    
                     if(jml < 1) {
                         alert ("Minimal Harus memilih 1 jumlah barang atau dihapus!")
                     } else {

@@ -33,7 +33,7 @@
 						<tr>
 							<th>No.</th>
 							<th>Barang</th>
-							<th>Merk</th>
+							<th>Harga Jual</th>
 							<th>Jumlah</th>
 							<th>Total</th>
 						</tr>
@@ -41,7 +41,7 @@
 						<tr align="center">
 							<td><?php echo $no;?></td>
 							<td><?php echo $isi['nama_barang'];?></td>
-							<td><?php echo $isi['merk'];?></td>
+							<td><?php echo $isi['harga_jual'];?></td>
 							<td><?php echo $isi['jumlah'];?></td>
 							<td><?php echo $isi['total'];?></td>
 						</tr>
