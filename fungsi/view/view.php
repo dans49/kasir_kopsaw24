@@ -57,15 +57,6 @@ class view
         $hasil = $row -> fetchAll();
         return $hasil;
     }
-	
-	public function supplier_edit($id)
-    {
-        $sql = "select*from supplier where id_supplier=?";
-        $row = $this-> db -> prepare($sql);
-        $row -> execute(array($id));
-        $hasil = $row -> fetch();
-        return $hasil;
-    }
 
     public function satuan()
     {

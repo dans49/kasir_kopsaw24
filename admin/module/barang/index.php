@@ -49,7 +49,7 @@
                             <th>ID Barang</th>
                             <th>Kategori</th>
                             <th>Nama Barang</th>
-                            <th>Merk</th>
+                          
                             <th>Stok</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
@@ -77,7 +77,7 @@
                             <td><?php echo $isi['id_barang'];?></td>
                             <td><?php echo $isi['nama_kategori'];?></td>
                             <td><?php echo $isi['nama_barang'];?></td>
-                            <td><?php echo $isi['merk'];?></td>
+                          
                             <td>
                                 <?php if($isi['stok'] == '0'){?>
                                 <button class="btn btn-danger"> Habis</button>
@@ -101,6 +101,7 @@
                                         onclick="javascript:return confirm('Hapus Data barang ?');">
                                         <button class="btn btn-danger btn-sm">Hapus</button></a>
                                 </form>
+                                <!-- <a href="index.php?page=restok" class="btn btn-primary btn-sm">Restok Barang</a> -->
                                 <?php }else{?>
                                 <a href="index.php?page=barang/details&barang=<?php echo $isi['id_barang'];?>"><button
                                         class="btn btn-primary btn-xs">Details</button></a>
@@ -122,7 +123,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">Total </td>
+                            <th colspan="4">Total </td>
                             <th><?php echo $totalStok;?></td>
                             <th>Rp.<?php echo number_format($totalBeli);?>,-</td>
                             <th>Rp.<?php echo number_format($totalJual);?>,-</td>
@@ -172,11 +173,7 @@
                                     <td><input type="text" placeholder="Nama Barang" required class="form-control"
                                             name="nama"></td>
                                 </tr>
-                                <tr>
-                                    <td>Merk Barang</td>
-                                    <td><input type="text" placeholder="Merk Barang" required class="form-control"
-                                            name="merk"></td>
-                                </tr>
+                                
                                 <tr>
                                     <td>Harga Beli</td>
                                     <td><input type="number" placeholder="Harga beli" required class="form-control"

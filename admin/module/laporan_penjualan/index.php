@@ -34,16 +34,16 @@
 				<h5 class="card-title mt-2">Cari Laporan Per Bulan</h5>
 			</div>
 			<div class="card-body p-0">
-				<form method="post" action="index.php?page=laporan&cari=ok">
+				<form method="post" action="index.php?page=laporan_penjualan&cari=ok">
 					<table class="table table-striped">
 						<tr>
-							<th>
+							<th bgcolor="#C2E7FF">
 								Pilih Bulan
 							</th>
-							<th>
+							<th bgcolor="#C2E7FF">
 								Pilih Tahun
 							</th>
-							<th>
+							<th bgcolor="#C2E7FF">
 								Aksi
 							</th>
 						</tr>
@@ -68,7 +68,7 @@
 								echo "<select name='thn' class='form-control'>";
 								echo '
 								<option selected="selected">Tahun</option>';
-								for ($a=2017;$a<=$now;$a++)
+								for ($a=2021;$a<=$now;$a++)
 								{
 									echo "<option value='$a'>$a</option>";
 								}
@@ -80,7 +80,7 @@
 								<button class="btn btn-primary">
 									<i class="fa fa-search"></i> Cari
 								</button>
-								<a href="index.php?page=laporan" class="btn btn-success">
+								<a href="index.php?page=laporan_penjualan" class="btn btn-success">
 									<i class="fa fa-refresh"></i> Refresh</a>
 
 								<?php if(!empty($_GET['cari'])){?>
@@ -88,20 +88,20 @@
 									class="btn btn-info"><i class="fa fa-download"></i>
 									Excel</a>
 								<?php }else{?>
-								<a href="excel.php" class="btn btn-info"><i class="fa fa-download"></i>
+								<a href="excel_penjualan.php" class="btn btn-info"><i class="fa fa-download"></i>
 									Excel</a>
 								<?php }?>
 							</td>
 						</tr>
 					</table>
 				</form>
-				<form method="post" action="index.php?page=laporan&hari=cek">
+				<form method="post" action="index.php?page=laporan_penjualan&hari=cek">
 					<table class="table table-striped">
 						<tr>
-							<th>
+							<th bgcolor="#C2E7FF">
 								Pilih Hari
 							</th>
-							<th>
+							<th bgcolor="#C2E7FF">
 								Aksi
 							</th>
 						</tr>
@@ -114,15 +114,15 @@
 								<button class="btn btn-primary">
 									<i class="fa fa-search"></i> Cari
 								</button>
-								<a href="index.php?page=laporan" class="btn btn-success">
-									<i class="fa fa-refresh"></i> Refresh</a>
+								<a href="index.php?page=laporan_penjualan" class="btn btn-success">
+									<i class="fa fa-refresh"></i> Refresh Hari</a>
 
 								<?php if(!empty($_GET['hari'])){?>
 								<a href="excel.php?hari=cek&tgl=<?= $_POST['hari'];?>" class="btn btn-info"><i
 										class="fa fa-download"></i>
 									Excel</a>
 								<?php }else{?>
-								<a href="excel.php" class="btn btn-info"><i class="fa fa-download"></i>
+								<a href="excel_penjualan.php" class="btn btn-info"><i class="fa fa-download"></i>
 									Excel</a>
 								<?php }?>
 							</td>
@@ -141,32 +141,32 @@
 						<thead>
 							<tr style="background:#DFF0D8;color:#333;">
 								<th> No</th>
-								<th> ID Transaksi</th>
-								<th> Nama Pelanggan</th>
-								<th style="width:10%;"> Status</th>
-								<th style="width:10%;"> Tanggal</th>
-								<th style="width:10%;"> Pembayaran</th>
+								<th> ID Barang</th>
+								<th> Nama Barang</th>
+								<th style="width:10%;"> Jumlah</th>
+								<th style="width:10%;"> Modal</th>
+								<th style="width:10%;"> Total</th>
 								<th> Kasir</th>
-								<th> Aksi</th>
+								<th> Tanggal Input</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php 
 								$no=1; 
 								if(!empty($_GET['cari'])){
-									$periode = $_POST['bln'].'-'.$_POST['thn'];
+									$periode = $_POST['thn'].'-'.$_POST['bln'];
 									$no=1; 
 									$jumlah = 0;
 									$bayar = 0;
-									$hasil = $lihat -> periode_jual($periode);
+									$hasil = $lihat -> periode_penjual($periode);
 								}elseif(!empty($_GET['hari'])){
 									$hari = $_POST['hari'];
 									$no=1; 
 									$jumlah = 0;
 									$bayar = 0;
-									$hasil = $lihat -> hari_jual($hari);
+									$hasil = $lihat -> hari_barang_jual($hari);
 								}else{
-									$hasil = $lihat -> jual();
+									$hasil = $lihat -> barang_jual();
 								}
 							?>
 							<?php 
@@ -175,18 +175,19 @@
 								$modal = 0;
 								foreach($hasil as $isi){ 
 									$bayar += $isi['total'];
-									$modal += $isi['harga_beli']* $isi['jumlah'];
+									$modal += $isi['harga_satuan_beli']* $isi['jumlah'];
 									$jumlah += $isi['jumlah'];
+									$expl = explode(' ', $isi['waktudata']);
 							?>
 							<tr>
 								<td><?php echo $no;?></td>
 								<td><?php echo $isi['id_barang'];?></td>
 								<td><?php echo $isi['nama_barang'];?></td>
 								<td><?php echo $isi['jumlah'];?> </td>
-								<td>Rp.<?php echo number_format($isi['harga_beli']* $isi['jumlah']);?>,-</td>
+								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['jumlah']);?>,-</td>
 								<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
-								<td><?php echo $isi['tanggal_input'];?></td>
+								<td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
 							</tr>
 							<?php $no++; }?>
 						</tbody>

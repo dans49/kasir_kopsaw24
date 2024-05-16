@@ -27,7 +27,6 @@ if (!empty($_SESSION['admin'])) {
         $kategori = htmlentities($_POST['kategori']);
         $satuan = htmlentities ($_POST['satuan']);
         $nama = htmlentities($_POST['nama']);
-        $merk = htmlentities($_POST['merk']);
         $beli = htmlentities($_POST['beli']);
         $jual = htmlentities($_POST['jual']);
         $satuan = htmlentities($_POST['satuan']);
@@ -38,14 +37,13 @@ if (!empty($_SESSION['admin'])) {
         $data[] = $kategori;
         $data[] = $satuan;
         $data[] = $nama;
-        $data[] = $merk;
         $data[] = $beli;
         $data[] = $jual;
         $data[] = $satuan;
         $data[] = $stok;
         $data[] = $tgl;
-        $sql = 'INSERT INTO barang (id_barang,id_kategori,id_satuan,nama_barang,merk,harga_beli,harga_jual,satuan_barang,stok,tgl_input) 
-			    VALUES (?,?,?,?,?,?,?,?,?,?) ';
+        $sql = 'INSERT INTO barang (id_barang,id_kategori,id_satuan,nama_barang,harga_beli,harga_jual,satuan_barang,stok,tgl_input) 
+			    VALUES (?,?,?,?,?,?,?,?,?) ';
         $row = $config -> prepare($sql);
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=barang&success=tambah-data"</script>';
@@ -159,5 +157,56 @@ if (!empty($_SESSION['admin'])) {
         $row = $config -> prepare($sql);
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=supplier&&success=tambah-data"</script>';
+    }
+
+    if (!empty($_GET['restok_barang'])) {
+        $id = $_GET['id'];
+
+        // get tabel barang id_barang
+        $sql = 'SELECT * FROM barang WHERE id_barang = ?';
+        $row = $config->prepare($sql);
+        $row->execute(array($id));
+        $hsl = $row->fetch();
+
+        if ($hsl['stok'] >= 0) {
+            $sqlb = 'SELECT jumlah FROM _temp_restok WHERE id_barang = ?';
+            $rowb = $config->prepare($sqlb);
+            $rowb->execute(array($id));
+            $hslb = $rowb->fetchColumn();
+            // echo $hslb;
+            // return 0;
+            $id_temp = restok_id($config);
+            $kasir =  $_GET['id_kasir'];
+            $jumlah = 1;
+            // $jumlah = $hsl['stok'];
+            $total = $hsl['harga_jual'];
+
+            $data1[] = $id_temp;
+            $data1[] = $id;
+            $data1[] = $kasir;
+            $data1[] = $jumlah;
+            $data1[] = $total;
+
+            if($hslb == 0) {
+                $sql1 = 'INSERT INTO _temp_restok (id_trestok,id_barang,id_member,jumlah,total) VALUES (?,?,?,?,?)';
+                $row1 = $config -> prepare($sql1);
+                $row1 -> execute($data1);
+            } 
+            elseif($hslb > 0) {
+                $data2[] = $jumlah+$hslb;
+                $data2[] = ($jumlah+$hslb) * $hsl['harga_jual'];
+                $data2[] = $id;
+                // var_dump($data2);
+                // return 0;
+                $sql2 = 'UPDATE _temp_restok SET jumlah=?,total=? WHERE id_barang=?';
+                $row2 = $config -> prepare($sql2);
+                $row2 -> execute($data2);
+            }
+
+            echo '<script>window.location="../../index.php?page=restok&success=tambah-data"</script>';
+        } else {
+            echo '<script>alert("Stok Barang Anda Telah Habis !");
+                    window.location="../../index.php?page=restok#keranjang"</script>';
+        }
     }
 }

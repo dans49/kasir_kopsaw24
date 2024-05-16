@@ -53,6 +53,7 @@
 									data-target="#myModalEdit<?php echo $isi['id_supplier'];?>">Edit</button>
 								<div id="myModalEdit<?php echo $isi['id_supplier'];?>" class="modal fade" role="dialog">
 									<div class="modal-dialog">
+									
 										<!-- Modal content-->
 										<div class="modal-content" style=" border-radius:0px;">
 											<div class="modal-header" style="background:#285c64;color:#fff;">

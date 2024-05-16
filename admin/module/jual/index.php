@@ -68,7 +68,7 @@
                                 <tr>
                                     <th> No</th>
                                     <th> Nama Barang</th>
-                                    <th> Merk Barang</th>
+                                  
                                     <th> Harga</th>
                                     <th> Jumlah</th>
                                     <th> Total</th>
@@ -78,23 +78,28 @@
                             </thead>
                             <tbody>
                                 <?php $total_bayar=0; $no=1; $hasil_penjualan = $lihat -> temp_penjualan();?>
-                                <?php foreach($hasil_penjualan  as $isi){?>
+                                <?php foreach($hasil_penjualan  as $isi){
+                                    ?>
                                 <tr>
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $isi['nama_barang'];?></td>
-                                    <td><?php echo $isi['merk'];?></td>
+                               
                                     <td>Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?></td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
-                                            <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml">
-                                            <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
+                                            <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>">
+                                            <input type="text" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
+                                           
                                     </td>
-                                    <td>Rp.<?php echo number_format($isi['total'],0,',','.');?>,-</td>
+                                    <td>Rp. <span class="totaltemp<?=$no?>" data-id3="<?= $isi['id_temp'];?>"><?php echo number_format($isi['total'],0,',','.');?></span>,-
+                                        
+                                        <input type="hidden" name="totaltemp" id="coltotal<?=$no ?>" data-id2="<?php echo $isi['id_temp'];?>" value="<?php echo $isi['total'];?>" class="form-control">
+                                    </td>
                                     <td><?php echo $isi['nm_member'];?></td>
                                     <td>
-                                            <button type="submit" class="btn btn-warning">Update</button>
+                                            <!-- <button type="submit" class="btn btn-warning">Update</button> -->
                                         </form>
                                         <!-- aksi ke table penjualan -->
                                         <a href="fungsi/hapus/hapus.php?jual=jual&id=<?php echo $isi['id_temp'];?>&brg=<?php echo $isi['id_barang'];?>
@@ -107,6 +112,7 @@
                                 $total_bayar += $isi['total'];
                                 }
                                 ?>
+                                <input type="hidden" name="no" value="<?php echo $no; ?>" class="gnomor">
                             </tbody>
                     </table>
                     <br/>
@@ -128,6 +134,8 @@
                                     $idnota = getnota($config);
                                     $id_barang = $_POST['id_barang'];
                                     $id_member = $_POST['id_member'];
+                                    $hsb = $_POST['harga_satuan_beli'];
+                                    $hsj = $_POST['harga_satuan_jual'];
                                     $getplg = $_POST['plg'];
                                     $jumlah = $_POST['jumlah'];
                                     $total = $_POST['total1'];
@@ -137,8 +145,8 @@
                                     for($x=0;$x<$jumlah_dipilih;$x++){
 
                                         $idjual = getpenjualan($config);
-                                        $d = array($idjual,$id_barang[$x],$id_member[$x],$idnota,$jumlah[$x],$total[$x]);
-                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?)";
+                                        $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$jumlah[$x],$total[$x]);
+                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
                                         $row->execute($d);
 
@@ -174,14 +182,16 @@
                             }
                             ?>
                         <form method="POST" id="subkasir" action="#" > <!-- index.php?page=jual&nota=yes#kasirnya -->
-                            <?php foreach($hasil_penjualan as $isi){;?>
+                            <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
+                                <input type="hidden" name='harga_satuan_beli[]' value='<?php echo $isi['harga_beli'];?>'>
+                                 <input type="hidden" name='harga_satuan_jual[]' value='<?= $isi['harga_jual'];?>' >
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
-                                <input type="hidden" name="jumlah[]" value="<?php echo $isi['jumlah'];?>">
-                                <input type="hidden" name="total1[]" value="<?php echo $isi['total'];?>">
+                                <input type="hidden" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
+                                <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
                                 <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
-                            <?php $no++; }?>
+                            <?php $no++; $no2++; }?>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Grand Total</div>
@@ -191,6 +201,7 @@
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Pelanggan *Opsi</div>
                             <div class="col-sm-2">
+                            
                                 <select class="form-control select2get" name="plg">
                                     <option value="">-Pilih-</option>
                                     <?php
@@ -321,7 +332,6 @@
                                 <tr>
                                     <td>No.</td>
                                     <td>Barang</td>
-                                    <td>Merk</td>
                                     <td>Jumlah</td>
                                     <td>Total</td>
                                 </tr>
@@ -367,6 +377,7 @@ $(document).ready(function(){
                 $("#tunggu").html('<p style="color:green"><blink>tunggu sebentar</blink></p>');
             },
             success: function(html){
+                // console.log(html);
                 $("#tunggu").html('');
                 $("#hasil_cari").show();
                 $("#hasil_cari").html(html);
@@ -405,6 +416,16 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#myKasir').on('hidden.bs.modal', function () {
+        $.ajax({
+            url: "fungsi/hapus/hapus.php?penjualan_jual=jual",
+            method: "GET",
+            success: function() {
+                location.reload();
+            }
+        })
+    })
 });
 
 
@@ -457,9 +478,70 @@ $(document).on('keyup','#dibayar', function() {
     }
 });
 
-$(document).on('change','.cjml', function() {
-    var jml = $(".cjml").val()
-    // console.log(jml)
+var nomor = $('.gnomor').val()
+
+$(document).on('change keyup','.cjml', function() {
+    var idt = $(this).data('id')
+    var idbarang = $(this).data('id-barang')
+    var memberid = $(this).data('member')
+    var jml = $(this).val()
+
+    for (var i = 1; i < nomor; i++) {
+        if(idt == $('#coltotal'+i).data('id2')) {
+            // console.log($('#coltotal'+i).val())
+            $.ajax({
+                url: "fungsi/edit/edit.php?jual=jual",
+                method: "POST",
+                data: {
+                    id : idt,
+                    id_barang : idbarang,
+                    jumlah : jml
+                },
+                success: function (res) {
+                    if(jml < 1) {
+                        alert ("Minimal Harus memilih 1 jumlah barang atau dihapus!")
+                    } else {
+                        if (res == 1) {
+                            // AJAX RELOAD HTML
+                            $.ajax({
+                                type: 'GET',
+                                url: "fungsi/apis/apitemppenjualan.php?memberid="+memberid+"&idt="+idt,
+                                dataType: 'json',
+                                success: function(response) {
+                                    // console.log(response.data[4])
+                                    for (var j = 1; j < nomor; j++) {
+                                        if(idt == $('.totaltemp'+j).data('id3')) {
+                                            $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
+                                            $(".totalg1"+j).val(response.data[4])
+                                            $(".cjml2"+j).val(response.data[3])
+                                        }
+                                    }
+                                }
+
+                            })
+
+
+                            $.ajax({
+                                type: 'GET',
+                                url: "fungsi/apis/apitempjualall.php?memberid="+memberid,
+                                dataType: 'json',
+                                success: function(response) {
+                                    // console.log(response.data[4])
+                                    $("#totals").val(response.total[0])
+                                }
+
+                            })
+                            
+
+                        } else {
+                            alert ("Keranjang Melebihi Stok Barang Anda !")
+                            location.reload()
+                        }
+                    }
+                }
+            })
+        }
+    }
 });
 
 //To select country name

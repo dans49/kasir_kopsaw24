@@ -45,10 +45,7 @@
 					<td>Nama Barang</td>
 					<td><input type="text" class="form-control" value="<?php echo $hasil['nama_barang'];?>" name="nama"></td>
 				</tr>
-				<tr>
-					<td>Merk Barang</td>
-					<td><input type="text" class="form-control" value="<?php echo $hasil['merk'];?>" name="merk"></td>
-				</tr>
+
 				<tr>
 					<td>Harga Beli</td>
 					<td><input type="number" class="form-control" value="<?php echo $hasil['harga_beli'];?>" name="beli"></td>
