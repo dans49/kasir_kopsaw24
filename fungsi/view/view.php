@@ -88,6 +88,7 @@ class view
         $row -> execute();
         $hasil = $row -> fetchAll();
         return $hasil;
+        // tes
     }
 
     public function pelanggan_w() //NAMBAH
