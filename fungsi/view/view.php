@@ -256,6 +256,24 @@ class view
         return $hasil;
     }
 
+    public function nota_penjualan() // NAMBAH
+    {
+        $data[] = date('m');
+        $data[] = date('Y');
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member,
+                member.nm_member from nota 
+                left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan
+                left join member on member.id_member=nota.id_member
+                where month(nota.waktudata) = ?
+                AND year(nota.waktudata) = ?
+                ORDER BY id_nota DESC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute($data);
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
+
     public function periode_jual($periode)
     {
         $sql ="SELECT nota.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,

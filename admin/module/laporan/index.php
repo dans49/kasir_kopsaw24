@@ -143,10 +143,10 @@
 								<th> No</th>
 								<th> ID Transaksi</th>
 								<th> Nama Pelanggan</th>
-								<th style="width:10%;"> Status</th>
 								<th style="width:10%;"> Tanggal</th>
 								<th style="width:10%;"> Pembayaran</th>
 								<th> Kasir</th>
+								<th style="width:10%;"> Status</th>
 								<th> Aksi</th>
 							</tr>
 						</thead>
@@ -166,7 +166,7 @@
 									$bayar = 0;
 									$hasil = $lihat -> hari_jual($hari);
 								}else{
-									$hasil = $lihat -> barang_jual();
+									$hasil = $lihat -> nota_penjualan();
 								}
 							?>
 							<?php 
@@ -174,19 +174,22 @@
 								$jumlah = 0;
 								$modal = 0;
 								foreach($hasil as $isi){ 
-									$bayar += $isi['total'];
-									$modal += $isi['harga_satuan_beli']* $isi['jumlah'];
-									$jumlah += $isi['jumlah'];
+									$expl = explode(' ', $isi['waktudata']);
+									
 							?>
 							<tr>
 								<td><?php echo $no;?></td>
-								<td><?php echo $isi['id_member'];?></td>
+								<td><?php echo $isi['id_nota'];?></td>
+								<td><?php echo $isi['nm_pelanggan'];?></td> 
+								<td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
+								<td>Rp.<?php echo number_format($isi['bayar']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
-								<td><?php echo $isi['jumlah'];?> </td>
-								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['jumlah']);?>,-</td>
-								<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
-								<td><?php echo $isi['nm_member'];?></td>
-								<td><?php echo $isi['nm_member'];?></td>
+								<td>
+									 <?php if($isi['status_nota']=="Lunas"){echo '<div class="btn btn-success btn-sm ">Lunas</div>';}
+									 if($isi['status_nota']=="Hutang"){ echo '<div class="btn btn-danger btn-sm">Hutang</div>';}
+									 ?>
+								</td>
+								<td><?php echo $isi['id_nota'];?></td>
 							</tr>
 							<?php $no++; }?>
 						</tbody>
@@ -197,3 +200,8 @@
 		</div>
      </div>
  </div>
+
+
+ <!-- Modal untuk detail nota -->
+
+ 
