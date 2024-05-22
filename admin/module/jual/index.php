@@ -176,6 +176,17 @@
                                     $row2 = $config->prepare($sql2);
                                     $row2->execute($d2);
 
+                                    // input tabel rincian
+                                    $jumlah=count($id_barang);
+                                    for($i=0;$i<$jumlah;$i++){
+                                        $id = $id_barang[$i];
+                                        $total_pembelian = $total[$i];
+                                        $d3 = array($idnota,$id,$total_pembelian);
+                                        $query_rincian = "INSERT into rincian (id_nota, id_barang, total_pembelian) values ('$idnota','$id','$total_pembelian')";
+                                        $row3 = $config->prepare($query_rincian);
+                                        $row3->execute($d3);
+                                    }
+
                                     echo '<script>alert("Belanjaan Berhasil Di Bayar !");</script>';
                                     
                                 }

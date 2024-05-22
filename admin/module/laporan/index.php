@@ -167,6 +167,7 @@
 									$hasil = $lihat -> hari_jual($hari);
 								}else{
 									$hasil = $lihat -> nota_penjualan();
+									
 								}
 							?>
 							<?php 
@@ -175,6 +176,8 @@
 								$modal = 0;
 								foreach($hasil as $isi){ 
 									$expl = explode(' ', $isi['waktudata']);
+									$notaid = $isi['id_nota'];
+									$tanpatitik = str_replace(".","",$notaid); 
 									
 							?>
 							<tr>
@@ -189,7 +192,83 @@
 									 if($isi['status_nota']=="Hutang"){ echo '<div class="btn btn-danger btn-sm">Hutang</div>';}
 									 ?>
 								</td>
-								<td><?php echo $isi['id_nota'];?></td>
+								<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detailRincian<?php echo $tanpatitik;?>" value="1" data-load-code="">  Detail </button>
+							 <!-- Modal untuk detail nota -->
+
+<div id="detailRincian<?php echo $tanpatitik;?>" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style=" border-radius:0px;">
+                <div class="modal-header" style="background:#285c64;color:#fff;">
+                    <h5 class="modal-title"> Detail Transaksi</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                    <div class="modal-body">
+                            <center>KPRI Sawangan</center>
+                            <center>Bappelitbangda Kab. Tasikmalaya</center>
+                            <center>Tanggal : <?php echo $frmwaktu->tgl_indo($expl[0]); ?></center>
+                        <table width="100%" class="mt-2">
+                            <tr>
+                                <td>TRX</td>
+                                <td>: <span id=""><?php echo $isi['id_nota'];?></span></td>
+                            </tr>
+                            <tr>
+                                <td>Kasir </td>
+                                <td>: <?php  echo htmlentities($_SESSION['admin']['nm_member']);?></td>
+                            </tr>
+                        </table>
+                        <table class="table bordered mt-2">
+                            <thead>
+                                <tr>
+                                    <td>No.</td>
+                                    <td>Barang</td>
+                                    <td>Jumlah</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody id="">
+
+							<?php $hasil = $lihat -> rincian_nota();
+							$nomor = 1;
+							foreach($hasil as $nota){
+							?>
+							<td><?php echo $nomor;?></td>
+							<td><?php echo $nota['nama_barang'];?></td>
+							<td><?php echo $jumlah;?></td>
+							<td><?php echo $nota['total'];?></td>
+
+							</tbody>
+							<?php $nomor++; }?>
+                        </table>
+                        <div class="pull-right">
+                            <?php $hasil = $lihat -> jumlah_rincian(); ?>
+                            Total : Rp. <span id="gettotal"></span>,-
+                            <br/>
+                            Bayar : Rp. <span id="getbayar"></span>,-
+                            <br/>
+                            Kembali : Rp. <span id="getkembali"></span>,-
+                        </div>
+                        <div class="clearfix"></div>
+                       
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <a href="" class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Print</a> -->
+                        <a href="#" id="printinv" target="_blank" class="btn btn-secondary btn-sm btnprint">
+                                <i class="fa fa-print"></i> Print Invoice
+                        </a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+            
+            </div>
+        </div>
+
+    </div>
+
+
+	
+							
+							</td>
 							</tr>
 							<?php $no++; }?>
 						</tbody>
@@ -202,6 +281,3 @@
  </div>
 
 
- <!-- Modal untuk detail nota -->
-
- 

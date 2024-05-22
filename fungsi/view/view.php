@@ -273,6 +273,23 @@ class view
         return $hasil;
     }
 
+    public function rincian_nota() // NAMBAH
+    {
+        $data[] = date('m');
+        $data[] = date('Y');
+        $sql ="SELECT rincian.* , barang.id_barang, barang.nama_barang, barang.stok, nota.id_nota,
+                nota.status_nota from rincian 
+                left join barang on barang.id_barang=rincian.id_barang
+                left join nota on nota.id_nota=rincian.id_nota
+                where id_nota = ?
+                
+                ORDER BY id_rincian DESC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute($data);
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
 
     public function periode_jual($periode)
     {
@@ -436,6 +453,16 @@ class view
         $hasil = $row -> fetch();
         return $hasil;
     }
+
+    public function jumlah_rincian()
+    {
+        $sql ="SELECT SUM(total) as bayar FROM rincian";
+        $row = $this -> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> fetch();
+        return $hasil;
+    }
+
 
     public function nota_print($nota)
     {
