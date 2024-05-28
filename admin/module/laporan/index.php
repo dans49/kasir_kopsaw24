@@ -192,9 +192,8 @@
 									 if($isi['status_nota']=="Hutang"){ echo '<div class="btn btn-danger btn-sm">Hutang</div>';}
 									 ?>
 								</td>
-								<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detailRincian<?php echo $tanpatitik;?>" value="1" data-load-code="">  Detail </button>
-							 <!-- Modal untuk detail nota -->
-
+								<td><button type="button" class="btn btn-primary" id="detail" data-toggle="modal" data-target="#detailRincian<?php echo $tanpatitik;?>" value="1" data-load-code="<?php echo $isi['id_nota'];?>">  Detail </button>
+ <!-- Modal untuk detail nota -->
 <div id="detailRincian<?php echo $tanpatitik;?>" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -229,23 +228,44 @@
                             </thead>
                             <tbody id="">
 
-							<?php $hasil = $lihat -> rincian_nota();
-							$nomor = 1;
-							foreach($hasil as $nota){
-							?>
-							<td><?php echo $nomor;?></td>
-							<td><?php echo $nota['nama_barang'];?></td>
-							<td><?php echo $jumlah;?></td>
-							<td><?php echo $nota['total'];?></td>
+							
+							<?php			 
+							$nomor=0;
+							$host 	= 'localhost'; // host server
+							$user 	= 'root';  // username server
+							$pass 	= ''; // password server, kalau pakai xampp kosongin saja
+							$dbname = 'db_niagakopsaw'; // nama database anda
+
+							$koneksi = mysqli_connect($host, $user, $pass, $dbname);
+							$id = $isi['id_nota'];
+							$sql = "SELECT * from rincian 
+							join nota on nota.id_nota=rincian.id_nota 
+							join barang on barang.id_barang=rincian.id_barang						
+							where rincian.id_nota = '$id' ";
+							$conn = mysqli_query($koneksi,$sql);
+							while($isi2=mysqli_fetch_array($conn)) { 
+								$nomor++;
+								$jumlahpcs = $isi2['total_pembelian'] / $isi2['harga_jual'];
+								$total2 += $isi2['total_pembelian'];
+								$bayar2 = $isi2['bayar'];
+								echo $bayar2;
+								
+
+								?>
+							<tr>
+								<td><?php echo $nomor;?></td>
+								<td><?php echo $isi2['nama_barang'];?></td>
+								<td><?php echo $jumlahpcs?></td>
+								<td><?php echo $isi2['total_pembelian'];?></td>
+							</tr> <?php } ?>
 
 							</tbody>
-							<?php $nomor++; }?>
                         </table>
                         <div class="pull-right">
-                            <?php $hasil = $lihat -> jumlah_rincian(); ?>
-                            Total : Rp. <span id="gettotal"></span>,-
+                            <?php $hasil = $lihat -> rincian_nota(); ?>
+                            Total : Rp. <?php echo $total2?> ,-
                             <br/>
-                            Bayar : Rp. <span id="getbayar"></span>,-
+                            Bayar : Rp. <?php echo $bayar2?>,-
                             <br/>
                             Kembali : Rp. <span id="getkembali"></span>,-
                         </div>
