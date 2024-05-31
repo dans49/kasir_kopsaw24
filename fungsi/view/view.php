@@ -244,11 +244,11 @@ class view
 
     public function jual()
     {
-        $sql ="SELECT nota.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
-                member.nm_member from nota 
-                left join barang on barang.id_barang=nota.id_barang 
-                left join member on member.id_member=nota.id_member 
-                where nota.periode = ?
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member,
+        member.nm_member from nota 
+        left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan
+        left join member on member.id_member=nota.id_member
+                where nota.waktudata = ?
                 ORDER BY id_nota DESC";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array(date('m-Y')));
@@ -291,18 +291,7 @@ class view
     }
 
 
-    public function periode_jual($periode)
-    {
-        $sql ="SELECT nota.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
-                member.nm_member from nota 
-                left join barang on barang.id_barang=nota.id_barang 
-                left join member on member.id_member=nota.id_member WHERE nota.periode = ? 
-                ORDER BY id_nota ASC";
-        $row = $this-> db -> prepare($sql);
-        $row -> execute(array($periode));
-        $hasil = $row -> fetchAll();
-        return $hasil;
-    }
+   
 
     public function barang_jual() // NAMBAH
     {
@@ -335,6 +324,20 @@ class view
         return $hasil;
     }
 
+    public function periode_jual($periode)
+    {
+        $cari = "%$periode%";
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan,member.id_member,
+        member.nm_member from nota 
+        left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan 
+        left join member on member.id_member=nota.id_member WHERE nota.waktudata LIKE ? 
+        ORDER BY id_nota ASC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($cari));
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
     public function hari_jual($hari)
     {
         $ex = explode('-', $hari);
@@ -346,12 +349,12 @@ class view
             $tgl1 = explode('0', $ex[2]);
             $tgl = $tgl1[1];
         }
-        $cek = $tgl.' '.$monthName.' '.$ex[0];
+        $cek = $hari;
         $param = "%{$cek}%";
-        $sql ="SELECT nota.* , barang.id_barang, barang.nama_barang,  barang.harga_beli, member.id_member,
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan,member.id_member,
                 member.nm_member from nota 
-                left join barang on barang.id_barang=nota.id_barang 
-                left join member on member.id_member=nota.id_member WHERE nota.tanggal_input LIKE ? 
+                left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan 
+                left join member on member.id_member=nota.id_member WHERE nota.waktudata LIKE ? 
                 ORDER BY id_nota ASC";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array($param));

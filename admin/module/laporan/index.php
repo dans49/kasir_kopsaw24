@@ -154,7 +154,7 @@
 							<?php 
 								$no=1; 
 								if(!empty($_GET['cari'])){
-									$periode = $_POST['bln'].'-'.$_POST['thn'];
+									$periode = $_POST['thn'].'-'.$_POST['bln'];
 									$no=1; 
 									$jumlah = 0;
 									$bayar = 0;
@@ -197,6 +197,7 @@
 <div id="detailRincian<?php echo $tanpatitik;?>" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
+
             <div class="modal-content" style=" border-radius:0px;">
                 <div class="modal-header" style="background:#285c64;color:#fff;">
                     <h5 class="modal-title"> Detail Transaksi</h5>
@@ -231,6 +232,7 @@
 							
 							<?php			 
 							$nomor=0;
+							$total2=0;
 							$host 	= 'localhost'; // host server
 							$user 	= 'root';  // username server
 							$pass 	= ''; // password server, kalau pakai xampp kosongin saja
@@ -246,11 +248,10 @@
 							while($isi2=mysqli_fetch_array($conn)) { 
 								$nomor++;
 								$jumlahpcs = $isi2['total_pembelian'] / $isi2['harga_jual'];
-								$total2 += $isi2['total_pembelian'];
+								$total2 +=  $isi2['total_pembelian'];
 								$bayar2 = $isi2['bayar'];
-								echo $bayar2;
+								$id_nota = $isi2['nota.id_nota'];
 								
-
 								?>
 							<tr>
 								<td><?php echo $nomor;?></td>
@@ -261,16 +262,35 @@
 
 							</tbody>
                         </table>
+						<!-- modal status lunas -->
+			<?php if($isi['status_nota']=="Lunas"){ ?>
                         <div class="pull-right">
-                            <?php $hasil = $lihat -> rincian_nota(); ?>
-                            Total : Rp. <?php echo $total2?> ,-
+                           
+                            Total : Rp. <?php echo $total2;?> ,-
                             <br/>
                             Bayar : Rp. <?php echo $bayar2?>,-
                             <br/>
-                            Kembali : Rp. <span id="getkembali"></span>,-
+                            Kembali : Rp. <?php if($bayar2==0){echo "0";} else{ echo $bayar2-$total2;}?>,-
                         </div>
-                        <div class="clearfix"></div>
-                       
+
+						<?php } else {?>  
+							<form method="POST" id="bayar_hutang" action="fungsi/edit/edit.php?nota=edit" > 
+                            
+                        <div class="row">                            
+                            <div class="col-sm-2.5 ">Total :</div>
+                            <div class="col-sm-4">Rp. <?php echo $total2;?> ,-</div>
+                        </div>
+                        
+                        <div class="row">                            
+                            <div class="col-sm-2.5 ">Bayar :</div>
+                            <div class="col-sm-4"><input type="number" id="bayar" class="form-control" name="bayar"min=<?php echo $total2 ?> value='<?php echo $total2 ?>' required></div>
+							<input type="text" name="status_nota" value= "Lunas" hidden >
+							<input type="text" name="id_nota" value= "<?php echo $isi['id_nota'];?>" hidden >
+							<div class="col-sm-3">
+                                <button type="submit" class="btn btn-success btn-sm-2"><i class="fa fa-shopping-cart "></i> Bayar </button>                              
+                            </div>                           
+                        </div>
+                       </form>    <?php }?>                  
                     </div>
                     <div class="modal-footer">
                         <!-- <a href="" class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Print</a> -->
@@ -280,14 +300,17 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
             
-            </div>
+            </div> 
+			 <!-- Akhir Modal content-->
+			<!-- akhir modal status lunas -->
+			
+				
+
+
         </div>
 
-    </div>
-
-
-	
-							
+    </div> 
+	<!-- Akhir Modal untuk detail nota -->
 							</td>
 							</tr>
 							<?php $no++; }?>

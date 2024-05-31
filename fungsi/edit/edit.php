@@ -89,6 +89,23 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=barang/edit&barang='.$id.'&success=edit-data"</script>';
     }
+    if (!empty($_GET['nota'])) {
+        $id_nota = htmlentities($_POST['id_nota']);
+        $bayar = htmlentities($_POST['bayar']);
+        $status_nota = htmlentities($_POST['status_nota']);
+        
+       
+        $data[] = $bayar;
+        $data[] = $status_nota;
+        $data[] = $id_nota;
+        $sql = 'UPDATE nota SET  bayar=?, 
+				status_nota=?  WHERE id_nota=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+       
+        echo '<script>window.location="../../index.php?page=laporan"</script>';
+    }
+
 	
 	if (!empty($_GET['supplier'])) {
         $id_supplier2 = htmlentities($_POST['id_supplier2']);
@@ -109,6 +126,27 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute($data);
         console.log(html);
         echo '<script>window.location="../../index.php?page=supplier&&success-supplier=edit-data"</script>';
+    }
+
+    if (!empty($_GET['pelanggan'])) {
+        $id_pelanggan = htmlentities($_POST['id']);
+        $nama_pelanggan = htmlentities($_POST['nm_pelanggan']);
+        $identitas = htmlentities($_POST['identitas']);
+        $telepon = htmlentities($_POST['telepon']);
+        $status = htmlentities($_POST['status']);
+
+       
+        $data[] = $nama_pelanggan;
+        $data[] = $identitas;
+        $data[] = $telepon;
+        $data[] = $status;
+        $data[] = $id_pelanggan;
+        $sql = 'UPDATE ksw_pelanggan SET nm_pelanggan=?, identitas=?, 
+				telepon=?, statusdata=? WHERE id_pelanggan=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        console.log(html);
+        echo '<script>window.location="../../index.php?page=pelanggan&&success-pelanggan=edit-data"</script>';
     }
 
     if (!empty($_GET['gambar'])) {
