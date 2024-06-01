@@ -12,8 +12,10 @@
     header("Cache-Control: private",false); 
 
     require 'config.php';
+    require 'fungsi/Waktu.php';
     include $view;
     $lihat = new view($config);
+    $frmwaktu = new Waktu;
 
     $bulan_tes =array(
         '01'=>"Januari",
@@ -54,32 +56,31 @@
             <thead>
                 <tr bgcolor="yellow">
                     <th> No</th>
-                    <th> ID Barang</th>
-                    <th> Nama Barang</th>
-                    <th style="width:10%;"> Jumlah</th>
-                    <th style="width:10%;"> Modal</th>
-                    <th style="width:10%;"> Total</th>
-                    <th> Kasir</th>
-                    <th> Tanggal Input</th>
+                    <th> ID Transaksi</th>
+                    <th> Nama Pelanggan</th>
+                    <th style="width:10%;"> Tanggal</th>
+                    <th style="width:10%;"> Pembayaran</th>
+                    <th style="width:10%;"> Kasir</th>
+                    <th> Status</th>
                 </tr>
             </thead>
             <tbody>
                 <?php 
                     $no=1; 
                     if(!empty(htmlentities($_GET['cari']))){
-                        $periode = htmlentities($_GET['bln']).'-'.htmlentities($_GET['thn']);
+                        $periode = htmlentities($_GET['thn']).'-'.htmlentities($_GET['bln']);
                         $no=1; 
                         $jumlah = 0;
                         $bayar = 0;
                         $hasil = $lihat -> periode_jual($periode);
                     }elseif(!empty(htmlentities($_GET['hari']))){
-                        $hari = htmlentities($_GET['tgl']);
+                        $hari = htmlentities($_GET['hari']);
                         $no=1; 
                         $jumlah = 0;
                         $bayar = 0;
                         $hasil = $lihat -> hari_jual($hari);
                     }else{
-                        $hasil = $lihat -> jual();
+                        $hasil = $lihat -> nota_penjualan();
                     }
                 ?>
                 <?php 
@@ -87,32 +88,19 @@
                     $jumlah = 0;
                     $modal = 0;
                     foreach($hasil as $isi){ 
-                        $bayar += $isi['total'];
-                        $modal += $isi['harga_beli'] * $isi['jumlah'];
-                        $jumlah += $isi['jumlah'];
+                        $expl = explode(' ', $isi['waktudata']);
+                        $notaid = $isi['id_nota'];
                 ?>
                 <tr>
                     <td><?php echo $no;?></td>
-                    <td><?php echo $isi['id_barang'];?></td>
-                    <td><?php echo $isi['nama_barang'];?></td>
-                    <td><?php echo $isi['jumlah'];?> </td>
-                    <td>Rp.<?php echo number_format($isi['harga_beli']* $isi['jumlah']);?>,-</td>
-                    <td>Rp.<?php echo number_format($isi['total']);?>,-</td>
+                    <td><?php echo $isi['id_nota'];?></td>
+                    <td><?php echo $isi['nm_pelanggan'];?></td> 
+                    <td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
+                    <td>Rp.<?php echo number_format($isi['bayar']);?>,-</td>
                     <td><?php echo $isi['nm_member'];?></td>
-                    <td><?php echo $isi['tanggal_input'];?></td>
+                    <td><?php echo $isi['status_nota'];?></td>
                 </tr>
                 <?php $no++; }?>
-                <tr>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><b>Total Terjual</b></td>
-                    <td><b><?php echo $jumlah;?></b></td>
-                    <td><b>Rp.<?php echo number_format($modal);?>,-</b></td>
-                    <td><b>Rp.<?php echo number_format($bayar);?>,-</b></td>
-                    <td><b>Keuntungan</b></td>
-                    <td><b>
-                        Rp.<?php echo number_format($bayar-$modal);?>,-</b></td>
-                </tr>
             </tbody>
         </table>
     </div>
