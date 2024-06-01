@@ -65,57 +65,57 @@
                         <a href="#" data-toggle="modal" data-target="#myModalEdit" class="btn btn-warning editpel" data-id="<?php echo $isi['id_pelanggan'];?>">Edit</a>
                         <!-- awal modal edit pelanggan -->
                         <div id="myModalEdit" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content" style=" border-radius:0px;">
-            <div class="modal-header" style="background:#285c64;color:#fff;">
-                <h5 class="modal-title"><i class="fa fa-plus"></i> Tambah Pelanggan</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <form action="fungsi/edit/edit.php?pelanggan=yes" method="POST" >
-                <div class="modal-body">
-                    <table class="table table-striped bordered">
-                  
-                            
-                            <input type="text" value="<?=$isi['id_pelanggan']?>" class="form-control" name="id" hidden readonly>
-                       
-                       
-                        <tr>
-                            <td>Nama Pelanggan</td>
-                            <td><input type="text" placeholder="Nama Pelanggan" value="<?= $isi['nm_pelanggan']?>" required class="form-control"
-                                    name="nm_pelanggan"></td>
-                        </tr>
-                        <tr>
-                            <td>Identitas</td>
-                            <td><input type="text" value="<?=$isi['identitas']?>" placeholder="Identitas" required class="form-control" name="identitas"></td>
-                        </tr>
-                        <tr>
-                            <td>Nomor HP</td>
-                            <td><input type="number" value="<?=$isi['telepon']?>" placeholder="No HP" required class="form-control"
-                                    name="telepon"></td>
-                        </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td><select name="status" class="form-control" placeholder="" required>
-                            <option value="" disabled selected hidden><?=$isi['statusdata']?></option>
-							<option value="AKTIF">AKTIF</option> 
-    						<option value="TIDAK">TIDAK AKTIF</option>
-							
-	    					</select></td>
-                        </tr>
-                       
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Update
-                        Data</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-        </div>
-    </div>
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content" style=" border-radius:0px;">
+                                    <div class="modal-header" style="background:#285c64;color:#fff;">
+                                        <h5 class="modal-title"><i class="fa fa-plus"></i> Tambah Pelanggan</h5>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <form action="fungsi/edit/edit.php?pelanggan=yes" method="POST" >
+                                        <div class="modal-body">
+                                            <table class="table table-striped bordered">
+                                          
+                                                    
+                                                    <input type="text" value="<?=$isi['id_pelanggan']?>" class="form-control" name="id" hidden readonly>
+                                               
+                                               
+                                                <tr>
+                                                    <td>Nama Pelanggan</td>
+                                                    <td><input type="text" placeholder="Nama Pelanggan" value="<?= $isi['nm_pelanggan']?>" required class="form-control"
+                                                            name="nm_pelanggan"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Identitas</td>
+                                                    <td><input type="text" value="<?=$isi['identitas']?>" placeholder="Identitas" required class="form-control" name="identitas"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nomor HP</td>
+                                                    <td><input type="number" value="<?=$isi['telepon']?>" placeholder="No HP" required class="form-control"
+                                                            name="telepon"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Status</td>
+                                                    <td><select name="status" class="form-control" placeholder="" required>
+                                                    <option value="" hidden></option>
+                        							<option value="AKTIF" <?=($isi['statusdata'] == 'AKTIF' ? 'selected':'')?>>AKTIF</option> 
+                            						<option value="TIDAK" <?=($isi['statusdata'] == 'TIDAK' ? 'selected':'') ?> >TIDAK AKTIF</option>
+                        							
+                        	    					</select></td>
+                                                </tr>
+                                               
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Update
+                                                Data</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
 
-</div>
+                        </div>
                     </td>
                 </tr>
                 
