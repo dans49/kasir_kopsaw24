@@ -83,7 +83,7 @@
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $isi['nama_barang'];?></td>
                                
-                                    <td>Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?></td>
+                                    <td><span class="harjul" data-id="<?php echo $isi['id_temp'];?>">Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?></span></td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
@@ -213,7 +213,7 @@
                             <div class="col-sm-2 text-right">Pelanggan *Opsi</div>
                             <div class="col-sm-2">
                             
-                                <select class="form-control select2get" name="plg">
+                                <select class="form-control select2get pilpelanggan" name="plg">
                                     <option value="">-Pilih-</option>
                                     <?php
                                     foreach ($lihat->pelanggan() as $gdata) {
@@ -554,6 +554,23 @@ $(document).on('change keyup','.cjml', function() {
             })
         }
     }
+});
+
+$(document).on('change','.pilpelanggan', function() {
+    var pil = $(".pilpelanggan").val()
+    $.ajax({
+        url: 'fungsi/apis/apicekpelanggan.php?idpil='+pil,
+        method: 'GET',
+        dataType: "JSON",
+        success: function(response) {
+            // console.log(response.status)
+            if(response.status == 'TIDAK') {
+                $(".paylater").attr('disabled',true)
+            } else {
+                $(".paylater").attr('disabled',false)
+            }
+        }
+    })
 });
 
 //To select country name
