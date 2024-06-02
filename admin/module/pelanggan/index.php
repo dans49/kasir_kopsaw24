@@ -1,4 +1,4 @@
-<h4>pelanggan dong</h4>
+<h4>Pelanggan</h4>
 <br />
 <?php if(isset($_GET['success-pelanggan'])){?>
 <div class="alert alert-success">
@@ -37,7 +37,7 @@
                 <tr style="background:#DFF0D8;color:#333;">
                     <th>No.</th>
                     <th>Nama Pelanggan</th>
-                    <th>Identitas</th>
+                    <th>NAK</th>
                     <th>No. HP</th> 
                     <th>Status</th> 
                     <th>Aksi</th>
@@ -58,36 +58,37 @@
     
                     <td>
 
+                       
+                    <button type="button" class="btn btn-warning" data-toggle="modal"
+									data-target="#myModalEdit<?php echo $isi['id_pelanggan'];?>">Edit</button>
+                      
                         <a href="fungsi/hapus/hapus.php?pelanggan=hapus&id=<?php echo $isi['id_pelanggan'];?>"
                             onclick="javascript:return confirm('Hapus Data Pelanggan ?');"><button
                                 class="btn btn-danger">Hapus</button></a>
 
-                        <a href="#" data-toggle="modal" data-target="#myModalEdit" class="btn btn-warning editpel" data-id="<?php echo $isi['id_pelanggan'];?>">Edit</a>
                         <!-- awal modal edit pelanggan -->
-                        <div id="myModalEdit" class="modal fade" role="dialog">
+                        <div id="myModalEdit<?php echo $isi['id_pelanggan'];?>" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <!-- Modal content-->
                                 <div class="modal-content" style=" border-radius:0px;">
                                     <div class="modal-header" style="background:#285c64;color:#fff;">
-                                        <h5 class="modal-title"><i class="fa fa-plus"></i> Tambah Pelanggan</h5>
+                                        <h5 class="modal-title"><i class="fa fa-edit"></i> Edit Pelanggan</h5>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
-                                    <form action="fungsi/edit/edit.php?pelanggan=yes" method="POST" >
+                                    <form action="fungsi/edit/edit.php?pelanggan=edit" method="POST" >
                                         <div class="modal-body">
                                             <table class="table table-striped bordered">
                                           
                                                     
                                                     <input type="text" value="<?=$isi['id_pelanggan']?>" class="form-control" name="id" hidden readonly>
-                                               
-                                               
                                                 <tr>
                                                     <td>Nama Pelanggan</td>
                                                     <td><input type="text" placeholder="Nama Pelanggan" value="<?= $isi['nm_pelanggan']?>" required class="form-control"
                                                             name="nm_pelanggan"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Identitas</td>
-                                                    <td><input type="text" value="<?=$isi['identitas']?>" placeholder="Identitas" required class="form-control" name="identitas"></td>
+                                                    <td>NAK</td>
+                                                    <td><input type="text" value="<?=$isi['identitas']?>" placeholder="Nomor Anggota" required class="form-control" name="identitas"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Nomor HP</td>
@@ -153,8 +154,8 @@
                                     name="nm_pelanggan"></td>
                         </tr>
                         <tr>
-                            <td>Identitas</td>
-                            <td><input type="text" placeholder="Identitas" required class="form-control" name="identitas"></td>
+                            <td>NAK</td>
+                            <td><input type="text" placeholder="Nomor Anggota" required class="form-control" name="identitas"></td>
                         </tr>
                         <tr>
                             <td>Nomor HP</td>
