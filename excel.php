@@ -37,7 +37,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Laporan Nota</title>
 </head>
 <body>
 	<!-- view barang -->	
@@ -72,13 +72,13 @@
                         $no=1; 
                         $jumlah = 0;
                         $bayar = 0;
-                        $hasil = $lihat -> periode_penjual($periode);
+                        $hasil = $lihat -> periode_jual($periode);
                     }elseif(!empty(htmlentities($_GET['hari']))){
                         $hari = htmlentities($_GET['hari']);
                         $no=1; 
                         $jumlah = 0;
                         $bayar = 0;
-                        $hasil = $lihat -> hari_barang_jual($hari);
+                        $hasil = $lihat -> hari_jual($hari);
                     }else{
                         $hasil = $lihat -> nota_penjualan();
                     }

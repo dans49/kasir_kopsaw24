@@ -343,7 +343,7 @@ class view
 
     public function hari_jual($hari)
     {
-        $ex = explode('-', $hari);
+        $ex = explode(' ', $hari);
         $monthNum  = $ex[1];
         $monthName = date('F', mktime(0, 0, 0, $monthNum, 10));
         if ($ex[2] > 9) {
@@ -352,8 +352,7 @@ class view
             $tgl1 = explode('0', $ex[2]);
             $tgl = $tgl1[1];
         }
-        $cek = $hari;
-        $param = "%{$cek}%";
+        $param = "%$hari%";
         $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member,
         member.nm_member from nota 
         left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan
@@ -364,6 +363,7 @@ class view
         $hasil = $row -> fetchAll();
         return $hasil;
     }
+    
 
     public function hari_barang_jual($hari) // NAMBAH
     {
