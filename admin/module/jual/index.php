@@ -462,6 +462,8 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+var nomor = $('.gnomor').val()
+
 $(document).on('change','.paylater', function(e) {
     let cek = e.target.checked;
 
@@ -492,8 +494,6 @@ $(document).on('keyup','#dibayar', function() {
     }
 });
 
-var nomor = $('.gnomor').val()
-
 $(document).on('change keyup','.cjml', function() {
     var idt = $(this).data('id')
     var idbarang = $(this).data('id-barang')
@@ -501,6 +501,7 @@ $(document).on('change keyup','.cjml', function() {
     var jml = $(this).val()
 
     for (var i = 1; i < nomor; i++) {
+        var harjul = $('#harjul2'+i).val()
         if(idt == $('#coltotal'+i).data('id2')) {
             // console.log($('#coltotal'+i).val())
             $.ajax({
@@ -509,7 +510,8 @@ $(document).on('change keyup','.cjml', function() {
                 data: {
                     id : idt,
                     id_barang : idbarang,
-                    jumlah : jml
+                    jumlah : jml,
+                    harjul : harjul,
                 },
                 success: function (res) {
                     
@@ -574,7 +576,7 @@ $(document).on('change keyup','.harjul', function() {
         if(idt2 == $('#coltotal'+i).data('id2')) {
             // console.log($('#coltotal'+i).val())
             $.ajax({
-                url: "fungsi/edit/edit.php?jual_harga=jual_harga",
+                url: "fungsi/edit/edit.php?jual=jual",
                 method: "POST",
                 data: {
                     id : idt2,

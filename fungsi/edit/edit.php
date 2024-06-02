@@ -244,34 +244,6 @@ if (!empty($_SESSION['admin'])) {
         $id = htmlentities($_POST['id']);
         $id_barang = htmlentities($_POST['id_barang']);
         $jumlah = htmlentities($_POST['jumlah']);
-
-        $sql_tampil = "select *from barang where barang.id_barang=?";
-        $row_tampil = $config -> prepare($sql_tampil);
-        $row_tampil -> execute(array($id_barang));
-        $hasil = $row_tampil -> fetch();
-
-        if ($hasil['stok'] > $jumlah) {
-            $jual = $hasil['harga_jual'];
-            $total = $jual * $jumlah;
-            $data1[] = $jumlah;
-            $data1[] = $total;
-            $data1[] = $id;
-            $sql1 = 'UPDATE _temp_penjualan SET jumlah=?,total=? WHERE id_temp=?';
-            $row1 = $config -> prepare($sql1);
-            $row1 -> execute($data1);
-            // echo '<script>window.location="../../index.php?page=jual#keranjang"</script>';
-            echo "1";
-        } else {
-     //        echo '<script>alert("Keranjang Melebihi Stok Barang Anda !");
-					// window.location="../../index.php?page=jual#keranjang"</script>';
-            echo "0";
-        }
-    }
-
-    if (!empty($_GET['jual_harga'])) {
-        $id = htmlentities($_POST['id']);
-        $id_barang = htmlentities($_POST['id_barang']);
-        $jumlah = htmlentities($_POST['jumlah']);
         $harjul = htmlentities($_POST['harjul']);
 
         $sql_tampil = "select *from barang where barang.id_barang=?";
@@ -283,7 +255,7 @@ if (!empty($_SESSION['admin'])) {
             $jual = $harjul;
             $total = $jual * $jumlah;
             $data1[] = $jumlah;
-            $data1[] = $harjul;
+            $data1[] = $jual;
             $data1[] = $total;
             $data1[] = $id;
             $sql1 = 'UPDATE _temp_penjualan SET jumlah=?,harga_jual=?,total=? WHERE id_temp=?';
@@ -293,7 +265,7 @@ if (!empty($_SESSION['admin'])) {
             echo "1";
         } else {
      //        echo '<script>alert("Keranjang Melebihi Stok Barang Anda !");
-                    // window.location="../../index.php?page=jual#keranjang"</script>';
+					// window.location="../../index.php?page=jual#keranjang"</script>';
             echo "0";
         }
     }
