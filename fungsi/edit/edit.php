@@ -244,6 +244,7 @@ if (!empty($_SESSION['admin'])) {
         $id = htmlentities($_POST['id']);
         $id_barang = htmlentities($_POST['id_barang']);
         $jumlah = htmlentities($_POST['jumlah']);
+        $harjul = htmlentities($_POST['harjul']);
 
         $sql_tampil = "select *from barang where barang.id_barang=?";
         $row_tampil = $config -> prepare($sql_tampil);
@@ -251,12 +252,13 @@ if (!empty($_SESSION['admin'])) {
         $hasil = $row_tampil -> fetch();
 
         if ($hasil['stok'] > $jumlah) {
-            $jual = $hasil['harga_jual'];
+            $jual = $harjul;
             $total = $jual * $jumlah;
             $data1[] = $jumlah;
+            $data1[] = $jual;
             $data1[] = $total;
             $data1[] = $id;
-            $sql1 = 'UPDATE _temp_penjualan SET jumlah=?,total=? WHERE id_temp=?';
+            $sql1 = 'UPDATE _temp_penjualan SET jumlah=?,harga_jual=?,total=? WHERE id_temp=?';
             $row1 = $config -> prepare($sql1);
             $row1 -> execute($data1);
             // echo '<script>window.location="../../index.php?page=jual#keranjang"</script>';

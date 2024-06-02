@@ -83,7 +83,10 @@
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $isi['nama_barang'];?></td>
                                
-                                    <td><span class="harjul" data-id="<?php echo $isi['id_temp'];?>">Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?></span></td>
+                                    <td>
+                                        <input type="text" name="harjul" class="form-control harjul" value="<?=$isi['harga_jual'] ?>" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>" data-jumlah="<?php echo $isi['jumlah'];?>">
+                                        <input type="text" name="harjul2" class="form-control" id="harjul2<?=$no ?>" data-idhar="<?php echo $isi['id_temp'];?>" value="<?=$isi['harga_jual'] ?>">
+                                    </td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
@@ -459,6 +462,8 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+var nomor = $('.gnomor').val()
+
 $(document).on('change','.paylater', function(e) {
     let cek = e.target.checked;
 
@@ -489,8 +494,6 @@ $(document).on('keyup','#dibayar', function() {
     }
 });
 
-var nomor = $('.gnomor').val()
-
 $(document).on('change keyup','.cjml', function() {
     var idt = $(this).data('id')
     var idbarang = $(this).data('id-barang')
@@ -498,6 +501,7 @@ $(document).on('change keyup','.cjml', function() {
     var jml = $(this).val()
 
     for (var i = 1; i < nomor; i++) {
+        var harjul = $('#harjul2'+i).val()
         if(idt == $('#coltotal'+i).data('id2')) {
             // console.log($('#coltotal'+i).val())
             $.ajax({
@@ -506,7 +510,8 @@ $(document).on('change keyup','.cjml', function() {
                 data: {
                     id : idt,
                     id_barang : idbarang,
-                    jumlah : jml
+                    jumlah : jml,
+                    harjul : harjul,
                 },
                 success: function (res) {
                     
@@ -523,8 +528,8 @@ $(document).on('change keyup','.cjml', function() {
                                     // console.log(response.data[4])
                                     for (var j = 1; j < nomor; j++) {
                                         if(idt == $('.totaltemp'+j).data('id3')) {
-                                            $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
-                                            $(".totalg1"+j).val(response.data[4])
+                                            $(".totaltemp"+j).html(numberWithCommas(response.data[5]))
+                                            $(".totalg1"+j).val(response.data[5])
                                             $(".cjml2"+j).val(response.data[3])
                                         }
                                     }
@@ -549,6 +554,69 @@ $(document).on('change keyup','.cjml', function() {
                             alert ("Keranjang Melebihi Stok Barang Anda !")
                             location.reload()
                         }
+                    }
+                }
+            })
+        }
+    }
+});
+
+$(document).on('change keyup','.harjul', function() {
+    var idt2 = $(this).data('id')
+    var idbarang2 = $(this).data('id-barang')
+    var memberid2 = $(this).data('member')
+    var jml2 = $(this).data('jumlah')
+    var harjul = $(this).val()
+
+    for (var i = 1; i < nomor; i++) {
+        if(idt2 == $('#harjul2'+i).data('idhar')) {
+            $('#harjul2'+i).val(harjul)
+        }
+
+        if(idt2 == $('#coltotal'+i).data('id2')) {
+            // console.log($('#coltotal'+i).val())
+            $.ajax({
+                url: "fungsi/edit/edit.php?jual=jual",
+                method: "POST",
+                data: {
+                    id : idt2,
+                    id_barang : idbarang2,
+                    jumlah : jml2,
+                    harjul : harjul
+                },
+                success: function (res) {
+                    
+                    
+                    if (res == 1) {
+                        // AJAX RELOAD HTML
+                        $.ajax({
+                            type: 'GET',
+                            url: "fungsi/apis/apitemppenjualan.php?memberid="+memberid2+"&idt="+idt2,
+                            dataType: 'json',
+                            success: function(response) {
+                                // console.log(response.data[4])
+                                for (var j = 1; j < nomor; j++) {
+                                    if(idt2 == $('.totaltemp'+j).data('id3')) {
+                                        $(".totaltemp"+j).html(numberWithCommas(response.data[5]))
+                                        $(".totalg1"+j).val(response.data[5])
+                                        $(".cjml2"+j).val(response.data[3])
+                                    }
+                                }
+                            }
+
+                        })
+
+                        $.ajax({
+                            type: 'GET',
+                            url: "fungsi/apis/apitempjualall.php?memberid="+memberid2,
+                            dataType: 'json',
+                            success: function(response) {
+                                // console.log(response.data[4])
+                                $("#totals").val(response.total[0])
+                            }
+
+                        })
+                            
                     }
                 }
             })
