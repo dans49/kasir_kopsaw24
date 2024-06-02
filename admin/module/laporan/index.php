@@ -68,7 +68,7 @@
 								echo "<select name='thn' class='form-control'>";
 								echo '
 								<option selected="selected">Tahun</option>';
-								for ($a=2017;$a<=$now;$a++)
+								for ($a=2021;$a<=$now;$a++)
 								{
 									echo "<option value='$a'>$a</option>";
 								}

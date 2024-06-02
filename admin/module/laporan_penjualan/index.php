@@ -84,7 +84,7 @@
 									<i class="fa fa-refresh"></i> Refresh</a>
 
 								<?php if(!empty($_GET['cari'])){?>
-								<a href="excel.php?cari=yes&bln=<?=$_POST['bln'];?>&thn=<?=$_POST['thn'];?>"
+								<a href="excel_penjualan.php?cari=yes&bln=<?=$_POST['bln'];?>&thn=<?=$_POST['thn'];?>"
 									class="btn btn-info"><i class="fa fa-download"></i>
 									Excel</a>
 								<?php }else{?>
@@ -118,7 +118,7 @@
 									<i class="fa fa-refresh"></i> Refresh Hari</a>
 
 								<?php if(!empty($_GET['hari'])){?>
-								<a href="excel.php?hari=cek&tgl=<?= $_POST['hari'];?>" class="btn btn-info"><i
+								<a href="excel_penjualan.php?hari=cek&tgl=<?= $_POST['hari'];?>" class="btn btn-info"><i
 										class="fa fa-download"></i>
 									Excel</a>
 								<?php }else{?>
@@ -151,7 +151,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php 
+						 	<?php 
 								$no=1; 
 								if(!empty($_GET['cari'])){
 									$periode = $_POST['thn'].'-'.$_POST['bln'];

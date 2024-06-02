@@ -5,15 +5,17 @@
 		echo '<script>window.location="login.php";</script>';
         exit;
 	}
-    header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-    header("Content-Disposition: attachment; filename=data-laporan-".date('Y-m-d').".xls");  //File name extension was wrong
+    header("Content-Type:   application/vnd.ms-excel charset=utf-8;" );
+    header("Content-Disposition: attachment; filename=laporan-nota".date('Y-m-d').".xls");  //File name extension was wrong
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Cache-Control: private",false); 
 
     require 'config.php';
+    require 'fungsi/Waktu.php';
     include $view;
     $lihat = new view($config);
+    $waktu = new Waktu;
 
     $bulan_tes =array(
         '01'=>"Januari",
@@ -43,25 +45,22 @@
     <div class="modal-view">
         <h3 style="text-align:center;"> 
                 <?php if(!empty(htmlentities($_GET['cari']))){ ?>
-                    Data Laporan Penjualan <?= $bulan_tes[htmlentities($_GET['bln'])];?> <?= htmlentities($_GET['thn']);?>
+                    Data Laporan Transaksi <?= $bulan_tes[htmlentities($_GET['bln'])];?> <?= htmlentities($_GET['thn']);?>
                 <?php }elseif(!empty(htmlentities($_GET['hari']))){?>
-                    Data Laporan Penjualan <?= htmlentities($_GET['tgl']);?>
+                    Data Laporan Transaksi <?= htmlentities($_GET['tgl']);?>
                 <?php }else{?>
-                    Data Laporan Penjualan <?= $bulan_tes[date('m')];?> <?= date('Y');?>
+                    Data Laporan Transaksi <?= $bulan_tes[date('m')];?> <?= date('Y');?>
                 <?php }?>
         </h3>
         <table border="1" width="100%" cellpadding="3" cellspacing="4">
             <thead>
-                <tr bgcolor="yellow">
-                    <th> No</th>
-                    <th> ID Barang</th>
-                    <th> Nama Barang</th>
-                    <th style="width:10%;"> Jumlah</th>
-                    <th style="width:10%;"> Modal</th>
-                    <th style="width:10%;"> Total</th>
-                    <th> Kasir</th>
-                    <th> Tanggal Input</th>
-                </tr>
+            <tr style="background:#DFF0D8;color:#333;">
+			    <th> No</th>
+			    <th> Nama Pelanggan</th>
+			    <th style="width:10%;"> Tanggal</th>
+			    <th style="width:10%;"> Pembayaran</th>
+			    <th style="width:10%;"> Status</th>
+            </tr>
             </thead>
             <tbody>
                 <?php 
@@ -71,15 +70,15 @@
                         $no=1; 
                         $jumlah = 0;
                         $bayar = 0;
-                        $hasil = $lihat -> periode_jual($periode);
+                        $hasil = $lihat -> periode_penjual($periode);
                     }elseif(!empty(htmlentities($_GET['hari']))){
                         $hari = htmlentities($_GET['tgl']);
                         $no=1; 
                         $jumlah = 0;
                         $bayar = 0;
-                        $hasil = $lihat -> hari_jual($hari);
+                        $hasil = $lihat -> hari_barang_jual($hari);
                     }else{
-                        $hasil = $lihat -> jual();
+                        $hasil = $lihat -> nota_penjualan();
                     }
                 ?>
                 <?php 
@@ -90,28 +89,26 @@
                         $bayar += $isi['total'];
                         $modal += $isi['harga_beli'] * $isi['jumlah'];
                         $jumlah += $isi['jumlah'];
-                ?>
+                        $expl = explode(' ', $isi['waktudata']);
+                ?> 
                 <tr>
                     <td><?php echo $no;?></td>
-                    <td><?php echo $isi['id_barang'];?></td>
+                    
                     <td><?php echo $isi['nama_barang'];?></td>
                     <td><?php echo $isi['jumlah'];?> </td>
                     <td>Rp.<?php echo number_format($isi['harga_beli']* $isi['jumlah']);?>,-</td>
                     <td>Rp.<?php echo number_format($isi['total']);?>,-</td>
-                    <td><?php echo $isi['nm_member'];?></td>
-                    <td><?php echo $isi['tanggal_input'];?></td>
+                    
+                    <td><?php echo $waktu->tgl_indo($expl[0]); ?></td>
                 </tr>
                 <?php $no++; }?>
-                <tr>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><b>Total Terjual</b></td>
+                <tr bgcolor="mediumseagreen">
+                    <td colspan ="2"><b>Total Terjual</b></td>
                     <td><b><?php echo $jumlah;?></b></td>
                     <td><b>Rp.<?php echo number_format($modal);?>,-</b></td>
                     <td><b>Rp.<?php echo number_format($bayar);?>,-</b></td>
-                    <td><b>Keuntungan</b></td>
-                    <td><b>
-                        Rp.<?php echo number_format($bayar-$modal);?>,-</b></td>
+                    
+                    <td ><b> Keuntungan : Rp.<?php echo number_format($bayar-$modal);?>,-</b></td>
                 </tr>
             </tbody>
         </table>

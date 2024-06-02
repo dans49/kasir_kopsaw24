@@ -244,18 +244,21 @@ class view
 
     public function jual()
     {
-        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member,
+        $data[] = date('m');
+        $data[] = date('Y');
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.       identitas, member.id_member,
         member.nm_member from nota 
         left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan
         left join member on member.id_member=nota.id_member
-                where nota.waktudata = ?
-                ORDER BY id_nota DESC";
+        where month(nota.waktudata) = ?
+        AND year(nota.waktudata) = ?
+        ORDER BY id_nota DESC";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array(date('m-Y')));
         $hasil = $row -> fetchAll();
         return $hasil;
     }
-
+    
     public function nota_penjualan() // NAMBAH
     {
         $data[] = date('m');
@@ -327,10 +330,10 @@ class view
     public function periode_jual($periode)
     {
         $cari = "%$periode%";
-        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan,member.id_member,
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member,
         member.nm_member from nota 
-        left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan 
-        left join member on member.id_member=nota.id_member WHERE nota.waktudata LIKE ? 
+        left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan
+        left join member on member.id_member=nota.id_member WHERE nota.waktudata like ?
         ORDER BY id_nota ASC";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array($cari));
@@ -351,11 +354,11 @@ class view
         }
         $cek = $hari;
         $param = "%{$cek}%";
-        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan,member.id_member,
-                member.nm_member from nota 
-                left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan 
-                left join member on member.id_member=nota.id_member WHERE nota.waktudata LIKE ? 
-                ORDER BY id_nota ASC";
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member,
+        member.nm_member from nota 
+        left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan
+        left join member on member.id_member=nota.id_member where nota.waktudata LIKE ?
+        ORDER BY id_nota ASC";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array($param));
         $hasil = $row -> fetchAll();
@@ -375,11 +378,13 @@ class view
         }
         $cek = $hari;
         $param = "%{$cek}%";
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang,  barang.harga_beli, member.id_member,
-                member.nm_member from penjualan 
-                left join barang on barang.id_barang=penjualan.id_barang 
-                left join member on member.id_member=penjualan.id_member WHERE penjualan.waktudata LIKE ? 
-                ORDER BY id_penjualan ASC";
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
+        member.nm_member from penjualan 
+        left join barang on barang.id_barang=penjualan.id_barang 
+        left join member on member.id_member=penjualan.id_member 
+        where month(penjualan.waktudata) = ?
+        AND year(penjualan.waktudata) = ?
+        ORDER BY id_penjualan DESC";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array($param));
         $hasil = $row -> fetchAll();
