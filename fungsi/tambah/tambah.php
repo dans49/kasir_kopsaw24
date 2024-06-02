@@ -75,9 +75,10 @@ if (!empty($_SESSION['admin'])) {
             $data1[] = $kasir;
             $data1[] = $jumlah;
             $data1[] = $total;
+            $data1[] = $total;
 
             if($hslb == 0) {
-                $sql1 = 'INSERT INTO _temp_penjualan (id_temp,id_barang,id_member,jumlah,total) VALUES (?,?,?,?,?)';
+                $sql1 = 'INSERT INTO _temp_penjualan (id_temp,id_barang,id_member,jumlah,harga_jual,total) VALUES (?,?,?,?,?,?)';
                 $row1 = $config -> prepare($sql1);
                 $row1 -> execute($data1);
             } 

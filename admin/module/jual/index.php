@@ -83,7 +83,11 @@
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $isi['nama_barang'];?></td>
                                
-                                    <td><span class="harjul" data-id="<?php echo $isi['id_temp'];?>">Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?></span></td>
+                                    <td>
+                                        <!-- Rp. <?php echo number_format($isi['harga_jual'],0,',','.');?> -->
+                                        <input type="text" name="harjul" class="form-control harjul" value="<?=$isi['harga_jual'] ?>" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>">
+                                        <input type="text" name="harjul2" class="form-control harjul2" value="<?=$isi['harga_jual'] ?>">
+                                    </td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
                                         <form method="POST" action="fungsi/edit/edit.php?jual=jual">
@@ -523,8 +527,8 @@ $(document).on('change keyup','.cjml', function() {
                                     // console.log(response.data[4])
                                     for (var j = 1; j < nomor; j++) {
                                         if(idt == $('.totaltemp'+j).data('id3')) {
-                                            $(".totaltemp"+j).html(numberWithCommas(response.data[4]))
-                                            $(".totalg1"+j).val(response.data[4])
+                                            $(".totaltemp"+j).html(numberWithCommas(response.data[5]))
+                                            $(".totalg1"+j).val(response.data[5])
                                             $(".cjml2"+j).val(response.data[3])
                                         }
                                     }
@@ -543,6 +547,70 @@ $(document).on('change keyup','.cjml', function() {
                                 }
 
                             })
+                            
+
+                        } else {
+                            alert ("Keranjang Melebihi Stok Barang Anda !")
+                            location.reload()
+                        }
+                    }
+                }
+            })
+        }
+    }
+});
+
+$(document).on('change keyup','.harjul', function() {
+    var idt2 = $(this).data('id')
+    var idbarang2 = $(this).data('id-barang')
+    var memberid2 = $(this).data('member')
+    var harjul = $(this).val()
+
+    for (var i = 1; i < nomor; i++) {
+        if(idt2 == $('#coltotal'+i).data('id2')) {
+            console.log($('#coltotal'+i).val())
+            $.ajax({
+                url: "fungsi/edit/edit.php?jual=jual",
+                method: "POST",
+                data: {
+                    id : idt,
+                    id_barang : idbarang,
+                    jumlah : jml
+                },
+                success: function (res) {
+                    
+                    if(jml < 1) {
+                        alert ("Minimal Harus memilih 1 jumlah barang atau dihapus!")
+                    } else {
+                        if (res == 1) {
+                            // AJAX RELOAD HTML
+                            $.ajax({
+                                type: 'GET',
+                                url: "fungsi/apis/apitemppenjualan.php?memberid="+memberid+"&idt="+idt,
+                                dataType: 'json',
+                                success: function(response) {
+                                    // console.log(response.data[4])
+                                    for (var j = 1; j < nomor; j++) {
+                                        if(idt == $('.totaltemp'+j).data('id3')) {
+                                            $(".totaltemp"+j).html(numberWithCommas(response.data[5]))
+                                            $(".totalg1"+j).val(response.data[5])
+                                            $(".cjml2"+j).val(response.data[3])
+                                        }
+                                    }
+                                }
+
+                            })
+
+                            // $.ajax({
+                            //     type: 'GET',
+                            //     url: "fungsi/apis/apitempjualall.php?memberid="+memberid,
+                            //     dataType: 'json',
+                            //     success: function(response) {
+                            //         // console.log(response.data[4])
+                            //         $("#totals").val(response.total[0])
+                            //     }
+
+                            // })
                             
 
                         } else {
