@@ -76,9 +76,7 @@
                                         <div class="modal-body">
                                             <table class="table table-striped bordered">
                                           
-                                                    
                                                     <input type="text" value="<?=$isi['id_pelanggan']?>" class="form-control" name="id" hidden readonly>
-                                               
                                                
                                                 <tr>
                                                     <td>Nama Pelanggan</td>
