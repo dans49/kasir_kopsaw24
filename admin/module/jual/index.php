@@ -84,8 +84,8 @@
                                     <td><?php echo $isi['nama_barang'];?></td>
                                
                                     <td>
-                                        <input type="text" name="harjul" class="form-control harjul" value="<?=$isi['harga_jual'] ?>" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>" data-jumlah="<?php echo $isi['jumlah'];?>">
-                                        <input type="text" name="harjul2" class="form-control" id="harjul2<?=$no ?>" data-idhar="<?php echo $isi['id_temp'];?>" value="<?=$isi['harga_jual'] ?>">
+                                        <input type="text" name="harjul" class="form-control harjul" value="<?=$isi['harga_jual'] ?>" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>" data-jumlah="<?php echo $isi['jumlah'];?>" readonly>
+                                        <input type="hidden" name="harjul2" class="form-control" id="harjul2<?=$no ?>" data-idhar="<?php echo $isi['id_temp'];?>" value="<?=$isi['harga_jual'] ?>">
                                     </td>
                                     <td>
                                         <!-- aksi ke table penjualan -->
@@ -473,11 +473,15 @@ $(document).on('change','.paylater', function(e) {
         $("#dibayar").val(0);
         $("#status").val('Hutang');
         $(".btnprint").show();
+
+        $(".harjul").attr('readonly',false)
     } else {
         $("#dibayar").prop('readonly', false);
         $("#dibayar").prop('required',true);
         $("#status").val('');
         $(".btnprint").hide();
+        
+        $(".harjul").attr('readonly',true)
     }
     $("#kembalian").val('0');
 });
