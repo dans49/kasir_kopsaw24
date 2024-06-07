@@ -70,8 +70,8 @@
                     if (!empty(htmlentities($_GET['cari']))) {
                         $periode = htmlentities($_GET['thn']) . '-' . htmlentities($_GET['bln']);
                         $hasil = $lihat->periode_jual($periode);
-                    } elseif (!empty(htmlentities($_GET['hari']))) {
-                        $hari = htmlentities($_GET['hari']);
+                    } elseif (!empty(htmlentities($_GET['tgl']))) {
+                        $hari = htmlentities($_GET['tgl']);
                         $hasil = $lihat->hari_jual($hari);
                     } else {
                         $hasil = $lihat->nota_penjualan();
