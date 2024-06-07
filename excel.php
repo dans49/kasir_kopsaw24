@@ -7,7 +7,7 @@
     }
     
     header("Content-Type: application/vnd.ms-excel charset=utf-8;");
-    header("Content-Disposition: attachment; filename=laporan-nota" . date('Y-m-d') . ".xls");
+    header("Content-Disposition: attachment; filename=laporan-nota_" . date('Y-m-d') . ".xls");
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Cache-Control: private", false); 

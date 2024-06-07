@@ -361,7 +361,7 @@ class view
     public function hari_barang_jual($hari) // NAMBAH
     {
         $ex = explode('-', $hari);
-        $monthNum  = $ex[1];
+        $monthNum  = $ex[1]; // ambil bulan
         $monthName = date('F', mktime(0, 0, 0, $monthNum, 10));
         if ($ex[2] > 9) {
             $tgl = $ex[2];
@@ -369,17 +369,16 @@ class view
             $tgl1 = explode('0', $ex[2]);
             $tgl = $tgl1[1];
         }
+
         $cek = $hari;
-        $param = "%{$cek}%";
+        $param[] = "%{$cek}%";
         $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
         member.nm_member from penjualan 
         left join barang on barang.id_barang=penjualan.id_barang 
         left join member on member.id_member=penjualan.id_member 
-        where month(penjualan.waktudata) = ?
-        AND year(penjualan.waktudata) = ?
-        ORDER BY id_penjualan DESC";
+        where penjualan.waktudata like ? ORDER BY id_penjualan DESC";
         $row = $this-> db -> prepare($sql);
-        $row -> execute(array($param));
+        $row -> execute($param);
         $hasil = $row -> fetchAll();
         return $hasil;
     }

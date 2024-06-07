@@ -6,7 +6,7 @@
         exit;
 	}
     header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-    header("Content-Disposition: attachment; filename=laporan-barang-terjual".date('Y-m-d').".xls");  //File name extension was wrong
+    header("Content-Disposition: attachment; filename=laporan-barang-terjual_".date('Y-m-d').".xls");  //File name extension was wrong
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Cache-Control: private",false); 
@@ -69,7 +69,7 @@
                 <?php 
                     $no=1; 
                     if(!empty(htmlentities($_GET['cari']))){
-                        $periode = htmlentities($_GET['bln']).'-'.htmlentities($_GET['thn']);
+                        $periode = htmlentities($_GET['thn']).'-'.htmlentities($_GET['bln']);
                         $no=1; 
                         $jumlah = 0;
                         $bayar = 0;
@@ -90,7 +90,7 @@
                     $modal = 0;
                     foreach($hasil as $isi){ 
                         $bayar += $isi['total'];
-                        $modal += $isi['harga_beli'] * $isi['jumlah'];
+                        $modal += $isi['harga_satuan_beli'] * $isi['jumlah'];
                         $jumlah += $isi['jumlah'];
                         $expl = explode(' ', $isi['waktudata']);
                 ?> 
@@ -99,7 +99,7 @@
                     
                     <td><?php echo $isi['nama_barang'];?></td>
                     <td><?php echo $isi['jumlah'];?> </td>
-                    <td>Rp.<?php echo number_format($isi['harga_beli']* $isi['jumlah']);?>,-</td>
+                    <td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['jumlah']);?>,-</td>
                     <td>Rp.<?php echo number_format($isi['total']);?>,-</td>
                     
                     <td><?php echo $waktu->tgl_indo($expl[0]); ?></td>
