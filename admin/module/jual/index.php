@@ -216,7 +216,7 @@
                             <div class="col-sm-2 text-right">Pelanggan *Opsi</div>
                             <div class="col-sm-2">
                             
-                                <select class="form-control select2get pilpelanggan" name="plg">
+                                <select class="form-control select2get pilpelanggan" name="plg" required>
                                     <option value="">-Pilih-</option>
                                     <?php
                                     foreach ($lihat->pelanggan() as $gdata) {
@@ -232,7 +232,7 @@
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Bayar</div>
-                            <div class="col-sm-2"><input type="text" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>" required></div>
+                            <div class="col-sm-2"><input type="number" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>" required min="<?php echo $total_bayar;?>" placeholder="<?php echo $total_bayar;?>" ></div>
                             <div class="col-sm-2">
                                 <!-- <?php  if(!empty($_GET['nota'] == 'yes')) {?>
                                     <a class="btn btn-danger" href="fungsi/hapus/hapus.php?penjualan=jual">
