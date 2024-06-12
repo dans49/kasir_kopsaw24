@@ -252,7 +252,7 @@
 								$jumlahpcs = $isi2['total_pembelian'] / $isi2['harga_jual'];
 								$total2 +=  $isi2['total_pembelian'];
 								$total3 +=  $isi2['total_pembelian'];
-								$sisa = $isi2['total_pembelian']-$isi2['bayar'];
+								$sisa = $total2-$isi2['bayar'];
 								$bayar2 = $isi2['bayar'];
 								$id_nota = $isi2['nota.id_nota'];
 								
@@ -277,7 +277,7 @@
                             Kembali : Rp. <?php if($bayar2==0){echo "0";} else{ echo $bayar2-$total2;}?>,-
                         </div>
 
-						<?php } else {?>  
+						<?php } else {?>    
 							<form method="POST" id="bayar_hutang" action="fungsi/edit/edit.php?nota=edit" > 
                             
                         <div class="row">                            
@@ -289,7 +289,7 @@
                             <div class="col-sm-2.5 ">Bayar :</div>
                             <div class="col-sm-4"><input type="number" id="bayar" class="form-control" name="bayar" value='<?php echo $sisa ?>' required></div>
 
-							<input type="text" name="total_blj" value= "<?=$total2 ?>" >
+							<input type="text" name="total_blj" value= "<?=$total2 ?>" hidden>
 							<input type="text" name="status_nota" value= "Lunas" hidden >
 							<input type="text" name="id_nota" value= "<?php echo $isi['id_nota'];?>" hidden >
 							<div class="col-sm-3">

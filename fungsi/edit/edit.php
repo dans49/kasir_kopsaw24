@@ -90,10 +90,17 @@ if (!empty($_SESSION['admin'])) {
         echo '<script>window.location="../../index.php?page=barang/edit&barang='.$id.'&success=edit-data"</script>';
     }
     if (!empty($_GET['nota'])) {
+        
+
         $id_nota = htmlentities($_POST['id_nota']);
+        $ambildtbs = 'SELECT * FROM nota where id_nota=?';
+        $row2 = $config-> prepare($ambildtbs);
+        $row2 -> execute(array($id_nota));
+        $hasil = $row2 -> fetch();
         $total_blj = htmlentities($_POST['total_blj']);
         $bayar = htmlentities($_POST['bayar']);
-        if($bayar < $total_blj) {
+        $sisa2=$hasil['bayar'] + $bayar;
+        if($sisa2 < $total_blj) {
             $status_nota = "Hutang";
         } else {
             $status_nota = htmlentities($_POST['status_nota']);
