@@ -144,6 +144,7 @@
 								<th> ID Transaksi</th>
 								<th> Nama Pelanggan</th>
 								<th style="width:10%;"> Tanggal</th>
+								<th> Total Belanja</th>
 								<th style="width:10%;"> Pembayaran</th>
 								<th> Kasir</th>
 								<th style="width:10%;"> Status</th>
@@ -185,6 +186,7 @@
 								<td><?php echo $isi['id_nota'];?></td>
 								<td><?php echo $isi['nm_pelanggan'];?></td> 
 								<td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
+								<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
 								<td>Rp.<?php echo number_format($isi['bayar']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
 								<td>
@@ -249,6 +251,8 @@
 								$nomor++;
 								$jumlahpcs = $isi2['total_pembelian'] / $isi2['harga_jual'];
 								$total2 +=  $isi2['total_pembelian'];
+								$total3 +=  $isi2['total_pembelian'];
+								$sisa = $isi2['total_pembelian']-$isi2['bayar'];
 								$bayar2 = $isi2['bayar'];
 								$id_nota = $isi2['nota.id_nota'];
 								
@@ -283,7 +287,9 @@
                         
                         <div class="row">                            
                             <div class="col-sm-2.5 ">Bayar :</div>
-                            <div class="col-sm-4"><input type="number" id="bayar" class="form-control" name="bayar"min=<?php echo $total2 ?> value='<?php echo $total2 ?>' required></div>
+                            <div class="col-sm-4"><input type="number" id="bayar" class="form-control" name="bayar" value='<?php echo $sisa ?>' required></div>
+
+							<input type="text" name="total_blj" value= "<?=$total2 ?>" >
 							<input type="text" name="status_nota" value= "Lunas" hidden >
 							<input type="text" name="id_nota" value= "<?php echo $isi['id_nota'];?>" hidden >
 							<div class="col-sm-3">

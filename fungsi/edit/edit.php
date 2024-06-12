@@ -91,14 +91,19 @@ if (!empty($_SESSION['admin'])) {
     }
     if (!empty($_GET['nota'])) {
         $id_nota = htmlentities($_POST['id_nota']);
+        $total_blj = htmlentities($_POST['total_blj']);
         $bayar = htmlentities($_POST['bayar']);
-        $status_nota = htmlentities($_POST['status_nota']);
+        if($bayar < $total_blj) {
+            $status_nota = "Hutang";
+        } else {
+            $status_nota = htmlentities($_POST['status_nota']);
+        }
         
        
         $data[] = $bayar;
         $data[] = $status_nota;
         $data[] = $id_nota;
-        $sql = 'UPDATE nota SET  bayar=?, 
+        $sql = 'UPDATE nota SET  bayar=bayar + ?, 
 				status_nota=?  WHERE id_nota=?';
         $row = $config -> prepare($sql);
         $row -> execute($data);

@@ -59,7 +59,9 @@
                     <th>ID Transaksi</th>
                     <th>Nama Pelanggan</th>
                     <th style="width:10%;">Tanggal</th>
+                    <th>Total Belanja</th>
                     <th style="width:10%;">Pembayaran</th>
+                    <th style="width:10%;">Piutang</th>
                     <th style="width:10%;">Kasir</th>
                     <th>Status</th>
                 </tr>
@@ -79,13 +81,20 @@
 
                     foreach ($hasil as $isi) { 
                         $expl = explode(' ', $isi['waktudata']);
+                        if($isi['bayar'] == '0') {
+                            $hutang = $isi['total'];
+                        } elseif($isi['bayar'] != '0') {
+                            $hutang = '0';
+                        }
                 ?>
                 <tr>
                     <td><?php echo $no; ?></td>
                     <td><?php echo $isi['id_nota']; ?></td>
                     <td><?php echo $isi['nm_pelanggan']; ?></td>
                     <td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
+                    <td>Rp.<?php echo number_format($isi['total']); ?>,-</td>
                     <td>Rp.<?php echo number_format($isi['bayar']); ?>,-</td>
+                    <td>Rp.<?php echo number_format($hutang); ?>,-</td>
                     <td><?php echo $isi['nm_member']; ?></td>
                     <td><?php echo $isi['status_nota']; ?></td>
                 </tr>
