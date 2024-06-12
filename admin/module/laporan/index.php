@@ -243,13 +243,16 @@
 							$koneksi = mysqli_connect($host, $user, $pass, $dbname);
 							$id = $isi['id_nota'];
 							$sql = "SELECT * from rincian 
-							join nota on nota.id_nota=rincian.id_nota 
-							join barang on barang.id_barang=rincian.id_barang						
+							left join nota on nota.id_nota=rincian.id_nota 
+							left join barang on barang.id_barang=rincian.id_barang
 							where rincian.id_nota = '$id' ";
 							$conn = mysqli_query($koneksi,$sql);
 							while($isi2=mysqli_fetch_array($conn)) { 
+								
+								$qjumlah = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM penjualan WHERE id_nota='$isi2[id_nota]' AND id_barang='$isi2[id_barang]'"));
 								$nomor++;
-								$jumlahpcs = $isi2['total_pembelian'] / $isi2['harga_jual'];
+								// $jumlahpcs = $isi2['total_pembelian'] / $isi2['harga_jual'];
+								$jumlahpcs = $qjumlah['jumlah'];
 								$total2 +=  $isi2['total_pembelian'];
 								$total3 +=  $isi2['total_pembelian'];
 								$sisa = $total2-$isi2['bayar'];
