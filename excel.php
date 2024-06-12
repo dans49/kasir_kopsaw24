@@ -81,11 +81,7 @@
 
                     foreach ($hasil as $isi) { 
                         $expl = explode(' ', $isi['waktudata']);
-                        if($isi['bayar'] == '0') {
-                            $hutang = $isi['total'];
-                        } elseif($isi['bayar'] != '0') {
-                            $hutang = '0';
-                        }
+                        $hutang = $isi['total'] - $isi['bayar'];
                 ?>
                 <tr>
                     <td><?php echo $no; ?></td>
