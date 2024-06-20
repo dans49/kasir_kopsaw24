@@ -113,6 +113,24 @@ class view
         return $format;
     }
 
+    public function member_id()
+    {
+        $sql = 'SELECT * FROM member ORDER BY id_member DESC';
+        $row = $this-> db -> prepare($sql);
+        $row -> execute();
+        $hasil = $row -> fetch();
+
+        if ($hasil) {
+            $lastId = (int) $hasil['id_member'];
+            $newId = $lastId + 1;
+        } else {
+            // Jika belum ada anggota, mulai dengan ID pertama
+            $newId = 1;
+        }
+    
+        return $newId;
+    }
+
     public function barang_stok()
     {
         $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori, satuan.id_satuan, satuan.nama_satuan from barang inner join kategori on barang.id_kategori = kategori.id_kategori 

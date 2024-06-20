@@ -136,4 +136,17 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute(array($id));
         echo '<script>window.location="../../index.php?page=supplier&remove=hapus"</script>';
     }
+    if (!empty(htmlentities($_GET['user']))) {
+        $id= htmlentities($_GET['id']);
+        $data[] = $id;
+        $sql = 'DELETE FROM member WHERE id_member=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        $sql2 = 'DELETE FROM login WHERE id_member=?';
+        $row2 = $config -> prepare($sql2);
+        $row2 -> execute($data);
+
+        echo '<script>window.location="../../index.php?page=user&&remove=hapus-data"</script>';
+    }
+
 }

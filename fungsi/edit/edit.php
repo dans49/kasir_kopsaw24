@@ -237,6 +237,26 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=user&success=edit-data"</script>';
     }
+
+    if (!empty($_GET['user'])) {
+        $id_member = htmlentities($_POST['id_member']); 
+        $username = htmlentities($_POST['username']);
+       
+        $email = htmlentities ($_POST['email']);
+        $telepon = htmlentities($_POST['telepon']);
+       
+        $nik = htmlentities($_POST['nik']);
+
+       
+        $data_member= [ $username,  $telepon, $alamat, $nik, $email,$id_member];
+        $data_login = [$username, $password, $id_member];
+        $sql = 'UPDATE member SET nm_member=?, telepon=?, 
+				alamat_member=?, nik=?, email=? WHERE id_member=?';
+        $row = $config -> prepare($sql);
+        $row -> execute($data);
+        console.log(html);
+        echo '<script>window.location="../../index.php?page=user&&success-user=edit-data"</script>';
+    }
     
     if (!empty($_GET['pass'])) {
         $id = htmlentities($_POST['id']);

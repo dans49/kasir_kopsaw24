@@ -48,6 +48,40 @@ if (!empty($_SESSION['admin'])) {
         $row -> execute($data);
         echo '<script>window.location="../../index.php?page=barang&success=tambah-data"</script>';
     }
+
+    if (!empty($_GET['user'])) {
+        
+        $id_member = htmlentities($_POST['id_member']); 
+        $username = htmlentities($_POST['username']);
+        $password = htmlentities ($_POST['password']);
+        $email = htmlentities ($_POST['email']);
+        $telepon = htmlentities($_POST['telepon']);
+        $alamat = htmlentities($_POST['alamat']);
+        $nik = htmlentities($_POST['nik']);
+        $gambar = htmlentities($_POST['gambar']);
+       
+        $data_member= [$id_member, $username,  $telepon, $alamat, $nik, $email, $gambar];
+        $data_login = [$username, $password, $id_member];
+     
+        // $data[] = $gambar;
+        // $data[] = $telepon;
+        // $data[] = $alamat;
+        // $data[] = $nik;
+        // $data[] = $username;
+        // $data[] = $password;
+        // and login(user,pass) 
+        $sql = 'INSERT INTO member (id_member, nm_member,telepon,alamat_member,nik, email, gambar) 
+			    VALUES (?,?,?,?,?,?,?)';
+        $row = $config -> prepare($sql);
+        $row -> execute($data_member);
+
+        $sql2 = 'INSERT INTO login (user,pass,id_member) 
+			    VALUES (?,?,?)';
+        $row2 = $config -> prepare($sql2);
+        $row2 -> execute($data_login);
+
+        echo '<script>window.location="../../index.php?page=user&success=tambah-data"</script>';
+    }
     
     if (!empty($_GET['jual'])) {
         $id = $_GET['id'];
