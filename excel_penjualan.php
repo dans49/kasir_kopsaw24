@@ -47,7 +47,7 @@
                 <?php if(!empty(htmlentities($_GET['cari']))){ ?>
                     Data Laporan Penjualan Barang Bulan <?= $bulan_tes[htmlentities($_GET['bln'])];?> <?= htmlentities($_GET['thn']);?>
                 <?php }elseif(!empty(htmlentities($_GET['hari']))){?>
-                    Data Laporan Penjualan Barang Tanggal <?= htmlentities($_GET['tgl']);?>
+                    Data Laporan Penjualan Barang Tanggal <?= $waktu->tgl_indo(htmlentities($_GET['tgl']));?>
                 <?php }else{?>
                     Data Laporan Penjualan Barang <?= $bulan_tes[date('m')];?> <?= date('Y');?>
                 <?php }?>
@@ -58,11 +58,12 @@
                     <th> No</th>
                    
                     <th> Nama Barang</th>
-                    <th style="width:10%;"> Jumlah</th>
+                    <th style="width:10%;"> Jumlah Terjual</th>
                     <th style="width:10%;"> Modal</th>
-                    <th style="width:10%;"> Harga Jual</th>
+                    <th style="width:10%;"> Total Terjual</th>
+                    <th style="width:10%;"> Kasir</th>
                     
-                    <th> Tanggal Transaksi</th>
+                    <!-- <th> Tanggal Transaksi</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -89,29 +90,30 @@
                     $jumlah = 0;
                     $modal = 0;
                     foreach($hasil as $isi){ 
-                        $bayar += $isi['total'];
-                        $modal += $isi['harga_satuan_beli'] * $isi['jumlah'];
-                        $jumlah += $isi['jumlah'];
+                        $bayar += $isi['totalb'];
+                        $modal += $isi['harga_satuan_beli']* $isi['terjual'];
+                        $jumlah += $isi['terjual'];
                         $expl = explode(' ', $isi['waktudata']);
                 ?> 
                 <tr>
                     <td><?php echo $no;?></td>
                     
                     <td><?php echo $isi['nama_barang'];?></td>
-                    <td><?php echo $isi['jumlah'];?> </td>
-                    <td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['jumlah']);?>,-</td>
-                    <td>Rp.<?php echo number_format($isi['total']);?>,-</td>
+                    <td><?php echo $isi['terjual'];?> </td>
+                    <td><?php echo $isi['harga_satuan_beli']* $isi['terjual']; ?></td>
+                    <td><?php echo $isi['totalb'];?></td>
+                    <td><?php echo $isi['nm_member'];?></td>
                     
-                    <td><?php echo $waktu->tgl_indo($expl[0]); ?></td>
+                    <!-- <td><?php echo $waktu->tgl_indo($expl[0]); ?></td> -->
                 </tr>
                 <?php $no++; }?>
                 <tr bgcolor="mediumseagreen">
                     <td colspan ="2"><b>Total Terjual</b></td>
                     <td><b><?php echo $jumlah;?></b></td>
-                    <td><b>Rp.<?php echo number_format($modal);?>,-</b></td>
-                    <td><b>Rp.<?php echo number_format($bayar);?>,-</b></td>
+                    <td><b><?php echo $modal;?></b></td>
+                    <td><b><?php echo $bayar;?></b></td>
                     
-                    <td ><b> Keuntungan : Rp.<?php echo number_format($bayar-$modal);?>,-</b></td>
+                    <td ><b> Keuntungan : <?php echo $bayar-$modal;?></b></td>
                 </tr>
             </tbody>
         </table>

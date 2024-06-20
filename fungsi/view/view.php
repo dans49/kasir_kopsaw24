@@ -318,13 +318,12 @@ class view
     {
         $data[] = date('m');
         $data[] = date('Y');
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
-                member.nm_member from penjualan 
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member, sum(penjualan.jumlah) as terjual, sum(penjualan.total) as totalb,member.nm_member from penjualan 
                 left join barang on barang.id_barang=penjualan.id_barang 
                 left join member on member.id_member=penjualan.id_member 
                 where month(penjualan.waktudata) = ?
                 AND year(penjualan.waktudata) = ?
-                ORDER BY id_penjualan DESC";
+                GROUP BY penjualan.id_barang ORDER BY penjualan.waktudata ASC";
         $row = $this-> db -> prepare($sql);
         $row -> execute($data);
         $hasil = $row -> fetchAll();
@@ -334,11 +333,10 @@ class view
     public function periode_penjual($periode) // NAMBAH
     {
         $cari = "%$periode%";
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
-                member.nm_member from penjualan 
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,sum(penjualan.jumlah) as terjual, sum(penjualan.total) as totalb, member.nm_member from penjualan 
                 left join barang on barang.id_barang=penjualan.id_barang 
                 left join member on member.id_member=penjualan.id_member WHERE penjualan.waktudata like ? 
-                ORDER BY id_penjualan ASC";
+                GROUP BY penjualan.id_barang ORDER BY penjualan.waktudata ASC";
         $row = $this-> db -> prepare($sql);
         $row -> execute(array($cari));
         $hasil = $row -> fetchAll();
@@ -390,11 +388,10 @@ class view
 
         $cek = $hari;
         $param[] = "%{$cek}%";
-        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,
-        member.nm_member from penjualan 
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,sum(penjualan.jumlah) as terjual, sum(penjualan.total) as totalb,member.nm_member from penjualan 
         left join barang on barang.id_barang=penjualan.id_barang 
         left join member on member.id_member=penjualan.id_member 
-        where penjualan.waktudata like ? ORDER BY id_penjualan DESC";
+        where penjualan.waktudata like ? GROUP BY penjualan.id_barang ORDER BY penjualan.waktudata ASC";
         $row = $this-> db -> prepare($sql);
         $row -> execute($param);
         $hasil = $row -> fetchAll();

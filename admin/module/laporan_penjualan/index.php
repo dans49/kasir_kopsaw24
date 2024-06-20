@@ -140,14 +140,14 @@
 					<table class="table table-bordered w-100 table-sm" id="example1">
 						<thead>
 							<tr style="background:#DFF0D8;color:#333;">
-								<th> No</th>
-								<th> ID Barang</th>
+								<th width="7%"> No</th>
+								<th width="10%"> ID Barang</th>
 								<th> Nama Barang</th>
-								<th style="width:10%;"> Jumlah</th>
+								<th width="12%"> Jumlah Terjual</th>
 								<th style="width:10%;"> Modal</th>
-								<th style="width:10%;"> Total</th>
-								<th> Kasir</th>
-								<th> Tanggal Input</th>
+								<th style="width:10%;"> Total Terjual</th>
+								<th width="20%"> Kasir</th>
+								<!-- <th> Tanggal Input</th> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -174,32 +174,31 @@
 								$jumlah = 0;
 								$modal = 0;
 								foreach($hasil as $isi){ 
-									$bayar += $isi['total'];
-									$modal += $isi['harga_satuan_beli']* $isi['jumlah'];
-									$jumlah += $isi['jumlah'];
+									$bayar += $isi['totalb'];
+									$modal += $isi['harga_satuan_beli']* $isi['terjual'];
+									$jumlah += $isi['terjual'];
 									$expl = explode(' ', $isi['waktudata']);
 							?>
 							<tr>
 								<td><?php echo $no;?></td>
 								<td><?php echo $isi['id_barang'];?></td>
 								<td><?php echo $isi['nama_barang'];?></td>
-								<td><?php echo $isi['jumlah'];?> </td>
-								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['jumlah']);?>,-</td>
-								<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
+								<td align="center"><?php echo $isi['terjual'];?> </td>
+								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['terjual']);?>,-</td>
+								<td>Rp.<?php echo number_format($isi['totalb']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
-								<td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
+								<!-- <td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td> -->
 							</tr>
 							<?php $no++; }?>
 						</tbody>
 						<tfoot>
 							<tr>
-								<th colspan="3">Total Terjual</td>
-								<th><?php echo $jumlah;?></td>
+								<th colspan="3">Total Terjual</th>
+								<td align="center"><b><?php echo $jumlah;?></b></td>
 								<th>Rp.<?php echo number_format($modal);?>,-</th>
 								<th>Rp.<?php echo number_format($bayar);?>,-</th>
-								<th style="background:#0bb365;color:#fff;">Keuntungan</th>
-								<th style="background:#0bb365;color:#fff;">
-									Rp.<?php echo number_format($bayar-$modal);?>,-</th>
+								<th style="background:#0bb365;color:#fff;">Keuntungan : Rp.<?php echo number_format($bayar-$modal);?>,-</th>
+								<!-- <th style="background:#0bb365;color:#fff;"></th> -->
 							</tr>
 						</tfoot>
 					</table>
