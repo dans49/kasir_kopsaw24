@@ -53,7 +53,7 @@ if (!empty($_SESSION['admin'])) {
         
         $id_member = htmlentities($_POST['id_member']); 
         $username = htmlentities($_POST['username']);
-        $password = htmlentities ($_POST['password']);
+        $password = md5(htmlentities ($_POST['password']));
         $email = htmlentities ($_POST['email']);
         $telepon = htmlentities($_POST['telepon']);
         $alamat = htmlentities($_POST['alamat']);

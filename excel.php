@@ -88,9 +88,9 @@
                     <td><?php echo $isi['id_nota']; ?></td>
                     <td><?php echo $isi['nm_pelanggan']; ?></td>
                     <td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
-                    <td>Rp.<?php echo number_format($isi['total']); ?>,-</td>
-                    <td>Rp.<?php echo number_format($isi['bayar']); ?>,-</td>
-                    <td>Rp.<?php echo number_format($hutang); ?>,-</td>
+                    <td><?php echo $isi['total']; ?></td>
+                    <td><?php echo $isi['bayar']; ?></td>
+                    <td><?php echo $hutang; ?></td>
                     <td><?php echo $isi['nm_member']; ?></td>
                     <td><?php echo $isi['status_nota']; ?></td>
                 </tr>
