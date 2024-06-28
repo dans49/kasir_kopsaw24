@@ -294,15 +294,13 @@ class view
         return $hasil;
     }
 
-    public function rincian_nota() // NAMBAH
+    public function rincian_nota($id) // NAMBAH
     {
-        $data[] = date('m');
-        $data[] = date('Y');
-        $sql ="SELECT rincian.* , barang.id_barang, barang.nama_barang, barang.stok, nota.id_nota,
-                nota.status_nota from rincian 
-                left join barang on barang.id_barang=rincian.id_barang
+        $data[] = $id;
+        $sql ="SELECT rincian.*,nota.id_nota,nota.bayar,barang.nama_barang from rincian 
                 left join nota on nota.id_nota=rincian.id_nota
-                where id_nota = ?
+                left join barang on barang.id_barang=rincian.id_barang
+                where rincian.id_nota = ?
                 
                 ORDER BY id_rincian DESC";
         $row = $this-> db -> prepare($sql);
@@ -358,19 +356,19 @@ class view
     }
 
     public function hari_jual($hari)
-{
-    $data[] = $hari . '%';
-    $sql = "SELECT nota.*, ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member, member.nm_member 
-            FROM nota 
-            LEFT JOIN ksw_pelanggan ON ksw_pelanggan.id_pelanggan = nota.id_pelanggan 
-            LEFT JOIN member ON member.id_member = nota.id_member 
-            WHERE DATE(nota.waktudata) LIKE ?
-            ORDER BY id_nota ASC";
-    $row = $this->db->prepare($sql);
-    $row->execute($data);
-    $hasil = $row->fetchAll();
-    return $hasil;
-}
+    {
+        $data[] = $hari . '%';
+        $sql = "SELECT nota.*, ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member, member.nm_member 
+                FROM nota 
+                LEFT JOIN ksw_pelanggan ON ksw_pelanggan.id_pelanggan = nota.id_pelanggan 
+                LEFT JOIN member ON member.id_member = nota.id_member 
+                WHERE DATE(nota.waktudata) LIKE ?
+                ORDER BY id_nota ASC";
+        $row = $this->db->prepare($sql);
+        $row->execute($data);
+        $hasil = $row->fetchAll();
+        return $hasil;
+    }
 
     
 
@@ -494,6 +492,24 @@ class view
         $row = $this -> db -> prepare($sql);
         $row -> execute();
         $hasil = $row -> fetch();
+        return $hasil;
+    }
+
+    // === DATATABLE SERVERSIDE ===
+    public function _getdatanota() // NAMBAH
+    {
+        $data[] = date('m');
+        $data[] = date('Y');
+        $sql ="SELECT nota.* , ksw_pelanggan.id_pelanggan, ksw_pelanggan.nm_pelanggan, ksw_pelanggan.identitas, member.id_member,
+                member.nm_member from nota 
+                left join ksw_pelanggan on ksw_pelanggan.id_pelanggan=nota.id_pelanggan
+                left join member on member.id_member=nota.id_member
+                where month(nota.waktudata) = ?
+                AND year(nota.waktudata) = ?
+                ORDER BY id_nota DESC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute($data);
+        $hasil = $row -> fetchAll();
         return $hasil;
     }
 }

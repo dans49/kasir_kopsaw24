@@ -194,133 +194,8 @@
 									 if($isi['status_nota']=="Hutang"){ echo '<div class="btn btn-danger btn-sm">Hutang</div>';}
 									 ?>
 								</td>
-								<td><button type="button" class="btn btn-primary" id="detail" data-toggle="modal" data-target="#detailRincian<?php echo $tanpatitik;?>" value="1" data-load-code="<?php echo $isi['id_nota'];?>">  Detail </button>
- <!-- Modal untuk detail nota -->
-<div id="detailRincian<?php echo $tanpatitik;?>" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-
-            <div class="modal-content" style=" border-radius:0px;">
-                <div class="modal-header" style="background:#285c64;color:#fff;">
-                    <h5 class="modal-title"> Detail Transaksi</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                
-                    <div class="modal-body">
-                            <center>KPRI Sawangan</center>
-                            <center>Bappelitbangda Kab. Tasikmalaya</center>
-                            <center>Tanggal : <?php echo $frmwaktu->tgl_indo($expl[0]); ?></center>
-                        <table width="100%" class="mt-2">
-                            <tr>
-                                <td>TRX</td>
-                                <td>: <span id=""><?php echo $isi['id_nota'];?></span></td>
-                            </tr>
-                            <tr>
-                                <td>Kasir </td>
-                                <td>: <?php  echo htmlentities($_SESSION['admin']['nm_member']);?></td>
-                            </tr>
-                        </table>
-                        <table class="table bordered mt-2">
-                            <thead>
-                                <tr>
-                                    <td>No.</td>
-                                    <td>Barang</td>
-                                    <td>Jumlah</td>
-                                    <td>Total</td>
-                                </tr>
-                            </thead>
-                            <tbody id="">
-
-							
-							<?php			 
-							$nomor=0;
-							$total2=0;
-							$host 	= 'localhost'; // host server
-							$user 	= 'root';  // username server
-							$pass 	= ''; // password server, kalau pakai xampp kosongin saja
-							$dbname = 'db_niagakopsaw'; // nama database anda
-
-							$koneksi = mysqli_connect($host, $user, $pass, $dbname);
-							$id = $isi['id_nota'];
-							$sql = "SELECT * from rincian 
-							left join nota on nota.id_nota=rincian.id_nota 
-							left join barang on barang.id_barang=rincian.id_barang
-							where rincian.id_nota = '$id' ";
-							$conn = mysqli_query($koneksi,$sql);
-							while($isi2=mysqli_fetch_array($conn)) { 
-								
-								$qjumlah = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM penjualan WHERE id_nota='$isi2[id_nota]' AND id_barang='$isi2[id_barang]'"));
-								$nomor++;
-								// $jumlahpcs = $isi2['total_pembelian'] / $isi2['harga_jual'];
-								$jumlahpcs = $qjumlah['jumlah'];
-								$total2 +=  $isi2['total_pembelian'];
-								$total3 +=  $isi2['total_pembelian'];
-								$sisa = $total2-$isi2['bayar'];
-								$bayar2 = $isi2['bayar'];
-								$id_nota = $isi2['nota.id_nota'];
-								
-								?>
-							<tr>
-								<td><?php echo $nomor;?></td>
-								<td><?php echo $isi2['nama_barang'];?></td>
-								<td><?php echo $jumlahpcs?></td>
-								<td><?php echo $isi2['total_pembelian'];?></td>
-							</tr> <?php } ?>
-
-							</tbody>
-                        </table>
-						<!-- modal status lunas -->
-			<?php if($isi['status_nota']=="Lunas"){ ?>
-                        <div class="pull-right">
-                           
-                            Total : Rp. <?php echo $total2;?> ,-
-                            <br/>
-                            Bayar : Rp. <?php echo $bayar2?>,-
-                            <br/>
-                            Kembali : Rp. <?php if($bayar2==0){echo "0";} else{ echo $bayar2-$total2;}?>,-
-                        </div>
-
-						<?php } else {?>    
-							<form method="POST" id="bayar_hutang" action="fungsi/edit/edit.php?nota=edit" > 
-                            
-                        <div class="row">                            
-                            <div class="col-sm-2.5 ">Total :</div>
-                            <div class="col-sm-4">Rp. <?php echo $total2;?> ,-</div>
-                        </div>
-                        
-                        <div class="row">                            
-                            <div class="col-sm-2.5 ">Bayar :</div>
-                            <div class="col-sm-4"><input type="number" id="bayar" class="form-control" name="bayar" value='<?php echo $sisa ?>' required></div>
-
-							<input type="text" name="total_blj" value= "<?=$total2 ?>" hidden>
-							<input type="text" name="status_nota" value= "Lunas" hidden >
-							<input type="text" name="id_nota" value= "<?php echo $isi['id_nota'];?>" hidden >
-							<div class="col-sm-3">
-                                <button type="submit" class="btn btn-success btn-sm-2"><i class="fa fa-shopping-cart "></i> Bayar </button>                              
-                            </div>                           
-                        </div>
-                       </form>    <?php }?>                  
-                    </div>
-                    <div class="modal-footer">
-                        <!-- <a href="" class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Print</a> -->
-                        <a href="print.php?nota=<?=$id ?>" target="_blank" class="btn btn-secondary btn-sm btnprint">
-                                <i class="fa fa-print"></i> Print Invoice
-                        </a>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-            
-            </div> 
-			 <!-- Akhir Modal content-->
-			<!-- akhir modal status lunas -->
-			
-				
-
-
-        </div>
-
-    </div> 
-	<!-- Akhir Modal untuk detail nota -->
-							</td>
+								<td><button type="button" class="btn btn-primary detailNota" data-toggle="modal" data-target="#rincianNota" value="1" data-load-code="<?php echo $isi['id_nota'];?>" data-id="<?php echo $isi['id_nota'];?>" data-status="<?=$isi['status_nota'] ?>">  Detail </button>
+								</td>
 							</tr>
 							<?php $no++; }?>
 						</tbody>
@@ -333,3 +208,86 @@
  </div>
 
 
+<!-- Modal untuk detail nota -->
+<div id="rincianNota" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+
+        <div class="modal-content" style=" border-radius:0px;">
+            <div class="modal-header" style="background:#285c64;color:#fff;">
+                <h5 class="modal-title"> Detail Transaksi</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+                <div class="modal-body">
+                        <center>KPRI Sawangan</center>
+                        <center>Bappelitbangda Kab. Tasikmalaya</center>
+                        <center>Tanggal : <?php  echo date("j F Y, G:i"); ?></center>
+                    <table width="100%" class="mt-2">
+                        <tr>
+                            <td>TRX</td>
+                            <td>: <span id="trx"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Kasir </td>
+                            <td>: <?php  echo htmlentities($_SESSION['admin']['nm_member']);?></td>
+                        </tr>
+                    </table>
+                    <table class="table bordered mt-2">
+                        <thead>
+                            <tr>
+                                <td>No.</td>
+                                <td>Barang</td>
+                                <td>Jumlah</td>
+                                <td>Total</td>
+                            </tr>
+                        </thead>
+                        <tbody id="dataRincian">
+						</tbody>
+                    </table>
+					<!-- modal status lunas -->
+					
+                    <div id="detailBayar"></div>
+    
+                </div>
+                <div class="modal-footer">
+                    <a href="#" id="printInv" target="_blank" class="btn btn-secondary btn-sm btnprint">
+                        <i class="fa fa-print"></i> Print Invoice
+                    </a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+        
+        </div> 
+		 <!-- Akhir Modal content-->
+		<!-- akhir modal status lunas -->
+
+    </div>
+
+</div> 
+
+<script>
+	$(document).ready(function(){
+		$('.detailNota').on('click', function(){
+	        let idm = "<?php echo $_SESSION['admin']['id_member']; ?>"
+	        let idn = $(this).data('id')
+	        let status = $(this).data('status')
+	        // $("#trx").html(idn)
+
+	        $.ajax({
+                type: 'GET',
+                url: "fungsi/apis/apisrincinota.php?nota="+idn+"&memberid="+idm+"&status="+status,
+                dataType: 'json',
+                success: function(res) {
+                	console.log(res)
+                    $("#trx").html(res.nota)
+                    $("#gettotal").html(numberWithCommas(res.total))
+                    $("#getbayar").html(numberWithCommas(res.bayar))
+                    $("#getkembali").html(numberWithCommas(res.kembali))
+                    $("#dataRincian").html(res.penjualan)
+                    $("#detailBayar").html(res.getbayar)
+                    $("#printInv").prop("href","print.php?nota="+res.nota)
+                }
+            })
+	    });
+	})
+</script>
