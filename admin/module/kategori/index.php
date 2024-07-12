@@ -1,4 +1,4 @@
-<h4>naon we</h4>
+<h4>kategori</h4>
 <br />
 <?php if(isset($_GET['success'])){?>
 <div class="alert alert-success">
