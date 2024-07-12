@@ -145,6 +145,8 @@
 								<th> Nama Barang</th>
 								<th width="12%"> Jumlah Terjual</th>
 								<th style="width:10%;"> Modal</th>
+								<th style="width:10%;"> Cash</th>
+								<th style="width:10%;"> Credit</th>
 								<th style="width:10%;"> Total Terjual</th>
 								<th width="20%"> Kasir</th>
 								<!-- <th> Tanggal Input</th> -->
@@ -185,6 +187,8 @@
 								<td><?php echo $isi['nama_barang'];?></td>
 								<td align="center"><?php echo $isi['terjual'];?> </td>
 								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['terjual']);?>,-</td>
+								<td></td>
+								<td></td>
 								<td>Rp.<?php echo number_format($isi['totalb']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
 								<!-- <td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td> -->
@@ -196,6 +200,8 @@
 								<th colspan="3">Total Terjual</th>
 								<td align="center"><b><?php echo $jumlah;?></b></td>
 								<th>Rp.<?php echo number_format($modal);?>,-</th>
+								<th>Rp.<?php echo number_format($cash);?>,-</th>
+								<th>Rp.<?php echo number_format($credit);?>,-</th>
 								<th>Rp.<?php echo number_format($bayar);?>,-</th>
 								<th style="background:#0bb365;color:#fff;">Keuntungan : Rp.<?php echo number_format($bayar-$modal);?>,-</th>
 								<!-- <th style="background:#0bb365;color:#fff;"></th> -->
