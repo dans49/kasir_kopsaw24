@@ -2,7 +2,7 @@
 <br />
 <?php if(isset($_GET['success'])){?>
 <div class="alert alert-success">
-    <p>Tambah Data Berhasil !</p>
+    <p>Tambah Data Berhasil ! TEST</p>
 </div>
 <?php }?>
 <?php if(isset($_GET['success-edit'])){?>
