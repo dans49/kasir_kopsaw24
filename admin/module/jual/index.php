@@ -30,6 +30,7 @@
                     <input type="text" id="cari" class="form-control" name="cari" placeholder="Masukan : Kode / Nama Barang  [ENTER]">
                 </div>
             </div>
+
         </div>
         <div class="col-sm-8">
             <div class="card card-info mb-3">

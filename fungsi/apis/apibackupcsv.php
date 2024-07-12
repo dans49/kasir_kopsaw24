@@ -26,7 +26,7 @@ if (empty($tables)) {
 // Direktori tempat menyimpan file backup
 $backup_directory = 'C:/xampp/htdocs/kasir_kopsaw24/admin/module/backup_restore/file_backup_csv/';
 
-// Jika direktori tidak ada, buat direktori
+// Jika direktori tidak ada, buat direktori 
 if (!is_dir($backup_directory)) {
     mkdir($backup_directory, 0777, true);
 }
