@@ -1,4 +1,4 @@
-<h4>kategori2</h4>
+<h4>kategori test ridwan</h4>
 <br />
 <?php if(isset($_GET['success'])){?>
 <div class="alert alert-success">
