@@ -70,6 +70,7 @@
                                     <th> No</th>
                                     <th> Nama Barang</th>
                                     <th> Harga</th>
+                                    <th> Diskon</th>
                                     <th> Jumlah</th>
                                     <th> Total</th>
                                     <th> Kasir</th>
@@ -88,16 +89,20 @@
                                         <input type="text" name="harjul" class="form-control harjul" value="<?=$isi['harga_jual'] ?>" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>" data-jumlah="<?php echo $isi['jumlah'];?>" readonly>
                                         <input type="hidden" name="harjul2" class="form-control" id="harjul2<?=$no ?>" data-idhar="<?php echo $isi['id_temp'];?>" value="<?=$isi['harga_jual'] ?>">
                                     </td>
+                                    <!-- aksi ke table penjualan -->
+                                    <form method="POST" action="fungsi/edit/edit.php?jual=jual">
                                     <td>
-                                        <!-- aksi ke table penjualan -->
-                                        <form method="POST" action="fungsi/edit/edit.php?jual=jual">
-                                            <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>">
+                                            <input type="number" name="diskon" value="<?php echo $isi['diskon'];?>" class="form-control cdskn udskn<?= $no ?>" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>" data-jumlah="<?php echo $isi['jumlah'];?>" > 
+                                    </td>
+                                    <td>
+                                            <input type="number" name="jumlah" value="<?php echo $isi['jumlah'];?>" class="form-control cjml jmldskn<?= $no ?>" data-id="<?php echo $isi['id_temp'];?>" data-id-barang="<?php echo $isi['id_barang'];?>" data-member="<?php echo $isi['id_member'];?>" data-diskon="<?php echo $isi['diskon'];?>">
                                             <input type="hidden" name="id" value="<?php echo $isi['id_temp'];?>" class="form-control">
                                             <input type="hidden" name="id_barang" value="<?php echo $isi['id_barang'];?>" class="form-control">
                                            
                                     </td>
-                                    <td>Rp. <span class="totaltemp<?=$no?>" data-id3="<?= $isi['id_temp'];?>"><?php echo number_format($isi['total'],0,',','.');?></span>,-
-                                        
+
+                                    <td>
+                                        Rp. <span class="totaltemp<?=$no?>" data-id3="<?= $isi['id_temp'];?>"><?php echo number_format($isi['total'],0,',','.');?></span>,-
                                         <input type="hidden" name="totaltemp" id="coltotal<?=$no ?>" data-id2="<?php echo $isi['id_temp'];?>" value="<?php echo $isi['total'];?>" class="form-control">
                                     </td>
                                     <td><?php echo $isi['nm_member'];?></td>
@@ -112,6 +117,7 @@
                                 </tr>
                                 <?php 
                                 $no++; 
+                                $diskon_total += $isi['diskon'];
                                 $total_bayar += $isi['total'];
                                 }
                                 ?>
@@ -141,6 +147,7 @@
                                     $hsj = $_POST['harga_satuan_jual'];
                                     $getplg = $_POST['plg'];
                                     $jumlah = $_POST['jumlah'];
+                                    $diskon = $_POST['diskon'];
                                     $total = $_POST['total1'];
                                     $periode = $_POST['periode'];
                                     $jumlah_dipilih = count($id_barang);
@@ -148,9 +155,9 @@
                                     for($x=0;$x<$jumlah_dipilih;$x++){
 
                                         $idjual = getpenjualan($config);
-                                        $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$jumlah[$x],$total[$x]);
+                                        $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$diskon[$x],$jumlah[$x],$total[$x]);
                                         var_dump($d);
-                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,jumlah,total) VALUES(?,?,?,?,?,?,?,?)";
+                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,diskon,jumlah,total) VALUES(?,?,?,?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
                                         $row->execute($d);
 
@@ -186,7 +193,7 @@
                                         $id = $id_barang[$i];
                                         $total_pembelian = $total[$i];
                                         $d3 = array($idnota,$id,$total_pembelian);
-                                        $query_rincian = "INSERT into rincian (id_nota, id_barang, total_pembelian) values ('$idnota','$id','$total_pembelian')";
+                                        $query_rincian = "INSERT into rincian (id_nota, id_barang, total_pembelian) values (?,?,?)";
                                         $row3 = $config->prepare($query_rincian);
                                         $row3->execute($d3);
                                     }
@@ -200,17 +207,18 @@
                             <?php $no2=1; foreach($hasil_penjualan as $isi){;?>
                                 <input type="hidden" name="id_barang[]" value="<?php echo $isi['id_barang'];?>">
                                 <input type="hidden" name='harga_satuan_beli[]' value='<?php echo $isi['harga_beli'];?>'>
-                                 <input type="hidden" name='harga_satuan_jual[]' value='<?= $isi['harga_jual'];?>' >
+                                <input type="hidden" name='harga_satuan_jual[]' value='<?= $isi['harga_jual'];?>' >
                                 <input type="hidden" name="id_member[]" value="<?php echo $isi['id_member'];?>">
                                 <input type="hidden" name="jumlah[]" class="cjml2<?=$no2?>" value="<?php echo $isi['jumlah'];?>">
+                                <input type="hidden" name="diskon[]" class="cdskn<?=$no2?>" value="<?php echo $isi['diskon'];?>">
                                 <input type="hidden" name="total1[]" class="totalg1<?=$no2?>" value="<?php echo $isi['total'];?>">
                                 <input type="hidden" name="tgl_input[]" value="<?php echo $isi['tanggal_input'];?>">
                                 <input type="hidden" name="periode[]" value="<?php echo date('m-Y');?>">
                             <?php $no++; $no2++; }?>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
-                            <div class="col-sm-2 text-right">Grand Total</div>
-                            <div class="col-sm-4"><input type="text" id="totals" class="form-control" name="total" value="<?php echo $total_bayar;?>"></div>
+                            <div class="col-sm-2 text-right">Sub Total</div>
+                            <div class="col-sm-4"><input type="text" id="totals" class="form-control" name="total" value="<?php echo $total_bayar;?>" readonly></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
@@ -233,7 +241,7 @@
                         <div class="row mb-3">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2 text-right">Bayar</div>
-                            <div class="col-sm-2"><input type="number" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>" required min="<?php echo $total_bayar;?>" placeholder="<?php echo $total_bayar;?>" ></div>
+                            <div class="col-sm-2"><input type="number" id="dibayar" class="form-control" name="bayar" value="<?php echo $bayar;?>" required min="<?php echo $total_bayar-$total_diskon;?>" placeholder="<?php echo $total_bayar;?>" ></div>
                             <div class="col-sm-2">
                                 <!-- <?php  if(!empty($_GET['nota'] == 'yes')) {?>
                                     <a class="btn btn-danger" href="fungsi/hapus/hapus.php?penjualan=jual">
@@ -298,8 +306,7 @@
                             </tr>
                             <tr>
                                 <td>Identitas*</td>
-                                <td><input type="text" placeholder="Identitas" class="form-control"
-                                        name="identitas"></td>
+                                <td><input type="text" placeholder="Identitas" class="form-control" name="identitas"></td>
                             </tr>
                             <tr>
                                 <td>Telepon*</td>
@@ -347,6 +354,8 @@
                                 <tr>
                                     <td>No.</td>
                                     <td>Barang</td>
+                                    <td>Harga</td>
+                                    <td>Diskon</td>
                                     <td>Jumlah</td>
                                     <td>Total</td>
                                 </tr>
@@ -419,6 +428,7 @@ $(document).ready(function(){
                     url: "fungsi/apis/apisnota.php?memberid="+idm,
                     dataType: 'json',
                     success: function(res) {
+                        console.log(res)
                         $("#trx").html(res.nota)
                         $("#gettotal").html(numberWithCommas(res.total))
                         $("#getbayar").html(numberWithCommas(res.bayar))
@@ -451,6 +461,7 @@ $(".btnprint").hide();
 
 
 $(document).on('keyup','#dibayar', function() {
+    // var total = $("#totals").val()
     var total = $("#totals").val()
     var bayar = $("#dibayar").val()
     var getang = 0;
@@ -508,6 +519,7 @@ $(document).on('change keyup','.cjml', function() {
     for (var i = 1; i < nomor; i++) {
         var harjul = $('#harjul2'+i).val()
         if(idt == $('#coltotal'+i).data('id2')) {
+            var diskon = $('.udskn'+i).val()
             // console.log($('#coltotal'+i).val())
             $.ajax({
                 url: "fungsi/edit/edit.php?jual=jual",
@@ -517,6 +529,7 @@ $(document).on('change keyup','.cjml', function() {
                     id_barang : idbarang,
                     jumlah : jml,
                     harjul : harjul,
+                    diskon : diskon,
                 },
                 success: function (res) {
                     
@@ -533,8 +546,9 @@ $(document).on('change keyup','.cjml', function() {
                                     // console.log(response.data[4])
                                     for (var j = 1; j < nomor; j++) {
                                         if(idt == $('.totaltemp'+j).data('id3')) {
-                                            $(".totaltemp"+j).html(numberWithCommas(response.data[5]))
-                                            $(".totalg1"+j).val(response.data[5])
+                                            $(".totaltemp"+j).html(numberWithCommas(response.data[6]))
+                                            $(".totalg1"+j).val(response.data[6])
+                                            $(".cdskn"+j).val(response.data[4])
                                             $(".cjml2"+j).val(response.data[3])
                                         }
                                     }
@@ -549,7 +563,8 @@ $(document).on('change keyup','.cjml', function() {
                                 dataType: 'json',
                                 success: function(response) {
                                     // console.log(response.data[4])
-                                    $("#totals").val(response.total[0])
+                                    $("#totals").val(response.data[0])
+                                    $("#dibayar").attr('placeholder', response.data[0]);
                                 }
 
                             })
@@ -566,12 +581,77 @@ $(document).on('change keyup','.cjml', function() {
     }
 });
 
+$(document).on('change keyup','.cdskn', function() {
+    var idt7 = $(this).data('id')
+    var idbarang7 = $(this).data('id-barang')
+    var memberid7 = $(this).data('member')
+    var diskon = $(this).val()
+
+
+    for (var i = 1; i < nomor; i++) {
+        var harjul = $('#harjul2'+i).val()
+        if(idt7 == $('#coltotal'+i).data('id2')) {
+            var jml7 = $('.jmldskn'+i).val()
+            // console.log($('#coltotal'+i).val())
+            $.ajax({
+                url: "fungsi/edit/edit.php?jual=jual",
+                method: "POST",
+                data: {
+                    id : idt7,
+                    id_barang : idbarang7,
+                    jumlah : jml7,
+                    harjul : harjul,
+                    diskon : diskon,
+                },
+                success: function (res) {
+                    
+                    
+                    if (res == 1) {
+                        // AJAX RELOAD HTML
+                        $.ajax({
+                            type: 'GET',
+                            url: "fungsi/apis/apitemppenjualan.php?memberid="+memberid7+"&idt="+idt7,
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response.data[4])
+                                for (var j = 1; j < nomor; j++) {
+                                    if(idt7 == $('.totaltemp'+j).data('id3')) {
+                                        $(".totaltemp"+j).html(numberWithCommas(response.data[6]))
+                                        $(".totalg1"+j).val(response.data[6])
+                                        $(".cdskn"+j).val(response.data[4])
+                                        $(".cjml2"+j).val(response.data[3])
+                                    }
+                                }
+                            }
+
+                        })
+
+                        $.ajax({
+                            type: 'GET',
+                            url: "fungsi/apis/apitempjualall.php?memberid="+memberid7,
+                            dataType: 'json',
+                            success: function(response) {
+                                // console.log(response.data[4])
+                                $("#totals").val(response.data[0])
+                                $("#dibayar").attr('placeholder', response.data[0]);
+                            }
+
+                        })
+                            
+                    }
+                }
+            })
+        }
+    }
+});
+
+
 $(document).on('change keyup','.harjul', function() {
     var idt2 = $(this).data('id')
     var idbarang2 = $(this).data('id-barang')
     var memberid2 = $(this).data('member')
-    var jml2 = $(this).data('jumlah')
     var harjul = $(this).val()
+
 
     for (var i = 1; i < nomor; i++) {
         if(idt2 == $('#harjul2'+i).data('idhar')) {
@@ -579,6 +659,8 @@ $(document).on('change keyup','.harjul', function() {
         }
 
         if(idt2 == $('#coltotal'+i).data('id2')) {
+            var jml2 = $('.jmldskn'+i).val()
+            var diskon = $('.udskn'+i).val()
             // console.log($('#coltotal'+i).val())
             $.ajax({
                 url: "fungsi/edit/edit.php?jual=jual",
@@ -587,7 +669,8 @@ $(document).on('change keyup','.harjul', function() {
                     id : idt2,
                     id_barang : idbarang2,
                     jumlah : jml2,
-                    harjul : harjul
+                    diskon : diskon,
+                    harjul : harjul,
                 },
                 success: function (res) {
                     
@@ -602,8 +685,8 @@ $(document).on('change keyup','.harjul', function() {
                                 // console.log(response.data[4])
                                 for (var j = 1; j < nomor; j++) {
                                     if(idt2 == $('.totaltemp'+j).data('id3')) {
-                                        $(".totaltemp"+j).html(numberWithCommas(response.data[5]))
-                                        $(".totalg1"+j).val(response.data[5])
+                                        $(".totaltemp"+j).html(numberWithCommas(response.data[6]))
+                                        $(".totalg1"+j).val(response.data[6])
                                         $(".cjml2"+j).val(response.data[3])
                                     }
                                 }
@@ -617,7 +700,8 @@ $(document).on('change keyup','.harjul', function() {
                             dataType: 'json',
                             success: function(response) {
                                 // console.log(response.data[4])
-                                $("#totals").val(response.total[0])
+                                $("#totals").val(response.data[0])
+                                $("#dibayar").attr('placeholder', response.data[0]);
                             }
 
                         })
@@ -628,6 +712,7 @@ $(document).on('change keyup','.harjul', function() {
         }
     }
 });
+
 
 $(document).on('change','.pilpelanggan', function() {
     var pil = $(".pilpelanggan").val()

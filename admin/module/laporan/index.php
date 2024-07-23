@@ -238,6 +238,7 @@
                             <tr>
                                 <td>No.</td>
                                 <td>Barang</td>
+                                <td>Diskon</td>
                                 <td>Jumlah</td>
                                 <td>Total</td>
                             </tr>
