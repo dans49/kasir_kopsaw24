@@ -177,7 +177,7 @@
 								$modal = 0;
 								foreach($hasil as $isi){ 
 									$bayar += $isi['totalb'];
-									$modal += $isi['harga_satuan_beli']* $isi['terjual'];
+									$modal += ($isi['harga_satuan_beli']-$isi['diskon'])* $isi['terjual'];
 									$jumlah += $isi['terjual'];
 									$expl = explode(' ', $isi['waktudata']);
 							?>
@@ -186,7 +186,7 @@
 								<td><?php echo $isi['id_barang'];?></td>
 								<td><?php echo $isi['nama_barang'];?></td>
 								<td align="center"><?php echo $isi['terjual'];?> </td>
-								<td>Rp.<?php echo number_format($isi['harga_satuan_beli']* $isi['terjual']);?>,-</td>
+								<td>Rp.<?php echo number_format(($isi['harga_satuan_beli']-$isi['diskon'])* $isi['terjual']);?>,-</td>
 								<td></td>
 								<td></td>
 								<td>Rp.<?php echo number_format($isi['totalb']);?>,-</td>

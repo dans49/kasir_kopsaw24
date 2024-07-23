@@ -34,6 +34,7 @@
 							<th>No.</th>
 							<th>Barang</th>
 							<th>Harga Jual</th>
+							<th>Diskon</th>
 							<th>Jumlah</th>
 							<th>Total</th>
 						</tr>
@@ -42,6 +43,7 @@
 							<td><?php echo $no;?></td>
 							<td><?php echo $isi['nama_barang'];?></td>
 							<td><?php echo $isi['harga_jual'];?></td>
+							<td><?php echo $isi['diskon'];?></td>
 							<td><?php echo $isi['jumlah'];?></td>
 							<td><?php echo $isi['total'];?></td>
 						</tr>

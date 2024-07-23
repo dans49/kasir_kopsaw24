@@ -22,7 +22,8 @@ foreach ($hasil2 as $value) {
 	$getjual .= "<tr>";
 	$getjual .= "<td>$nom</td>";
 	$getjual .= "<td>$value[nama_barang]</td>";
-	
+	$getjual .= "<td>$value[harga_jual]</td>";
+	$getjual .= "<td>$value[diskon]</td>";
 	$getjual .= "<td>".number_format($value['jumlah'],0,',','.')."</td>";
 	$getjual .= "<td>Rp. ".number_format($value['total'],0,',','.').",-</td>";
 	$getjual .= "</tr>";
