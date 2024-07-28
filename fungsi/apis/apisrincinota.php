@@ -7,8 +7,8 @@ $lihat = new view($config);
 $nota = $_GET['nota'];
 $member = $_GET['memberid'];
 $status = $_GET['status'];
-echo $nota;
-return 0;
+// echo $nota;
+// return 0;
 
 $sql ="SELECT * FROM nota WHERE id_nota = ?
         ORDER BY id_nota DESC";
@@ -43,6 +43,7 @@ foreach ($hasil2 as $isi2) {
    $getjual .= "<tr>";
    $getjual .= "<td>$nom</td>";
    $getjual .= "<td>$isi2[nama_barang]</td>";
+   $getjual .= "<td>$isi2[diskon]</td>";
    $getjual .= "<td>$jumlahpcs</td>";
    $getjual .= "<td>Rp. ".number_format($isi2['total_pembelian'],0,',','.').",-</td>";
    $getjual .= "</tr>";
