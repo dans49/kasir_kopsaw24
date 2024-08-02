@@ -192,14 +192,14 @@
 
                                     foreach($hsl_penj as $penj) {
 										if($penj['jenis_bayar'] == 'cash') {
-											$cash = $penj['harga_satuan_jual']-$penj['diskon'];
-											$jcash += $penj['harga_satuan_jual']-$penj['diskon'];
+											$cash = $penj['total'];
+											$jcash += $penj['total'];
 											$credit = 0;
 										} 
 										elseif($penj['jenis_bayar'] == 'credit') {
 											$cash = 0;
-											$credit = $penj['harga_satuan_jual']-$penj['diskon'];
-											$jcredit += $penj['harga_satuan_jual']-$penj['diskon'];
+											$credit = $penj['total'];
+											$jcredit += $penj['total'];
 										}
                                     }
 							?>
