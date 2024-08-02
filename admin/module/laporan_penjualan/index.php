@@ -185,17 +185,19 @@
 									$jumlah += $isi['terjual'];
 									$expl = explode(' ', $isi['waktudata']);
 
-									$sql_penj = "SELECT * FROM penjualan WHERE id_barang = ?";
+									$sql_penj = "SELECT * FROM penjualan WHERE id_barang = ? AND id_nota= ? ";
                                     $row_penj = $config->prepare($sql_penj);
-                                    $row_penj->execute(array($isi['id_barang']));
+                                    $row_penj->execute(array($isi['id_barang'],$isi['id_nota']));
                                     $hsl_penj = $row_penj->fetchAll();
 
                                     foreach($hsl_penj as $penj) {
 										if($penj['jenis_bayar'] == 'cash') {
 											$cash = $penj['harga_satuan_jual']-$penj['diskon'];
 											$jcash += $penj['harga_satuan_jual']-$penj['diskon'];
+											$credit = 0;
 										} 
 										elseif($penj['jenis_bayar'] == 'credit') {
+											$cash = 0;
 											$credit = $penj['harga_satuan_jual']-$penj['diskon'];
 											$jcredit += $penj['harga_satuan_jual']-$penj['diskon'];
 										}
