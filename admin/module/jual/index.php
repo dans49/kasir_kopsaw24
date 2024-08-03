@@ -151,13 +151,18 @@
                                     $total = $_POST['total1'];
                                     $periode = $_POST['periode'];
                                     $jumlah_dipilih = count($id_barang);
+                                    if($status == 'Hutang'){
+                                        $jb = 'credit';
+                                    } else {
+                                        $jb = 'cash';
+                                    }
                                     
                                     for($x=0;$x<$jumlah_dipilih;$x++){
 
                                         $idjual = getpenjualan($config);
-                                        $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$diskon[$x],$jumlah[$x],$total[$x]);
+                                        $d = array($idjual,$id_barang[$x],$hsb[$x], $hsj[$x], $id_member[$x],$idnota,$diskon[$x],$jb,$jumlah[$x],$total[$x]);
                                         var_dump($d);
-                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,diskon,jumlah,total) VALUES(?,?,?,?,?,?,?,?,?)";
+                                        $sql = "INSERT INTO penjualan (id_penjualan,id_barang,harga_satuan_beli,harga_satuan_jual,id_member,id_nota,diskon,jenis_bayar,jumlah,total) VALUES(?,?,?,?,?,?,?,?,?,?)";
                                         $row = $config->prepare($sql);
                                         $row->execute($d);
 

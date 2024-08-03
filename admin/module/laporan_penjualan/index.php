@@ -175,21 +175,43 @@
 								$bayar = 0;
 								$jumlah = 0;
 								$modal = 0;
+								$cash = 0;
+								$credit = 0;
+								$jcash = 0;
+								$jcredit = 0;
 								foreach($hasil as $isi){ 
 									$bayar += $isi['totalb'];
 									$modal += ($isi['harga_satuan_beli']-$isi['diskon'])* $isi['terjual'];
 									$jumlah += $isi['terjual'];
 									$expl = explode(' ', $isi['waktudata']);
+
+									$sql_penj = "SELECT * FROM penjualan WHERE id_barang = ? AND id_nota= ? ";
+                                    $row_penj = $config->prepare($sql_penj);
+                                    $row_penj->execute(array($isi['id_barang'],$isi['id_nota']));
+                                    $hsl_penj = $row_penj->fetchAll();
+
+                                    foreach($hsl_penj as $penj) {
+										if($penj['jenis_bayar'] == 'cash') {
+											$cash = $penj['total'];
+											$jcash += $penj['total'];
+											$credit = 0;
+										} 
+										elseif($penj['jenis_bayar'] == 'credit') {
+											$cash = 0;
+											$credit = $penj['total'];
+											$jcredit += $penj['total'];
+										}
+                                    }
 							?>
 							<tr>
 								<td><?php echo $no;?></td>
 								<td><?php echo $isi['id_barang'];?></td>
 								<td><?php echo $isi['nama_barang'];?></td>
 								<td align="center"><?php echo $isi['terjual'];?> </td>
-								<td>Rp.<?php echo number_format(($isi['harga_satuan_beli']-$isi['diskon'])* $isi['terjual']);?>,-</td>
-								<td></td>
-								<td></td>
-								<td>Rp.<?php echo number_format($isi['totalb']);?>,-</td>
+								<td>Rp. <?php echo number_format(($isi['harga_satuan_beli']-$isi['diskon'])* $isi['terjual']);?>,-</td>
+								<td>Rp <?=number_format($cash) ?></td>
+								<td>Rp <?=number_format($credit) ?></td>
+								<td>Rp. <?php echo number_format($isi['totalb']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
 								<!-- <td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td> -->
 							</tr>
@@ -199,11 +221,11 @@
 							<tr>
 								<th colspan="3">Total Terjual</th>
 								<td align="center"><b><?php echo $jumlah;?></b></td>
-								<th>Rp.<?php echo number_format($modal);?>,-</th>
-								<th>Rp.<?php echo number_format($cash);?>,-</th>
-								<th>Rp.<?php echo number_format($credit);?>,-</th>
-								<th>Rp.<?php echo number_format($bayar);?>,-</th>
-								<th style="background:#0bb365;color:#fff;">Keuntungan : Rp.<?php echo number_format($bayar-$modal);?>,-</th>
+								<th>Rp. <?php echo number_format($modal);?>,-</th>
+								<th>Rp. <?php echo number_format($jcash);?>,-</th>
+								<th>Rp. <?php echo number_format($jcredit);?>,-</th>
+								<th>Rp. <?php echo number_format($bayar);?>,-</th>
+								<th style="background:#0bb365;color:#fff;">Keuntungan : Rp. <?php echo number_format($bayar-$modal);?>,-</th>
 								<!-- <th style="background:#0bb365;color:#fff;"></th> -->
 							</tr>
 						</tfoot>
