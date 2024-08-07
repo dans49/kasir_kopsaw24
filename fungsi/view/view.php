@@ -495,6 +495,19 @@ class view
         return $hasil;
     }
 
+    public function tahun_barang_jual($periode) // NAMBAH
+    {
+        $cari = "%$periode%";
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,sum(penjualan.jumlah) as terjual, sum(penjualan.total) as totalb, member.nm_member from penjualan 
+                left join barang on barang.id_barang=penjualan.id_barang 
+                left join member on member.id_member=penjualan.id_member WHERE penjualan.waktudata like ? 
+                GROUP BY penjualan.id_barang ORDER BY penjualan.waktudata ASC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($cari));
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
     // === DATATABLE SERVERSIDE ===
     public function _getdatanota() // NAMBAH
     {

@@ -44,8 +44,16 @@
     <!-- view barang -->	
     <div class="modal-view">
         <h3 style="text-align:center;"> 
-                <?php if(!empty(htmlentities($_GET['cari']))){ ?>
-                    Data Laporan Penjualan Barang Bulan <?= $bulan_tes[htmlentities($_GET['bln'])];?> <?= htmlentities($_GET['thn']);?>
+                <?php if(!empty(htmlentities($_GET['cari']))){ 
+                    if($_GET['cari'] == 'ok'){ ?>
+                        Data Laporan Penjualan Barang Bulan <?= $bulan_tes[htmlentities($_GET['bln'])];?> <?= htmlentities($_GET['thn']);?>
+                    <?php
+                    } else { ?>
+                        Data Laporan Penjualan Barang Tahun <?= $_GET['thn'];?>
+                    <?php
+                    }
+                    ?>
+                    
                 <?php }elseif(!empty(htmlentities($_GET['hari']))){?>
                     Data Laporan Penjualan Barang Tanggal <?= $waktu->tgl_indo(htmlentities($_GET['tgl']));?>
                 <?php }else{?>
@@ -70,11 +78,20 @@
                 <?php 
                     $no=1; 
                     if(!empty(htmlentities($_GET['cari']))){
-                        $periode = htmlentities($_GET['thn']).'-'.htmlentities($_GET['bln']);
-                        $no=1; 
-                        $jumlah = 0;
-                        $bayar = 0;
-                        $hasil = $lihat -> periode_penjual($periode);
+                        if($_GET['cari'] == 'ok') {
+                            $periode = htmlentities($_GET['thn']).'-'.htmlentities($_GET['bln']);
+                            $no=1; 
+                            $jumlah = 0;
+                            $bayar = 0;
+                            $hasil = $lihat -> periode_penjual($periode);
+                        } else {
+                            $thn = htmlentities($_GET['thn']);
+                            $no=1; 
+                            $jumlah = 0;
+                            $bayar = 0;
+                            $hasil = $lihat -> tahun_barang_jual($thn);
+
+                        }
                     }elseif(!empty(htmlentities($_GET['hari']))){
                         $hari = htmlentities($_GET['tgl']);
                         $no=1; 
