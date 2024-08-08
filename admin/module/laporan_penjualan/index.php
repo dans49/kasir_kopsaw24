@@ -91,7 +91,7 @@
 										<i class="fa fa-refresh"></i> Refresh</a>
 
 									<?php if(!empty($_GET['cari'])){?>
-									<a href="excel_penjualan.php?cari=yes&thn=<?=$_POST['tahun'];?>"
+									<a href="excel_penjualan.php?cari=tahun&thn=<?=$_POST['tahun'];?>"
 										class="btn btn-info"><i class="fa fa-download"></i>
 										Excel</a>
 									<?php }else{?>
