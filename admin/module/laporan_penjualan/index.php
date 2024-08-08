@@ -224,7 +224,7 @@
 								<th style="width:10%;"> Credit</th>
 								<th style="width:10%;"> Total Terjual</th>
 								<th width="20%"> Kasir</th>
-								<th> Tanggal Input</th>
+								<!-- <th> Tanggal Input</th> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -260,8 +260,6 @@
 								$bayar = 0;
 								$jumlah = 0;
 								$modal = 0;
-								$cash = 0;
-								$credit = 0;
 								$jcash = 0;
 								$jcredit = 0;
 								foreach($hasil as $isi){ 
@@ -270,36 +268,41 @@
 									$jumlah += $isi['terjual'];
 									$expl = explode(' ', $isi['waktudata']);
 
-									$sql_penj = "SELECT sum(total) as totc,total,jenis_bayar,id_barang,id_nota FROM penjualan WHERE id_barang = ? AND id_nota= ?";
-                                    $row_penj = $config->prepare($sql_penj);
-                                    $row_penj->execute(array($isi['id_barang'],$isi['id_nota']));
-                                    $hsl_penj = $row_penj->fetchAll();
+									if(!empty($_GET['cari'])){
+										if($_GET['cari'] == 'ok') {
+											$periode = $_POST['thn'].'-'.$_POST['bln'];
+											$hsl_penj = $lihat -> sumcashcari($isi['id_barang'],$periode);
+                                    		$hsl_cr = $lihat->sumcreditcari($isi['id_barang'],$periode);
+										} else {
+											$thn = $_POST['tahun'];
+											$hsl_penj = $lihat -> sumcashcari($isi['id_barang'],$thn);
+                                    		$hsl_cr = $lihat->sumcreditcari($isi['id_barang'],$thn);
 
-                                    foreach($hsl_penj as $penj) {
-                                    	// var_dump($isi['totalb'].''.$isi['id_barang']);
-										if($penj['jenis_bayar'] == 'cash') {
-											$credit = 0;
-											$cash = $isi['totalb'];
-											$jcash += $isi['totalb'];
-										} 
-										elseif($penj['jenis_bayar'] == 'credit') {
-											$cash = 0;
-											$credit = $isi['totalb'];
-											$jcredit += $isi['totalb'];
 										}
-                                    }
+									}elseif(!empty($_GET['hari'])){
+										$hari = $_POST['hari'];
+										$hsl_penj = $lihat -> sumcashcari($isi['id_barang'],$hari);
+                                    	$hsl_cr = $lihat->sumcreditcari($isi['id_barang'],$hari);
+									}else{
+										$hsl_penj = $lihat->sumcash($isi['id_barang'],date('m'),date('Y'));
+                                    	$hsl_cr = $lihat->sumcredit($isi['id_barang'],date('m'),date('Y'));
+									}
+
+                                    $jcash += $hsl_penj['totc'];
+                                    $jcredit += $hsl_cr['totcr'];
+
 							?>
 							<tr>
 								<td><?php echo $no;?></td>
 								<td><?php echo $isi['id_barang'];?></td>
 								<td><?php echo $isi['nama_barang'];?></td>
 								<td align="center"><?php echo $isi['terjual'];?> </td>
-								<td>Rp. <?php echo number_format(($isi['harga_satuan_beli']-$isi['diskon'])* $isi['terjual']);?>,-</td>
-								<td>Rp <?=number_format($cash) ?></td>
-								<td>Rp <?=number_format($credit) ?></td>
-								<td>Rp. <?php echo number_format($isi['totalb']);?>,-</td>
+								<td align="right">Rp. <?php echo number_format(($isi['harga_satuan_beli']-$isi['diskon'])* $isi['terjual']);?>,-</td>
+								<td align="right">Rp <?=number_format($hsl_penj['totc'] ?? '0'); ?>,-</td>
+								<td align="right">Rp <?=number_format($hsl_cr['totcr'] ?? '0'); ?>,-</td>
+								<td align="right">Rp. <?php echo number_format($isi['totalb']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
-								<td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td>
+								<!-- <td><?php echo $frmwaktu->tgl_indo($expl[0]); ?></td> -->
 							</tr>
 							<?php $no++; }?>
 						</tbody>
@@ -307,10 +310,10 @@
 							<tr>
 								<th colspan="3">Total Terjual</th>
 								<td align="center"><b><?php echo $jumlah;?></b></td>
-								<th>Rp. <?php echo number_format($modal);?>,-</th>
-								<th>Rp. <?php echo number_format($jcash);?>,-</th>
-								<th>Rp. <?php echo number_format($jcredit);?>,-</th>
-								<th>Rp. <?php echo number_format($bayar);?>,-</th>
+								<td align="right" style="font-weight: bold">Rp. <?php echo number_format($modal);?>,-</td>
+								<td align="right" style="font-weight: bold">Rp. <?php echo number_format($jcash);?>,-</td>
+								<td align="right" style="font-weight: bold">Rp. <?php echo number_format($jcredit);?>,-</td>
+								<td align="right" style="font-weight: bold">Rp. <?php echo number_format($bayar);?>,-</td>
 								<th style="background:#0bb365;color:#fff;">Keuntungan : Rp. <?php echo number_format($bayar-$modal);?>,-</th>
 								<!-- <th style="background:#0bb365;color:#fff;"></th> -->
 							</tr>
