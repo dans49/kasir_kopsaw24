@@ -272,6 +272,8 @@
 	        let idm = "<?php echo $_SESSION['admin']['id_member']; ?>"
 	        let idn = $(this).data('id')
 	        let status = $(this).data('status')
+			// console.log(idn)
+			// return 0;
 	        // $("#trx").html(idn)
 
 	        $.ajax({

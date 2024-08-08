@@ -7,7 +7,6 @@ $lihat = new view($config);
 $nota = $_GET['nota'];
 $member = $_GET['memberid'];
 $status = $_GET['status'];
-// echo $nota;
 // return 0;
 
 $sql ="SELECT * FROM nota WHERE id_nota = ?
