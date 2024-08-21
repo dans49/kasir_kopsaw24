@@ -495,6 +495,63 @@ class view
         return $hasil;
     }
 
+    public function tahun_barang_jual($periode) // NAMBAH
+    {
+        $cari = "%$periode%";
+        $sql ="SELECT penjualan.* , barang.id_barang, barang.nama_barang, barang.harga_beli, member.id_member,sum(penjualan.jumlah) as terjual, sum(penjualan.total) as totalb, member.nm_member from penjualan 
+                left join barang on barang.id_barang=penjualan.id_barang 
+                left join member on member.id_member=penjualan.id_member WHERE penjualan.waktudata like ? 
+                GROUP BY penjualan.id_barang ORDER BY penjualan.waktudata ASC";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($cari));
+        $hasil = $row -> fetchAll();
+        return $hasil;
+    }
+
+    public function sumcash($idbarang,$par2,$par3)
+    {
+        $data[] = $idbarang;
+        $data[] = $par2;
+        $data[] = $par3;
+        $sql_penj = "SELECT sum(total) as totc FROM penjualan WHERE jenis_bayar='cash' AND id_barang = ? AND month(penjualan.waktudata) = ? AND year(penjualan.waktudata) = ?";
+        $row_penj = $this-> db ->prepare($sql_penj);
+        $row_penj->execute($data);
+        $hasil = $row_penj->fetch();
+        return $hasil;
+    }
+
+    public function sumcashcari($idbarang,$periode) // NAMBAH
+    {
+        $cari = "%$periode%";
+        $sql ="SELECT sum(total) as totc FROM penjualan WHERE jenis_bayar='cash' AND id_barang = ? AND waktudata like ?";
+        $row = $this-> db -> prepare($sql);
+        $row -> execute(array($idbarang,$cari));
+        $hasil = $row -> fetch();
+        return $hasil;
+    }
+
+    public function sumcredit($idbarang,$par2,$par3)
+    {
+        $data[] = $idbarang;
+        $data[] = $par2;
+        $data[] = $par3;
+        $sql_cr = "SELECT sum(total) as totcr FROM penjualan WHERE jenis_bayar='credit' AND id_barang = ? AND month(penjualan.waktudata) = ? AND year(penjualan.waktudata) = ?";
+        $row_cr = $this-> db ->prepare($sql_cr);
+        $row_cr->execute($data);
+        $hasil = $row_cr->fetch();
+        return $hasil;
+    }
+
+    public function sumcreditcari($idbarang,$periode)
+    {
+        $cari = "%$periode%";
+        $sql_cr = "SELECT sum(total) as totcr FROM penjualan WHERE jenis_bayar='credit' AND id_barang = ? AND waktudata like ?";
+        $row_cr = $this-> db ->prepare($sql_cr);
+        $row_cr->execute(array($idbarang,$cari));
+        $hasil = $row_cr->fetch();
+        return $hasil;
+    }
+
     // === DATATABLE SERVERSIDE ===
     public function _getdatanota() // NAMBAH
     {

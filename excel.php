@@ -44,9 +44,16 @@
 <body>
     <div class="modal-view">
         <h3 style="text-align:center;">
-            <?php if (!empty(htmlentities($_GET['cari']))) { ?>
-                Data Laporan Transaksi <?= $bulan_tes[htmlentities($_GET['bln'])]; ?> <?= htmlentities($_GET['thn']); ?>
-            <?php } elseif (!empty(htmlentities($_GET['hari']))) { ?>
+            <?php if (!empty(htmlentities($_GET['cari']))) { 
+                if($_GET['cari'] == 'yes') {
+                ?>
+                    Data Laporan Transaksi Bulan <?= $bulan_tes[htmlentities($_GET['bln'])]; ?> Tahun <?= htmlentities($_GET['thn']); ?>
+                <?php
+                } else { ?>
+                    Data Laporan Transaksi Tahun <?= htmlentities($_GET['thn']); ?>
+                <?php 
+                } 
+            } elseif (!empty(htmlentities($_GET['hari']))) { ?>
                 Data Laporan Transaksi <?= htmlentities($_GET['hari']); ?>
             <?php } else { ?>
                 Data Laporan Transaksi <?= $bulan_tes[date('m')]; ?> <?= date('Y'); ?>
@@ -70,8 +77,13 @@
                 <?php
                     $no = 1; 
                     if (!empty(htmlentities($_GET['cari']))) {
-                        $periode = htmlentities($_GET['thn']) . '-' . htmlentities($_GET['bln']);
-                        $hasil = $lihat->periode_jual($periode);
+                        if($_GET['cari'] == 'yes') {
+                            $periode = htmlentities($_GET['thn']) . '-' . htmlentities($_GET['bln']);
+                            $hasil = $lihat->periode_jual($periode);
+                        } else {
+                            $thn = htmlentities($_GET['thn']);
+                            $hasil = $lihat -> periode_jual($thn);
+                        }
                     } elseif (!empty(htmlentities($_GET['tgl']))) {
                         $hari = htmlentities($_GET['tgl']);
                         $hasil = $lihat->hari_jual($hari);
