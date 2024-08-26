@@ -22,15 +22,15 @@
 					</a>-->
 			<?php if(!empty($_GET['cari'])){ 
 				if($_GET['cari'] == 'ok'){ ?>
-					Data Laporan Penjualan <?= $bulan_tes[$_POST['bln']];?> <?= $_POST['thn'];?>
+					Data Laporan Penjualan <?= $bulan_tes[$_GET['bln']];?> <?= $_GET['thn'];?>
 				<?php
 				} else { ?>
-					Data Laporan Penjualan Tahun <?= $_POST['tahun'];?>
+					Data Laporan Penjualan Tahun <?= $_GET['thn'];?>
 				<?php
 				}
 			?>
 			<?php }elseif(!empty($_GET['hari'])){?>
-			Data Laporan Penjualan <?= $_POST['hari'];?>
+			Data Laporan Penjualan <?= $_GET['tgl'];?>
 			<?php }else{?>
 			Data Laporan Penjualan <?= $bulan_tes[date('m')];?> <?= date('Y');?>
 			<?php }?>
@@ -82,6 +82,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="periode" value="ya">
+									<input type="text" name="kat_thn" value="tahun">
 									<button class="btn btn-primary">
 										<i class="fa fa-search"></i> Cari
 									</button>
@@ -89,7 +90,7 @@
 										<i class="fa fa-refresh"></i> Refresh</a>
 
 									<?php if(!empty($_GET['cari'])){?>
-									<a href="excel.php?cari=tahun&thn=<?=$_POST['tahun'];?>"
+									<a href="excel.php?cari=tahun&thn=<?=$_GET['tahun'];?>"
 										class="btn btn-info"><i class="fa fa-download"></i>
 										Excel</a>
 									<?php }else{?>
@@ -100,6 +101,12 @@
 							</tr>
 						</table>
 					</form>
+					<?php
+					if($_GET['cari'] == 'tahun' && $_POST['kat_thn'] == 'tahun') {
+						$thn = $_POST['tahun'];
+						echo "<script>document.location.href='index.php?page=laporan&cari=tahun&thn=$thn'</script>";
+					}
+					?>
 				</div>
 
 				<div id="caribulan">
@@ -153,7 +160,7 @@
 										<i class="fa fa-refresh"></i> Refresh</a>
 
 									<?php if(!empty($_GET['cari'])){?>
-									<a href="excel.php?cari=yes&bln=<?=$_POST['bln'];?>&thn=<?=$_POST['thn'];?>"
+									<a href="excel.php?cari=yes&bln=<?=$_GET['bln'];?>&thn=<?=$_GET['thn'];?>"
 										class="btn btn-info"><i class="fa fa-download"></i>
 										Excel</a>
 									<?php }else{?>
@@ -164,6 +171,13 @@
 							</tr>
 						</table>
 					</form>
+					<?php
+					if(!empty($_POST['bln']) && !empty($_POST['thn'])) {
+						$bln = $_POST['bln'];
+						$thn = $_POST['thn'];
+						echo "<script>document.location.href='index.php?page=laporan&cari=ok&bln=$bln&thn=$thn'</script>";
+					}
+					?>
 				</div>
 
 				<div id="carihari">
@@ -179,7 +193,7 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="date" value="<?= date('Y-m-d');?>" class="form-control" name="hari">
+									<input type="date" value="<?= date('Y-m-d');?>" class="form-control" name="tgl">
 								</td>
 								<td>
 									<input type="hidden" name="periode" value="ya">
@@ -190,7 +204,7 @@
 										<i class="fa fa-refresh"></i> Refresh</a>
 
 									<?php if(!empty($_GET['hari'])){?>
-									<a href="excel.php?hari=cek&tgl=<?= $_POST['hari'];?>" class="btn btn-info"><i
+									<a href="excel.php?hari=ok&tgl=<?= $_GET['tgl'];?>" class="btn btn-info"><i
 											class="fa fa-download"></i>
 										Excel</a>
 									<?php }else{?>
@@ -201,10 +215,16 @@
 							</tr>
 						</table>
 					</form>
+					<?php
+					if($_GET['hari'] == 'cek') {
+						$tgl = $_POST['tgl'];
+						echo "<script>document.location.href='index.php?page=laporan&hari=ok&tgl=$tgl'</script>";
+					}
+					?>
 				</div>
 			</div>
 		</div>
-		<input type="text" name="filtercek" id="filtercek" value="<?=$_SESSION['lap_nota'] ?>">
+		<input type="text" name="filtercek" id="filtercek" value="<?=$_SESSION['lap_nota'] ?>" hidden>
          <br />
          <br />
          <!-- view Nota -->
@@ -231,20 +251,20 @@
 								if(!empty($_GET['cari'])){
 									
 									if($_GET['cari'] == 'ok') {
-										$periode = $_POST['thn'].'-'.$_POST['bln'];
+										$periode = $_GET['thn'].'-'.$_GET['bln'];
 										$no=1; 
 										$jumlah = 0;
 										$bayar = 0;
 										$hasil = $lihat -> periode_jual($periode);
 									} else {
-										$thn = $_POST['tahun'];
+										$thn = $_GET['thn'];
 										$no=1; 
 										$jumlah = 0;
 										$bayar = 0;
 										$hasil = $lihat -> periode_jual($thn);
 									}
 								}elseif(!empty($_GET['hari'])){
-									$hari = $_POST['hari'];
+									$hari = $_GET['tgl'];
 									$no=1; 
 									$jumlah = 0;
 									$bayar = 0;
@@ -375,32 +395,7 @@
 	    });
 	})
 
-
-	url_string = window.location.href 
- 	var url = new URL(url_string);
- 	var h = url.searchParams.get("hari");
- 	var c = url.searchParams.get("cari");
  	var sess = $("#filtercek").val()
- 	console.log(sess)
- 	// console.log(c);
-
- 	// if(c == null && h == null) {
-	 // 	$("#caribulan").hide();
-	 // 	$("#carihari").hide();
-	 // 	$("#caritahun").hide();
- 	// } else if(c == 'ok' && h == null){
- 	// 	$("#caribulan").show();
-	 // 	$("#carihari").hide();
-	 // 	$("#caritahun").hide();
- 	// } else if(c == 'tahun' && h == null){
- 	// 	$("#caribulan").hide();
-	 // 	$("#carihari").hide();
-	 // 	$("#caritahun").show();
- 	// } else if(c == null && h == 'cek'){
- 	// 	$("#caribulan").hide();
-	 // 	$("#carihari").show();
-	 // 	$("#caritahun").hide();
- 	// }
 
  	if(sess == '') {
 	 	$("#caribulan").hide();
