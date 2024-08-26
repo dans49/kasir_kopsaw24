@@ -298,7 +298,14 @@
 									 ?>
 								</td>
 								<td><button type="button" class="btn btn-primary detailNota" data-toggle="modal" data-target="#rincianNota" value="1" data-load-code="<?php echo $isi['id_nota'];?>" data-id="<?php echo $isi['id_nota'];?>" data-status="<?=$isi['status_nota'] ?>">  Detail </button>
+								<!-- <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>"
+                                    onclick="javascript:return confirm('Hapus Data Transaksi ?');"><button
+                                        class="btn btn-danger btn-sm">Hapus</button></a> -->
+										<a href="fungsi/hapus/hapus.php?id_nota=<?= $nota['id_nota'];?>}" 
+                           onclick='return confirm("Apakah Anda yakin ingin menghapus data ini?")' 
+                           class='btn btn-danger btn-sm'>Hapus</a>
 								</td>
+								
 							</tr>
 							<?php $no++; }?>
 						</tbody>
