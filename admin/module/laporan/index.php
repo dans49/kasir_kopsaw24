@@ -234,7 +234,7 @@
 					<table class="table table-bordered w-100 table-sm" id="example1">
 						<thead>
 							<tr style="background:#DFF0D8;color:#333;">
-								<th> No <?=$_SESSION['lap_nota'] ?></th>
+								<th> No </th>
 								<th> ID Transaksi</th>
 								<th> Nama Pelanggan</th>
 								<th style="width:10%;"> Tanggal</th>
