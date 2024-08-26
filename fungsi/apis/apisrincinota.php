@@ -74,10 +74,10 @@ if($status=="Lunas"){
          <div class='col-sm-2.5 '>Bayar :</div>
          <div class='col-sm-4'><input type='number' id='bayar' class='form-control' name='bayar' value='$sisa' required></div>
 
-         <input type='text' name='filter' value= '$filter' >
-         <input type='text' name='tgl2' value= '$tgl' >
-         <input type='text' name='bln2' value= '$bln' >
-         <input type='text' name='thn2' value= '$thn' >
+         <input type='hidden' name='filter' value= '$filter' >
+         <input type='hidden' name='tgl2' value= '$tgl' >
+         <input type='hidden' name='bln2' value= '$bln' >
+         <input type='hidden' name='thn2' value= '$thn' >
          <input type='text' name='total_blj' value= '$total2' hidden>
          <input type='text' name='status_nota' value= 'Lunas' hidden >
          <input type='text' name='id_nota' value= '$nota' hidden >
