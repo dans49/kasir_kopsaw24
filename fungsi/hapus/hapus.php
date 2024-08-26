@@ -30,6 +30,15 @@ if (!empty($_SESSION['admin'])) {
         echo '<script>window.location="../../index.php?page=barang&&remove=hapus-data"</script>';
     }
 
+    if (!empty(htmlentities($_GET['id_nota']))) {
+        $id = htmlentities($_GET['id_nota']);
+        $data[] = $id;
+        $sql = 'DELETE FROM nota WHERE id_nota=?';
+        $row = $config->prepare($sql);
+        $row->execute($data);
+        echo '<script>window.location="../../index.php?page=laporan&&remove=hapus-data"</script>';
+    }
+
     if (!empty(htmlentities($_GET['pelanggan']))) {
         $id= htmlentities($_GET['id']);
         $data[] = $id;
