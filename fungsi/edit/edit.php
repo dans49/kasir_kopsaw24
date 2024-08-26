@@ -114,6 +114,8 @@ if (!empty($_SESSION['admin'])) {
 				status_nota=?  WHERE id_nota=?';
         $row = $config -> prepare($sql);
         $row -> execute($data);
+
+        $url = "";
        
         echo '<script>window.location="../../index.php?page=laporan"</script>';
     }
