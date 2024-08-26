@@ -30,13 +30,35 @@ if (!empty($_SESSION['admin'])) {
         echo '<script>window.location="../../index.php?page=barang&&remove=hapus-data"</script>';
     }
 
-    if (!empty(htmlentities($_GET['id_nota']))) {
+    if ((htmlentities($_GET['nota']) == 'oke')) {
+        $tgl = $_GET['tgl'];
+
+
+
         $id = htmlentities($_GET['id_nota']);
         $data[] = $id;
         $sql = 'DELETE FROM nota WHERE id_nota=?';
         $row = $config->prepare($sql);
         $row->execute($data);
-        echo '<script>window.location="../../index.php?page=laporan&&remove=hapus-data"</script>';
+        // ============ HAPUS NOTA END === 
+
+        $sql2 = 'DELETE FROM penjualan WHERE id_nota=?';
+        $row2 = $config->prepare($sql2);
+        $row2->execute($data);
+
+        $sql3 = 'DELETE FROM rincian WHERE id_nota=?';
+        $row3 = $config->prepare($sql3);
+        $row3->execute($data);
+
+        // if() {
+
+        // } else {
+        //     echo '<script>window.location="../../index.php?page=laporan&remove=hapus-data"</script>';
+        // }
+        if(!empty($tgl)){
+            echo '<script>window.location="../../index.php?page=laporan&cari=ok&tgl=$tgl"</script>';
+        }
+
     }
 
     if (!empty(htmlentities($_GET['pelanggan']))) {
