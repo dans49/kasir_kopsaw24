@@ -82,7 +82,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="periode" value="ya">
-									<input type="text" name="kat_thn" value="tahun">
+									<input type="hidden" name="kat_thn" value="tahun">
 									<button class="btn btn-primary">
 										<i class="fa fa-search"></i> Cari
 									</button>
@@ -382,14 +382,27 @@
 	        let idm = "<?php echo $_SESSION['admin']['id_member']; ?>"
 	        let idn = $(this).data('id')
 	        let status = $(this).data('status')
+	        let filter = $('#filtercek').val()
+	        var tgl = "<?= $_GET['tgl'] ?? '' ?>"
+	        var bln = "<?=$_GET['bln'] ?? '' ?>"
+	        var thn = "<?=$_GET['thn'] ?? '' ?>"
 	        // $("#trx").html(idn)
 
 	        $.ajax({
-                type: 'GET',
-                url: "fungsi/apis/apisrincinota.php?nota="+idn+"&memberid="+idm+"&status="+status,
+                type: 'POST',
+                url: "fungsi/apis/apisrincinota.php",
+                data: {
+                	nota : idn,
+                	memberid : idm,
+                	status : status,
+                	filter : filter,
+                	tgl : tgl,
+                	bln : bln,
+                	thn : thn,
+                },
                 dataType: 'json',
                 success: function(res) {
-                	console.log(res)
+                	// console.log(res)
                     $("#trx").html(res.nota)
                     $("#gettotal").html(numberWithCommas(res.total))
                     $("#getbayar").html(numberWithCommas(res.bayar))

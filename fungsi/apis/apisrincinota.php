@@ -4,9 +4,13 @@ require '../../config.php';
 require '../../fungsi/view/view.php';
 $lihat = new view($config);
 
-$nota = $_GET['nota'];
-$member = $_GET['memberid'];
-$status = $_GET['status'];
+$nota    = $_POST['nota'];
+$member  = $_POST['memberid'];
+$status  = $_POST['status'];
+$filter  = $_POST['filter'];
+$tgl     = $_POST['tgl'];
+$bln     = $_POST['bln'];
+$thn     = $_POST['thn'];
 // echo $nota;
 // return 0;
 
@@ -66,11 +70,14 @@ if($status=="Lunas"){
           <div class='col-sm-4'>Rp. $total2 ,-</div>
       </div>
       
-      <div class='row'>                            
+      <div class='row'>
          <div class='col-sm-2.5 '>Bayar :</div>
          <div class='col-sm-4'><input type='number' id='bayar' class='form-control' name='bayar' value='$sisa' required></div>
 
-         <input type='text' name='kategori' value= '' >
+         <input type='text' name='filter' value= '$filter' >
+         <input type='text' name='tgl2' value= '$tgl' >
+         <input type='text' name='bln2' value= '$bln' >
+         <input type='text' name='thn2' value= '$thn' >
          <input type='text' name='total_blj' value= '$total2' hidden>
          <input type='text' name='status_nota' value= 'Lunas' hidden >
          <input type='text' name='id_nota' value= '$nota' hidden >

@@ -99,6 +99,10 @@ if (!empty($_SESSION['admin'])) {
         $hasil = $row2 -> fetch();
         $total_blj = htmlentities($_POST['total_blj']);
         $bayar = htmlentities($_POST['bayar']);
+        $filter = htmlentities($_POST['filter']);       
+        $tgl2 = htmlentities($_POST['tgl2']);       
+        $bln2 = htmlentities($_POST['bln2']);       
+        $thn2 = htmlentities($_POST['thn2']);
         $sisa2=$hasil['bayar'] + $bayar;
         if($sisa2 < $total_blj) {
             $status_nota = "Hutang";
@@ -115,9 +119,19 @@ if (!empty($_SESSION['admin'])) {
         $row = $config -> prepare($sql);
         $row -> execute($data);
 
-        $url = "";
+        if($filter == 'hari') {
+            echo '<script>window.location="../../index.php?page=laporan&hari=ok&tgl='.$tgl2.'"</script>';
+        } elseif($filter == 'bulan') {
+            $url = "";
+            echo '<script>window.location="../../index.php?page=laporan&cari=ok&bln='.$bln2.'&thn='.$thn2.'"</script>';
+        } elseif($filter == 'tahun') {
+            echo '<script>window.location="../../index.php?page=laporan&cari=tahun&thn='.$thn2.'"</script>';
+        } elseif($filter == 'hari' || $filter == 'bulan' || $filter == 'tahun' && ($tgl2 == '' && $bln2 == '' && $thn2 == '')) {
+            echo '<script>window.location="../../index.php?page=laporan"</script>';
+        } elseif($tgl2 == '' && $bln2 == '' && $thn2 == '') {
+            echo '<script>window.location="../../index.php?page=laporan"</script>';
+        }
        
-        echo '<script>window.location="../../index.php?page=laporan"</script>';
     }
 
 	
