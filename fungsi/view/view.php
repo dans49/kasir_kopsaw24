@@ -297,9 +297,10 @@ class view
     public function rincian_nota($id) // NAMBAH
     {
         $data[] = $id;
-        $sql ="SELECT rincian.*,nota.id_nota,nota.bayar,barang.nama_barang from rincian 
+        $sql ="SELECT rincian.*, penjualan.diskon, nota.id_nota,nota.bayar,barang.nama_barang from rincian 
                 left join nota on nota.id_nota=rincian.id_nota
                 left join barang on barang.id_barang=rincian.id_barang
+                left join penjualan on penjualan.id_nota=rincian.id_nota
                 where rincian.id_nota = ?
                 
                 ORDER BY id_rincian DESC";

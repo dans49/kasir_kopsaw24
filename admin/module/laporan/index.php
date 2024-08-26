@@ -204,6 +204,7 @@
 				</div>
 			</div>
 		</div>
+		<input type="text" name="filtercek" id="filtercek" value="<?=$_SESSION['lap_nota'] ?>">
          <br />
          <br />
          <!-- view Nota -->
@@ -213,7 +214,7 @@
 					<table class="table table-bordered w-100 table-sm" id="example1">
 						<thead>
 							<tr style="background:#DFF0D8;color:#333;">
-								<th> No</th>
+								<th> No <?=$_SESSION['lap_nota'] ?></th>
 								<th> ID Transaksi</th>
 								<th> Nama Pelanggan</th>
 								<th style="width:10%;"> Tanggal</th>
@@ -374,28 +375,51 @@
 	    });
 	})
 
+
 	url_string = window.location.href 
  	var url = new URL(url_string);
  	var h = url.searchParams.get("hari");
  	var c = url.searchParams.get("cari");
+ 	var sess = $("#filtercek").val()
+ 	console.log(sess)
  	// console.log(c);
 
- 	if(c == null && h == null) {
+ 	// if(c == null && h == null) {
+	 // 	$("#caribulan").hide();
+	 // 	$("#carihari").hide();
+	 // 	$("#caritahun").hide();
+ 	// } else if(c == 'ok' && h == null){
+ 	// 	$("#caribulan").show();
+	 // 	$("#carihari").hide();
+	 // 	$("#caritahun").hide();
+ 	// } else if(c == 'tahun' && h == null){
+ 	// 	$("#caribulan").hide();
+	 // 	$("#carihari").hide();
+	 // 	$("#caritahun").show();
+ 	// } else if(c == null && h == 'cek'){
+ 	// 	$("#caribulan").hide();
+	 // 	$("#carihari").show();
+	 // 	$("#caritahun").hide();
+ 	// }
+
+ 	if(sess == '') {
 	 	$("#caribulan").hide();
 	 	$("#carihari").hide();
 	 	$("#caritahun").hide();
- 	} else if(c == 'ok' && h == null){
- 		$("#caribulan").show();
-	 	$("#carihari").hide();
-	 	$("#caritahun").hide();
- 	} else if(c == 'tahun' && h == null){
- 		$("#caribulan").hide();
-	 	$("#carihari").hide();
-	 	$("#caritahun").show();
- 	} else if(c == null && h == 'cek'){
- 		$("#caribulan").hide();
-	 	$("#carihari").show();
-	 	$("#caritahun").hide();
+ 	} else if(sess != ''){
+ 		if(sess == 'bulan'){
+	 		$("#caribulan").show();
+		 	$("#carihari").hide();
+		 	$("#caritahun").hide();
+	 	} else if(sess == 'tahun'){
+	 		$("#caribulan").hide();
+		 	$("#carihari").hide();
+		 	$("#caritahun").show();
+	 	} else if(sess == 'hari'){
+	 		$("#caribulan").hide();
+		 	$("#carihari").show();
+		 	$("#caritahun").hide();
+		 }
  	}
 
  	$(document).on('change','.filter', function(e) {
@@ -403,20 +427,49 @@
 	    // console.log(cek);
 
 	    if (cek == 'hari') {
+	    	$.ajax({
+	    		url: "fungsi/apis/apisessionlap.php?status="+cek,
+	    		method: 'GET',
+	    		success: function(res) {
+	    			$("#filtercek").val(res)
+	    		}
+	    	})
 	    	$("#carihari").show();
 	    	$("#caribulan").hide();
 	    	$("#caritahun").hide();
 	    	q = 'hari'
 	    	
 	    } else if (cek == 'bulan') {
+	    	$.ajax({
+	    		url: "fungsi/apis/apisessionlap.php?status="+cek,
+	    		method: 'GET',
+	    		success: function(res) {
+	    			$("#filtercek").val(res)
+	    		}
+	    	})
 	        $("#carihari").hide();
 	    	$("#caribulan").show();
 	    	$("#caritahun").hide();
 	    	q = 'cek'
 	    } else if (cek == 'tahun') {
+	    	$.ajax({
+	    		url: "fungsi/apis/apisessionlap.php?status="+cek,
+	    		method: 'GET',
+	    		success: function(res) {
+	    			$("#filtercek").val(res)
+	    		}
+	    	})
 	        $("#carihari").hide();
 	    	$("#caribulan").hide();
 	    	$("#caritahun").show();
+	    } else {
+	    	$.ajax({
+	    		url: "fungsi/apis/apisessionlap.php?status=null",
+	    		method: 'GET',
+	    		success: function(res) {
+	    			$("#filtercek").val(res)
+	    		}
+	    	})
 	    }
 	});
 </script>

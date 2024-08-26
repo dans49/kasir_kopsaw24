@@ -30,7 +30,7 @@ foreach ($hasil2 as $isi2) {
 
    $sql2 ="SELECT * FROM penjualan WHERE id_nota='$isi2[id_nota]' AND id_barang='$isi2[id_barang]'";
    $row2 = $config -> prepare($sql2);
-   $row2 -> execute(array($nota));
+   $row2 -> execute();
    $qjumlah = $row2 -> fetch();
 
    $jumlahpcs = $qjumlah['jumlah'];
