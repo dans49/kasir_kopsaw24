@@ -30,36 +30,42 @@ if (!empty($_SESSION['admin'])) {
         echo '<script>window.location="../../index.php?page=barang&&remove=hapus-data"</script>';
     }
 
-    if ((htmlentities($_GET['nota']) == 'oke')) {
-        $tgl = $_GET['tgl'];
-
-
-
+    if (htmlentities($_GET['nota']) == 'ok') {
+        $tgl = htmlentities($_GET['tgl']);
+        $bln = htmlentities($_GET['bln']);  
+        $thn = htmlentities($_GET['thn']);
         $id = htmlentities($_GET['id_nota']);
-        $data[] = $id;
-        $sql = 'DELETE FROM nota WHERE id_nota=?';
-        $row = $config->prepare($sql);
-        $row->execute($data);
-        // ============ HAPUS NOTA END === 
-
-        $sql2 = 'DELETE FROM penjualan WHERE id_nota=?';
-        $row2 = $config->prepare($sql2);
-        $row2->execute($data);
-
-        $sql3 = 'DELETE FROM rincian WHERE id_nota=?';
-        $row3 = $config->prepare($sql3);
-        $row3->execute($data);
-
-        // if() {
-
-        // } else {
-        //     echo '<script>window.location="../../index.php?page=laporan&remove=hapus-data"</script>';
-        // }
-        if(!empty($tgl)){
-            echo '<script>window.location="../../index.php?page=laporan&cari=ok&tgl=$tgl"</script>';
+        
+        $data = [$id];
+        
+        $sql = 'DELETE FROM nota WHERE id_nota = ?';
+        $stmt = $config->prepare($sql);
+        $stmt->execute($data);
+        
+        $sql2 = 'DELETE FROM penjualan WHERE id_nota = ?';
+        $stmt2 = $config->prepare($sql2);
+        $stmt2->execute($data);
+        
+        $sql3 = 'DELETE FROM rincian WHERE id_nota = ?';
+        $stmt3 = $config->prepare($sql3);
+        $stmt3->execute($data);
+        
+        if (!empty($tgl)) {
+            // Jika tanggal tersedia
+            echo "<script>window.location='../../index.php?page=laporan&hari=ok&tgl=$thn$bln$tgl'</script>";
+        
+        } elseif (!empty($bln)) {
+            // Jika bulan atau tanggal tersedia
+            echo "<script>window.location='../../index.php?page=laporan&cari=ok&tgl=$tgl&bln=$bln&thn=$thn'</script>";
+            } elseif (!empty($thn)) {
+            // Jika tahun tersedia
+            echo "<script>window.location='../../index.php?page=laporan&cari=tahun&thn=$thn'</script>";
+        } else {
+            // Jika tidak ada parameter yang valid
+            echo "<script>window.location='../../index.php?page=laporan&remove=hapus-data'</script>";
         }
-
     }
+    
 
     if (!empty(htmlentities($_GET['pelanggan']))) {
         $id= htmlentities($_GET['id']);

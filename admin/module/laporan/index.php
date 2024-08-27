@@ -301,7 +301,7 @@
 								<!-- <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>"
                                     onclick="javascript:return confirm('Hapus Data Transaksi ?');"><button
                                         class="btn btn-danger btn-sm">Hapus</button></a> -->
-									<a href="fungsi/hapus/hapus.php?nota=oke&id_nota=<?= $isi['id_nota'];?>&tgl=<?=$_GET[tgl]?>&bln=<?=$_GET[bln]?>&thn=<?=$_GET[thn]?>" 
+									<a href="fungsi/hapus/hapus.php?nota=ok&id_nota=<?= $isi['id_nota'];?>&tgl=<?=$_GET[tgl]?>&bln=<?=$_GET[bln]?>&thn=<?=$_GET[thn]?>" 
                            onclick='return confirm("Apakah Anda yakin ingin menghapus data ini?")' 
                            class='btn btn-danger btn-sm'>Hapus</a>
 								</td>
